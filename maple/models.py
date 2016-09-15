@@ -1,6 +1,7 @@
 from .database import db
 from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
 from flask_login import UserMixin
+from datetime import datetime
 
 class Image(db.Model):
     __tablename__ = 'images'
@@ -9,7 +10,7 @@ class Image(db.Model):
     image = db.Column(db.String(80))
     link = db.Column(db.String(80))
     deletehash = db.Column(db.String(80))
-    created = db.Column(db.DateTime)
+    created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self, image, deletehash, link, created=None):
         self.image = image
@@ -25,13 +26,13 @@ class Post(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String())
-    created = db.Column(db.DateTime)
+    created = db.Column(db.DateTime, default=datetime.utcnow)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    #user = db.relationship('User', backref=db.backref('user', lazy='joined'), uselist=False)
+    user = db.relationship('User', backref=db.backref('posts', lazy='dynamic'), uselist=False)
 
     image_id = db.Column(db.Integer, db.ForeignKey('images.id'))
-    image = db.relationship('Image', backref=db.backref('image', lazy='joined'), uselist=False)
+    image = db.relationship('Image', backref='post', uselist=False)
 
     def __init__(self, image, user, text=None, created=None):
         self.image = image
@@ -47,8 +48,7 @@ class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
-    created = db.Column(db.DateTime)
-    posts = db.relationship('Post', backref='user', lazy='dynamic')
+    created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self, username, created=None):
         self.username = username
@@ -59,4 +59,5 @@ class OAuth(db.Model, OAuthConsumerMixin):
 
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
     user = db.relationship(User)
+    created = db.Column(db.DateTime, default=datetime.utcnow)
 

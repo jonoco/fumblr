@@ -38,13 +38,13 @@ def upload():
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(path)
+        image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(image_path)
         text = request.form['text']
-        post = create_post(current_user, path, text)
+        post = create_post(current_user, image_path, text)
 
         ## delete file after uploading it
-        os.remove(path)
+        os.remove(image_path)
 
         return redirect(url_for('view_post', id=post.id))
 
@@ -71,8 +71,16 @@ def gallery():
 def user(username):
     # TODO sanitize username input?
     user = User.query.filter_by(username=username).first()
+    posts = user.posts
+    posts_data = [{
+        'id': post.id,
+        'link': post.image.link,
+        'text': post.text or '',
+        'user': post.user.username
+    } for post in posts]
 
-    return ''
+
+    return render_template('blog.html', posts=posts_data)
 
 
 @app.errorhandler(404)
