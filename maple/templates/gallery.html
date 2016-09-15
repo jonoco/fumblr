@@ -1,0 +1,20 @@
+{% extends "_base.html" %}
+{% block title %}Gallery{% endblock %}
+{% block content %}
+<div class="post">
+	<div class="container">
+		<h1>Gallery</h1>
+		
+		<ul>
+		{% for item in items %}
+			<li>
+				<a href="{{ url_for('view_post', id=item.id) }}">
+					<img src="{{ item.link }}">
+				</a>
+			</li>
+		{% endfor %}	
+		</ul>
+		
+	</div><!-- container -->
+</div><!-- home -->
+{% endblock %}

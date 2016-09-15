@@ -1,0 +1,22 @@
+{% extends '_base.html' %}
+{% block title %}New Post{% endblock %}
+{% block content %}
+<div class="post">
+	<div class="container">
+		<h1>Upload new File</h1>
+		<form action="/upload" method="post" enctype="multipart/form-data">
+			<div class="form-group">
+				<label for="text">Description</label>
+				<input class="form-control" id="text" type="text" name="text" placeholder="Description">	
+			</div><!-- form-group -->
+
+			<div class="form-group">
+				<label for="photo">Photo</label>
+				<input class="form-control" id="photo" type="file" name="file">	
+			</div><!-- form-group -->
+			
+		  <button type="submit" class="btn btn-primary" value="Upload">Upload</button>
+		</form>
+	</div><!-- container -->
+</div><!-- post -->
+{% endblock content %}

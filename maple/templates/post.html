@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+{% block title %}Post{% endblock %}
+{% block content %}
+<div class="post">
+	<div class="container">
+		<h1>Post</h1>
+		<h2>{{ post.user }}</h2>
+		<p>{{ post.text }}</p>
+		<img src="{{ post.link }}">
+	</div><!-- container -->
+</div><!-- home -->
+{% endblock %}
