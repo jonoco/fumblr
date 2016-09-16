@@ -1,0 +1,21 @@
+{% extends "_base.html" %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+<div class="settings">
+	<div class="container">
+		<h1>Settings</h1>
+		
+		<p>this is where i'd put my settings, IF I HAD THEM</p>
+
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				<ul class="flash">
+					{% for category, message in messages %}
+						<li class='{{ category }}'>{{ message }}</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		{% endwith %}
+	</div><!-- container -->
+</div><!-- home -->
+{% endblock %}
