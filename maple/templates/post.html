@@ -6,7 +6,21 @@
 		<h1>Post</h1>
 		<h2>{{ post.user }}</h2>
 		<p>{{ post.text }}</p>
+		<p>likes: {{ post.likes|count }}</p>
 		<img src="{{ post.link }}">
+
+		{% set class = 'btn-success' if post.liked else 'btn-default' %}
+		<button class="btn {{ class }} " id="like-btn" data-post="{{ post.id }}">Like</button>
+
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				<ul class="flash">
+					{% for category, message in messages %}
+						<li class='{{ category }}'>{{ message }}</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		{% endwith %}
 	</div><!-- container -->
 </div><!-- home -->
 {% endblock %}

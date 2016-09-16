@@ -53,12 +53,6 @@ def twitter_error(blueprint, message, response):
         ).format(name=blueprint.name, msg=message, resp=response)
     flash(msg, category='error')
 
-# def twitter_error(blueprint, error, error_description=None, error_uri=None):
-#     msg = (
-#         "OAuth error from {name}! "
-#         "error={error} description={description} uri={uri}"
-#         ).format(name=blueprint.name, error=error, description=error_description, uri=error_uri)
-#     flash(msg, category='error')
 
 
 

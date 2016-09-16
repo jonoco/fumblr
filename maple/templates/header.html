@@ -1,13 +1,23 @@
 <nav class="navbar navbar-light bg-faded">
 	<div class="nav navbar-nav">
-		<a href="{{ url_for('index') }}" class="nav-item nav-link">Fumblr</a>
+		<a href="{{ url_for('index') }}" class="navbar-brand">Fumblr</a>
 		<div class="pull-xs-right">
 			<a href="{{ url_for('gallery') }}" class="nav-item nav-link">Gallery</a>
 			
 			{% if current_user.is_authenticated %}
 			<a href="{{ url_for('upload') }}" class="nav-item nav-link">New Post</a>
-			<a href="#" class="nav-item nav-link">{{ current_user.username }}</a>
-			<a href="{{ url_for('logout') }}" class="nav-item nav-link">Log out</a>
+			<div class="nav-item dropdown">
+				<button type="button" data-toggle="dropdown" class="nav-item btn btn-outline-info dropdown-toggle">
+					{{ current_user.username }}</button>
+				<div class="dropdown-menu">
+					<a href="{{ url_for('user', username=current_user.username) }}" class="dropdown-item">
+						Blog</a>
+					<a href="{{ url_for('settings') }}" class="dropdown-item">
+						Settings</a>
+					<div class="dropdown-divider"></div><!-- dropdown-divider -->
+					<a href="{{ url_for('logout') }}" class="dropdown-item">Log out</a>
+				</div><!-- dropdown-menu -->
+			</div><!-- btn-group -->
 			{% else %}
 			<a href="{{ url_for('twitter.login') }}" class="nav-item nav-link">Sign in</a>
 			{% endif %}

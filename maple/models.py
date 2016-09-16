@@ -32,7 +32,7 @@ class Post(db.Model):
     user = db.relationship('User', backref=db.backref('posts', lazy='dynamic'), uselist=False)
 
     image_id = db.Column(db.Integer, db.ForeignKey('images.id'))
-    image = db.relationship('Image', backref='post', uselist=False)
+    image = db.relationship('Image', backref=db.backref('post', uselist=False), uselist=False)
 
     def __init__(self, image, user, text=None, created=None):
         self.image = image
@@ -42,6 +42,27 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post {} - {}>'.format(self.user, self.image)
+
+class Like(db.Model):
+    __tablename__ = 'likes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    created = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', backref=db.backref('likes', lazy='dynamic'), uselist=False)
+
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    post = db.relationship('Post', backref=db.backref('likes', lazy='dynamic'), uselist=False)
+
+
+    def __init__(self, user, post, created=None):
+        self.user = user
+        self.post = post
+        self.created = created
+
+    def __repr__(self):
+        return '<Like {} - {}>'.format(self.user, self.post)
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'

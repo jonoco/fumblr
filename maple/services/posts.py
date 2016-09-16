@@ -1,6 +1,7 @@
 from .imgur import upload_image
-from maple.models import User, Post, Image
-from maple.database import db
+from ..models import User, Post, Image, Like
+from ..database import db
+from flask_login import current_user
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
@@ -62,6 +63,22 @@ def create_image(image_path):
     db.session.commit()
 
     return image
+
+def like_post(post_id):
+    """ create a like for a post """
+    post = Post.query.get(post_id)
+    like = Like(user=current_user, post=post)
+
+    db.session.add(like)
+    db.session.commit()
+
+    return like
+
+def get_post_like(post_id):
+    """ return like of post liked by user """
+    like = Like.query.filter_by(user_id=current_user.id, post_id=post_id).first()
+
+    return like
 
 def allowed_file(filename):
     return '.' in filename and \
