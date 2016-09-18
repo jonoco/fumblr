@@ -1,0 +1,20 @@
+{% extends "layout/base.html" %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<div class="search">
+	<div class="container">
+		<h1>Search</h1>
+
+		{% for user in users %}
+			<div class="user">
+				<a href="{{ url_for('user', username=user.username) }}">{{ user.username }}</a>
+			</div>
+		{% endfor %}
+
+		{% for post in posts %}
+			{% include "component/post.html" %}
+		{% endfor %}
+
+	</div><!-- container -->
+</div><!-- home -->
+{% endblock %}

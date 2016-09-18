@@ -75,6 +75,11 @@ class User(db.Model, UserMixin):
         self.username = username
         self.created = created
 
+    def get_user_info(self):
+        return {
+            'username': self.username
+        }
+
 class OAuth(db.Model, OAuthConsumerMixin):
     __tablename__ = 'oauths'
 

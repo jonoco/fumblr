@@ -2,6 +2,10 @@
 	<nav class="navbar navbar-light bg-faded">
 		<div class="nav navbar-nav">
 			<a href="{{ url_for('index') }}" class="navbar-brand">Fumblr</a>
+			<form action="/search" id="search-bar">
+				<input type="text" name="q" placeholder="Search Fumblr" />	
+			</form>
+
 			<div class="pull-xs-right">
 				<a href="{{ url_for('gallery') }}" class="nav-item nav-link">Gallery</a>
 

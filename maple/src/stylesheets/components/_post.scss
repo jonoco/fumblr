@@ -2,6 +2,7 @@
     background-color: #eeeeee;
     width: 640px;
     margin: 3rem auto;
+    border-radius: .2rem;
     .top-bar {
         padding: .5rem 1rem 2rem 1rem;
         .user {
@@ -9,21 +10,24 @@
             font-weight: 700;
         }
     }
-    .img {
-        width: 100%;
-        margin: 0;
-    }
+    .img { width: 100%; }
     .bottom-bar {
         padding: 1rem;
         min-height: 3.5rem;
         @extend %clearfix;
-        .text { 
-            font-size: 20px;
-        }
+        .text { font-size: 20px; }
         .post-menu {
             float: right;
-            .like-btn { 
-                //
+            .like-btn {
+                outline: none; 
+                transition: .2s all ease;
+                border: none;
+                padding: .5rem 1rem;
+                &:hover { opacity: .8; }
+                &.liked {
+                    color: #eee;
+                    background-color: $green;
+                }
             }    
         }
     }

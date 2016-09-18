@@ -4,13 +4,8 @@
 <div class="view-post">
 	<div class="container">
 		<h1>Post</h1>
-		<h2>{{ post.user }}</h2>
-		<p>{{ post.text }}</p>
-		<p>likes: {{ post.likes|count }}</p>
-		<img src="{{ post.link }}">
 
-		{% set class = 'btn-success' if post.liked else 'btn-default' %}
-		<button class="btn {{ class }} " id="like-btn" data-post="{{ post.id }}">Like</button>
+		{% include 'component/post.html' %}
 
 		{% with messages = get_flashed_messages(with_categories=true) %}
 			{% if messages %}

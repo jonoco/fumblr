@@ -4,7 +4,7 @@ from flask import render_template, redirect, url_for, flash, request, jsonify
 from maple import app
 from flask_login import login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
-from .services.posts import allowed_file, create_post, like_post, get_post_like
+from .services.posts import allowed_file, create_post, like_post, get_post_like, get_posts_data, get_post_data
 from .models import Post, User, Image
 from .database import db
 
@@ -59,36 +59,14 @@ def settings():
 @app.route('/post/<id>')
 def view_post(id):
     post = Post.query.get(id)
-
-    likes = [{
-        'user': l.user.username
-    } for l in post.likes]
-
-    liked = False
-    for like in likes:
-        if current_user.username == like['user']:
-            liked = True
-
-    post_data = {
-        'id': post.id,
-        'link': post.image.link,
-        'text': post.text or '',
-        'user': post.user.username,
-        'likes': likes,
-        'liked': liked
-    }
+    post_data = get_post_data(post)
 
     return render_template('view_post.html', post=post_data)
 
 @app.route('/gallery')
 def gallery():
     posts = Post.query.limit(10).all()
-    posts_data = [{
-                      'id': post.id,
-                      'link': post.image.link,
-                      'text': post.text or '',
-                      'user': post.user.username
-                  } for post in posts]
+    posts_data = get_posts_data(posts)
 
     return render_template('gallery.html', posts=posts_data)
 
@@ -97,13 +75,7 @@ def user(username):
     # TODO sanitize username input?
     user = User.query.filter_by(username=username).first()
     posts = user.posts
-    posts_data = [{
-                      'id': post.id,
-                      'link': post.image.link,
-                      'text': post.text or '',
-                      'user': post.user.username
-                  } for post in posts]
-
+    posts_data = get_posts_data(posts)
 
     return render_template('blog.html', posts=posts_data)
 
@@ -139,6 +111,19 @@ def like():
         like = True
 
     return jsonify(like=like)
+
+@app.route('/search')
+def search():
+    q = request.args.get('q')
+    query = '%{}%'.format(q)
+
+    users = User.query.filter(User.username.like(query)).all()
+    posts = Post.query.filter(Post.text.like(query)).all()
+
+    users_data = [user.get_user_info() for user in users]
+    posts_data = get_posts_data(posts)
+
+    return render_template('search.html', posts=posts_data, users=users_data)
 
 ## debugging/testing routes
 

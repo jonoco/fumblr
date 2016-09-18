@@ -80,6 +80,29 @@ def get_post_like(post_id):
 
     return like
 
+def get_post_data(post):
+    return {
+            'id': post.id,
+            'link': post.image.link,
+            'text': post.text or '',
+            'user': post.user.username,
+            'likes': post.likes.count(),
+            'liked': any(l.user.username == current_user.username for l in post.likes)
+        }
+
+def get_posts_data(posts):
+    """ Strips post data off of array of Posts """
+    return [{
+            'id': post.id,
+            'link': post.image.link,
+            'text': post.text or '',
+            'user': post.user.username,
+            'likes': post.likes.count(),
+            'liked': any(l.user.username == current_user.username for l in post.likes)
+        } for post in posts]
+
+    # 'likes': [{'user': l.user.username} for l in post.likes],
+
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
