@@ -5,6 +5,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v4.0.0 | MIT License | github.com/necolas/normalize.css */
+@import 'https://fonts.googleapis.com/css?family=Raleway:200,400,700';
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -4732,3 +4733,100 @@ a.text-danger:focus, a.text-danger:hover {
 @media print {
   .hidden-print {
     display: none !important; } }
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+body {
+  background-color: #545454;
+  font-family: 'Raleway', sans-serif; }
+
+h1 {
+  font-size: 5rem;
+  font-weight: 400; }
+
+h2 {
+  font-size: 4rem;
+  font-weight: 400; }
+
+h3 {
+  font-size: 3rem;
+  font-weight: 700; }
+
+h4 {
+  font-size: 2rem;
+  font-weight: 700; }
+
+a {
+  color: inherit; }
+  a:hover {
+    text-decoration: none; }
+
+.post .bottom-bar:after {
+  clear: both;
+  display: table;
+  content: ''; }
+
+.post {
+  background-color: #eeeeee;
+  width: 640px;
+  margin: 3rem auto; }
+  .post .top-bar {
+    padding: .5rem 1rem 2rem 1rem; }
+    .post .top-bar .user {
+      font-size: 18px;
+      font-weight: 700; }
+  .post .img {
+    width: 100%;
+    margin: 0; }
+  .post .bottom-bar {
+    padding: 1rem;
+    min-height: 3.5rem; }
+    .post .bottom-bar .text {
+      font-size: 20px; }
+    .post .bottom-bar .post-menu {
+      float: right; }

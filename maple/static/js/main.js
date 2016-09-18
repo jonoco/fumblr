@@ -2,16 +2,23 @@
 
 (function () {
 
-    var likeButton = document.querySelector('#like-btn');
-    likeButton.addEventListener('click', function (e) {
-        var postID = e.currentTarget.dataset.post;
+    var likeButtons = document.querySelectorAll('.like-btn');
+    if (likeButtons) {
+        likeButtons.forEach(function (btn) {
+            btn.addEventListener('click', likePost);
+        });
+    }
+
+    function likePost(e) {
+        var btn = e.currentTarget;
+        var postID = btn.dataset.post;
 
         axios.post('/like', {
             post: postID
         }).then(function (res) {
-            likeButton.classList.toggle('btn-success');
+            btn.classList.toggle('btn-success');
         }).catch(function (err) {
             console.log(err);
         });
-    });
+    }
 })(axios);

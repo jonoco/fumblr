@@ -1,22 +1,11 @@
-{% extends "_base.html" %}
+{% extends "layout/base.html" %}
 {% block title %}Blog{% endblock %}
 {% block content %}
 <div class="blog">
 	<div class="container">
 		<h1>Blog</h1>
 		
-		<ul>
-		{% for post in posts %}
-			<li>
-				<h2>{{ post.user }}</h2>
-				<p>{{ post.text }}</p>
-
-				<a href="{{ url_for('view_post', id=post.id) }}">
-					<img src="{{ post.link }}">
-				</a>
-			</li>
-		{% endfor %}	
-		</ul>
+		{% include "component/post.html" %}
 
 	</div><!-- container -->
 </div><!-- home -->

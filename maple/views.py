@@ -78,7 +78,7 @@ def view_post(id):
         'liked': liked
     }
 
-    return render_template('post.html', post=post_data)
+    return render_template('view_post.html', post=post_data)
 
 @app.route('/gallery')
 def gallery():

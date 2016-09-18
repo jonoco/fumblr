@@ -6,7 +6,8 @@ var
   sass      = require('gulp-sass'),
   babel     = require('gulp-babel'),
   prefix    = require('gulp-autoprefixer'),
-  uglify    = require('gulp-uglify');
+  uglify    = require('gulp-uglify'),
+  livereload = require('gulp-livereload');
 
 gulp.task('js', function() {
   gulp.src('maple/src/js/main.js')

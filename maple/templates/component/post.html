@@ -1,0 +1,16 @@
+{% for post in posts %}
+	<div class="post">
+		<div class="top-bar">
+			<a class="user" href="{{ url_for('user', username=post.user) }}">{{ post.user }}</a>
+		</div>
+		<a href="{{ url_for('view_post', id=post.id) }}">
+			<img class="img" src="{{ post.link }}">
+		</a>
+		<div class="bottom-bar">
+			<p class="text">{{ post.text }}</p>	
+			<div class="post-menu">
+				<button class="like-btn" data-post="{{ post.id }}">Like</button>	
+			</div><!-- post-menu -->
+		</div><!-- bottom-bar -->
+	</div>
+{% endfor %}
