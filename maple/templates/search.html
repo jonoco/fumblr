@@ -1,14 +1,32 @@
 {% extends "layout/base.html" %}
 {% block title %}Search{% endblock %}
 {% block content %}
-<div class="search">
+<div id="search">
 	<div class="container">
 		<h1>Search</h1>
 
+		{% if no_results %}
+		<div class="no-result">Sorry, no results</div>
+		{% endif %}
+
+		{% if tag %}
+		<h3>{{ tag }}</h3>
+		{% elif search %}
+		<h3>{{ search }}</h3>
+		{% endif %}
+
+		{% if tags %}
+		<div class="tags">
+			{% for tag in tags %}
+				<a href="{{ url_for('tag', tag_name=tag) }}" class="tag">#{{ tag }}</a>	
+			{% endfor %}
+		</div>	
+		{% endif %}
+
 		{% for user in users %}
-			<div class="user">
-				<a href="{{ url_for('user', username=user.username) }}">{{ user.username }}</a>
-			</div>
+		<div class="user">
+			<a href="{{ url_for('user', username=user.username) }}">{{ user.username }}</a>
+		</div>
 		{% endfor %}
 
 		{% for post in posts %}

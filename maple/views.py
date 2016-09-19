@@ -4,7 +4,7 @@ from maple import app
 from flask_login import login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
 from .services.posts import allowed_file, create_post, like_post, get_post_like, get_posts_data, get_post_data
-from .models import Post, User, Image
+from .models import Post, User, Image, Tag
 from .database import db
 
 @app.route('/')
@@ -77,7 +77,7 @@ def view_post(id):
 
 @app.route('/gallery')
 def gallery():
-    posts = Post.query.order_by(Post.created).limit(20).all()
+    posts = Post.query.order_by(Post.created.desc()).limit(20).all()
     posts_data = get_posts_data(posts)
 
     return render_template('gallery.html', posts=posts_data)
@@ -85,7 +85,7 @@ def gallery():
 @app.route('/user/<username>')
 def user(username):
     user = User.query.filter_by(username=username).first()
-    posts = user.posts
+    posts = user.posts.order_by(Post.created.desc())
     posts_data = get_posts_data(posts)
 
     return render_template('blog.html', posts=posts_data, user=username)
@@ -146,13 +146,29 @@ def search():
     q = request.args.get('q')
     query = '%{}%'.format(q)
 
+    #TODO get all posts with tag named like the query
+
     users = User.query.filter(User.username.like(query)).all()
     posts = Post.query.filter(Post.text.like(query)).all()
+    tags = Tag.query.filter(Tag.name.like(query)).all()
 
     users_data = [user.get_user_info() for user in users]
     posts_data = get_posts_data(posts)
+    tags_data = [tag.name for tag in tags]
 
-    return render_template('search.html', posts=posts_data, users=users_data)
+    return render_template('search.html', posts=posts_data, users=users_data, tags=tags_data, search=q)
+
+@app.route('/tag/<tag_name>')
+def tag(tag_name):
+    tag = Tag.query.filter_by(name=tag_name).first()
+    if not tag:
+        return render_template('search.html', no_results=True)
+
+    posts = tag.posts.order_by(Post.created.desc())
+
+    posts_data = get_posts_data(posts)
+
+    return render_template('search.html', tag=tag_name, posts=posts_data)
 
 @app.errorhandler(404)
 def page_not_found(error):

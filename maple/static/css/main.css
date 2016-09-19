@@ -4829,6 +4829,9 @@ a {
     #login .login-menu .login-buttons a {
       margin: 1rem; }
 
+#search .no-result {
+  color: #eee; }
+
 .post {
   background-color: #eeeeee;
   width: 640px;
