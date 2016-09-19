@@ -4781,8 +4781,13 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+.post .bottom-bar:after {
+  clear: both;
+  display: table;
+  content: ''; }
+
 body {
-  background-color: #545454;
+  background-color: #236863;
   font-family: 'Raleway', sans-serif; }
 
 h1 {
@@ -4809,11 +4814,6 @@ a {
   color: inherit; }
   a:hover {
     text-decoration: none; }
-
-.post .bottom-bar:after {
-  clear: both;
-  display: table;
-  content: ''; }
 
 #blog .follow-btn.followed {
   background-color: #76ba30; }
@@ -4860,5 +4860,12 @@ a {
           color: #eee;
           background-color: #76ba30; }
 
-.header #search-bar {
-  display: inline; }
+.header {
+  color: #ddd; }
+  .header .navbar-brand {
+    color: #eee; }
+  .header nav {
+    background-color: #236863;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5); }
+  .header #search-bar {
+    display: inline; }

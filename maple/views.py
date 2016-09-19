@@ -1,11 +1,10 @@
-import json
 import os
 from flask import render_template, redirect, url_for, flash, request, jsonify
 from maple import app
 from flask_login import login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
 from .services.posts import allowed_file, create_post, like_post, get_post_like, get_posts_data, get_post_data
-from .models import Post, User, Image, Follow
+from .models import Post, User, Image
 from .database import db
 
 @app.route('/')

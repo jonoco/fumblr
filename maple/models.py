@@ -4,6 +4,11 @@ from flask_login import UserMixin
 from datetime import datetime
 from sqlalchemy import exists
 
+tags = db.Table('tag_post_association',
+                db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
+                db.Column('post_id', db.Integer, db.ForeignKey('posts.id'))
+                )
+
 class Image(db.Model):
     __tablename__ = 'images'
 
@@ -35,10 +40,13 @@ class Post(db.Model):
     image_id = db.Column(db.Integer, db.ForeignKey('images.id'))
     image = db.relationship('Image', backref=db.backref('post', uselist=False), uselist=False)
 
-    def __init__(self, image, user, text=None, created=None):
+    tags = db.relationship('Tag', secondary=tags, backref=db.backref('posts', lazy='dynamic'))
+
+    def __init__(self, image, user, tags, text=None, created=None):
         self.image = image
         self.user = user
         self.text = text
+        self.tags = tags
         self.created = created
 
     def __repr__(self):
@@ -147,6 +155,20 @@ class Follow(db.Model):
 
     def __repr__(self):
         return '<Follow {} - {}>'.format(self.target, self.follower)
+
+class Tag(db.Model):
+    __tablename__ = 'tags'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, unique=True)
+    created = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, name, created=None):
+        self.name = name
+        self.created = created
+
+    def __repr__(self):
+        return '<Tag - {}>'.format(self.name)
 
 class OAuth(db.Model, OAuthConsumerMixin):
     __tablename__ = 'oauths'
