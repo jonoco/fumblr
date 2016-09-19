@@ -1,11 +1,11 @@
 from .imgur import upload_image
-from ..models import User, Post, Image, Like
+from ..models import User, Post, Image, Like, Tag
 from ..database import db
 from flask_login import current_user
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
-def create_post(user, image_path, text=None, created=None):
+def create_post(user, image_path, text=None, created=None, tags=[]):
     """
     creates and store a post object from a user and image
 
@@ -15,7 +15,8 @@ def create_post(user, image_path, text=None, created=None):
     """
 
     image = create_image(image_path)
-    post = Post(image, user, text, created)
+    tag_list = Tag.get_tag_list(tags)
+    post = Post(image=image, user=user, text=text, tags=tag_list, created=created)
 
     db.session.add(post)
     db.session.commit()
@@ -92,7 +93,9 @@ def get_post_data(post):
             'text': post.text or '',
             'user': post.user.username,
             'likes': post.likes.count(),
-            'liked': any(l.user.username == user for l in post.likes)
+            'liked': any(l.user.username == user for l in post.likes),
+            'tags': [tag.name for tag in post.tags],
+            'created': post.created
         }
 
 def get_posts_data(posts):

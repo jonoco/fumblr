@@ -2,12 +2,18 @@
 <div class="post">
 	<div class="top-bar">
 		<a class="user" href="{{ url_for('user', username=post.user) }}">{{ post.user }}</a>
+		<span class="created">{{ post.created }}</span>
 	</div>
 	<a href="{{ url_for('view_post', id=post.id) }}">
 		<img class="img" src="{{ post.link }}">
 	</a>
 	<div class="bottom-bar">
 		<p class="text">{{ post.text }}</p>
+		<div class="tags">
+			{% for tag in post.tags %}
+			<a href="#" class="tag">#{{ tag }}</a>
+			{% endfor %}
+		</div>
 		<div class="post-menu">
 			<span class="likes">likes - {{ post.likes }}</span>
 			{% set class = 'liked' if post.liked else '' %}

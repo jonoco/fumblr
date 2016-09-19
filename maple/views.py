@@ -33,23 +33,27 @@ def upload():
     # check if the post request has the file part
     if 'file' not in request.files:
         flash('No file not in request')
-        return redirect(url_for('post'))
+        return redirect(url_for('upload'))
 
     file = request.files['file']
     # if user does not select file, browser also
     # submit a empty part without filename
     if file.filename == '':
         flash('No file selected')
-        return redirect(url_for('post'))
+        return redirect(url_for('upload'))
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(image_path)
-        text = request.form['text']
-        post = create_post(current_user, image_path, text)
 
-        ## delete file after uploading it
+        tags_string = request.form['tags']
+        tags = [s.strip().lower() for s in tags_string.split(',')]
+        text = request.form['text']
+
+        post = create_post(current_user, image_path, text, tags=tags)
+
+        ## delete image after uploading it
         os.remove(image_path)
 
         return redirect(url_for('view_post', id=post.id))
@@ -73,7 +77,7 @@ def view_post(id):
 
 @app.route('/gallery')
 def gallery():
-    posts = Post.query.limit(10).all()
+    posts = Post.query.order_by(Post.created).limit(20).all()
     posts_data = get_posts_data(posts)
 
     return render_template('gallery.html', posts=posts_data)

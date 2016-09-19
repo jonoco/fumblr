@@ -4846,6 +4846,8 @@ a {
     min-height: 3.5rem; }
     .post .bottom-bar .text {
       font-size: 20px; }
+    .post .bottom-bar .tags .tag {
+      color: #555; }
     .post .bottom-bar .post-menu {
       float: right; }
       .post .bottom-bar .post-menu .like-btn {

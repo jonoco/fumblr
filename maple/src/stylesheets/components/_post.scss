@@ -16,6 +16,11 @@
         min-height: 3.5rem;
         @extend %clearfix;
         .text { font-size: 20px; }
+        .tags {
+            .tag{
+                color: #555;
+            }
+        }
         .post-menu {
             float: right;
             .like-btn {

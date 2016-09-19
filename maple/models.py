@@ -170,6 +170,16 @@ class Tag(db.Model):
     def __repr__(self):
         return '<Tag - {}>'.format(self.name)
 
+    @classmethod
+    def get_or_create_tag(cls, name):
+        """ Create or find a Tag from the given tag name """
+        return cls.query.filter_by(name=name).first() or cls(name)
+
+    @classmethod
+    def get_tag_list(cls, tags):
+        """ Generate a list of Tag models from a list of tag names """
+        return [cls.get_or_create_tag(tag) for tag in tags]
+
 class OAuth(db.Model, OAuthConsumerMixin):
     __tablename__ = 'oauths'
 
