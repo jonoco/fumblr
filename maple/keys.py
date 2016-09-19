@@ -5,3 +5,6 @@ IMGUR_SECRET = '057ea896523ff9d4da94e3999003ec6cd95065d1'
 
 TWITTER_KEY = 'kkUaoneWq5iH8nFXzpFWht6xP'
 TWITTER_SECRET = 'gmi8WlmgxeVtBX11b1WAS7zRELyvoyacBXeqGQjplpWTODJFa7'
+
+GOOGLE_ID = '880686149050-lc0bbu77sqecgf6tpds8ohc99kchvben.apps.googleusercontent.com'
+GOOGLE_SECRET = 'A6h_8R0P2OO7EA9rkGu3LPlB'

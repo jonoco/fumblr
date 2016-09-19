@@ -10,6 +10,27 @@
         console.log(e);
     }
 
+    // Follow button
+    var followButtons = document.querySelectorAll('.follow-btn');
+    if (followButtons) {
+        followButtons.forEach(function (btn) {
+            btn.addEventListener('click', followUser);
+        });
+    }
+    function followUser(e) {
+        var btn = e.currentTarget;
+        var user = btn.dataset.user;
+
+        axios.post('/follow', {
+            user: user
+        }).then(function (res) {
+            console.log(res.data.following);
+            btn.classList.toggle('followed');
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }
+
     // Like buttons
     var likeButtons = document.querySelectorAll('.like-btn');
     if (likeButtons) {

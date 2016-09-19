@@ -1,3 +1,7 @@
-.blog {
-	
+#blog {
+    .follow-btn {
+        &.followed {
+            background-color: $green;
+        }
+    }
 }

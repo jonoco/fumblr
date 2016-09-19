@@ -1,4 +1,5 @@
 import sys
+import os
 from maple import app
 from maple.database import db
 
@@ -9,4 +10,5 @@ if __name__ == '__main__':
             db.session.commit()
             print('Database tables created')
     else:
+        os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
         app.run()

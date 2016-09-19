@@ -81,27 +81,23 @@ def get_post_like(post_id):
     return like
 
 def get_post_data(post):
+    if not current_user.is_anonymous:
+        user = current_user.username
+    else:
+        user = ''
+
     return {
             'id': post.id,
             'link': post.image.link,
             'text': post.text or '',
             'user': post.user.username,
             'likes': post.likes.count(),
-            'liked': any(l.user.username == current_user.username for l in post.likes)
+            'liked': any(l.user.username == user for l in post.likes)
         }
 
 def get_posts_data(posts):
     """ Strips post data off of array of Posts """
-    return [{
-            'id': post.id,
-            'link': post.image.link,
-            'text': post.text or '',
-            'user': post.user.username,
-            'likes': post.likes.count(),
-            'liked': any(l.user.username == current_user.username for l in post.likes)
-        } for post in posts]
-
-    # 'likes': [{'user': l.user.username} for l in post.likes],
+    return [get_post_data(post) for post in posts]
 
 def allowed_file(filename):
     return '.' in filename and \

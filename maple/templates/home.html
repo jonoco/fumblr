@@ -3,7 +3,7 @@
 {% block content %}
 <div class="home">
 	<div class="container">
-		<h1>Hello Twit</h1>
+		<h1>Fumblr</h1>
 		
 		{% with messages = get_flashed_messages(with_categories=true) %}
 			{% if messages %}
@@ -19,7 +19,7 @@
 			<a href="{{ url_for('logout') }}">Log out</a>
 		{% else %}
 			You are not logged in.
-			<a href="{{ url_for('twitter.login') }}">Sign in</a>
+			<a href="{{ url_for('login') }}">Sign in</a>
 		{% endif %}
 
 	</div><!-- container -->

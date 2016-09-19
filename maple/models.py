@@ -2,6 +2,7 @@ from .database import db
 from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
 from flask_login import UserMixin
 from datetime import datetime
+from sqlalchemy import exists
 
 class Image(db.Model):
     __tablename__ = 'images'
@@ -69,21 +70,88 @@ class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
+    loginname = db.Column(db.String)
+    provider = db.Column(db.String)
     created = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def __init__(self, username, created=None):
-        self.username = username
+    def __init__(self, loginname, provider, created=None):
+        self.loginname = loginname
+        self.provider = provider
+        self.username = User.generate_username(loginname, id)
         self.created = created
+
+    @classmethod
+    def username_taken(cls, username):
+        return db.session.query(exists().where(User.username == username)).scalar()
+
+    @classmethod
+    def generate_username(cls, loginname, id):
+        """
+        Generates a username for a user
+        :param loginname:
+        :param id:
+        :return String:
+        """
+        if cls.username_taken(loginname):
+            return '{name}{id}'.format(id=id,name=loginname)
+        else:
+            return loginname
 
     def get_user_info(self):
         return {
             'username': self.username
         }
 
+    def following_user(self, username):
+        """ Check if current user is following given user """
+        return any(username == f.target.username for f in self.following)
+
+    def follow_user(self, username):
+        """ Follow user by given username and returns new Follow """
+
+        user = User.query.filter_by(username=username).first()
+        follow = Follow(target_user=user, follower_user=self)
+
+        db.session.add(follow)
+        db.session.commit()
+
+        return follow
+
+    def stop_following_user(self, username):
+        """
+            Deleted Follow for user provided
+            Returns False if user wasn't found
+        """
+        follow = next(f for f in self.following if f.target.username == username)
+        if follow:
+            db.session.delete(follow)
+            db.session.commit()
+            return True
+        else:
+            return False
+
+class Follow(db.Model):
+    __tablename__ = 'followers'
+
+    id = db.Column(db.Integer, primary_key=True)
+    target_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    target = db.relationship('User', foreign_keys='Follow.target_id', backref=db.backref('followers', lazy='dynamic'), uselist=False)
+    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    follower = db.relationship('User', foreign_keys='Follow.follower_id', backref=db.backref('following', lazy='dynamic'), uselist=False)
+    created = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, target_user, follower_user, created=None):
+        self.target = target_user
+        self.follower = follower_user
+        self.created = created
+
+    def __repr__(self):
+        return '<Follow {} - {}>'.format(self.target, self.follower)
+
 class OAuth(db.Model, OAuthConsumerMixin):
     __tablename__ = 'oauths'
 
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
     user = db.relationship(User)
-    created = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 

@@ -5,7 +5,7 @@ from maple import app
 from flask_login import login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
 from .services.posts import allowed_file, create_post, like_post, get_post_like, get_posts_data, get_post_data
-from .models import Post, User, Image
+from .models import Post, User, Image, Follow
 from .database import db
 
 @app.route('/')
@@ -13,6 +13,10 @@ def index():
     if current_user.is_authenticated:
         return redirect(url_for('user', username=current_user.username))
     return render_template('home.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
 
 @app.route('/logout')
 @login_required
@@ -51,9 +55,14 @@ def upload():
 
         return redirect(url_for('view_post', id=post.id))
 
-@app.route('/settings')
+@app.route('/settings', methods=['get', 'post'])
 @login_required
 def settings():
+    if request.method == 'GET':
+        return render_template('settings.html')
+
+    #TODO get new user settings and update user info
+
     return render_template('settings.html')
 
 @app.route('/post/<id>')
@@ -72,12 +81,11 @@ def gallery():
 
 @app.route('/user/<username>')
 def user(username):
-    # TODO sanitize username input?
     user = User.query.filter_by(username=username).first()
     posts = user.posts
     posts_data = get_posts_data(posts)
 
-    return render_template('blog.html', posts=posts_data)
+    return render_template('blog.html', posts=posts_data, user=username)
 
 @app.route('/image/<id>')
 def get_image(id):
@@ -89,6 +97,24 @@ def get_image(id):
     }
 
     return render_template('image.html', image=image_data)
+
+@app.route('/follow', methods=['post'])
+@login_required
+def follow():
+    """
+        Follow a user
+    """
+
+    req = request.get_json()
+    username = req['user']
+    following = current_user.following_user(username)
+
+    if following:
+        current_user.stop_following_user(username)
+    else:
+        current_user.follow_user(username)
+
+    return jsonify(following=following)
 
 @app.route('/like', methods=['post'])
 @login_required
@@ -124,27 +150,6 @@ def search():
     posts_data = get_posts_data(posts)
 
     return render_template('search.html', posts=posts_data, users=users_data)
-
-## debugging/testing routes
-
-@app.route('/test')
-def test():
-    thing = request.args.get('thing', type=str)
-
-    msg = thing * 3
-    return jsonify(result=msg)
-
-@app.route('/testpost', methods=['post'])
-def testpost():
-    for a in request.args:
-        print('args - {}'.format(a))
-    for f in request.form:
-        print('form - {}'.format(f))
-
-    print('json - {}'.format(request.get_json()))
-
-
-    return jsonify(result='post success?')
 
 @app.errorhandler(404)
 def page_not_found(error):

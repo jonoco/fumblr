@@ -4787,19 +4787,23 @@ body {
 
 h1 {
   font-size: 5rem;
-  font-weight: 400; }
+  font-weight: 400;
+  margin-bottom: 1rem; }
 
 h2 {
   font-size: 4rem;
-  font-weight: 400; }
+  font-weight: 400;
+  margin-bottom: 1rem; }
 
 h3 {
   font-size: 3rem;
-  font-weight: 700; }
+  font-weight: 700;
+  margin-bottom: 1rem; }
 
 h4 {
   font-size: 2rem;
-  font-weight: 700; }
+  font-weight: 700;
+  margin-bottom: 1rem; }
 
 a {
   color: inherit; }
@@ -4810,6 +4814,20 @@ a {
   clear: both;
   display: table;
   content: ''; }
+
+#blog .follow-btn.followed {
+  background-color: #76ba30; }
+
+#login .login-menu {
+  padding: 3rem; }
+  #login .login-menu .login-buttons {
+    background-color: #eeeeee;
+    width: 16rem;
+    padding: 2rem;
+    margin: 0 auto;
+    text-align: center; }
+    #login .login-menu .login-buttons a {
+      margin: 1rem; }
 
 .post {
   background-color: #eeeeee;

@@ -1,10 +1,12 @@
 {% extends "layout/base.html" %}
 {% block title %}Blog{% endblock %}
 {% block content %}
-<div class="blog">
+<div id="blog">
 	<div class="container">
 		<h1>Blog</h1>
-		
+
+		<button class="btn follow-btn" data-user="{{ user }}">Follow</button>
+
 		{% for post in posts %}
 			{% include "component/post.html" %}
 		{% endfor %}
