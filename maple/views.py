@@ -4,13 +4,13 @@ from maple import app
 from flask_login import login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
 from .services.posts import allowed_file, create_post, like_post, get_post_like, get_posts_data, get_post_data
-from .models import Post, User, Image, Tag
+from .models import Post, User, Image, Tag, Follow
 from .database import db
 
 @app.route('/')
 def index():
     if current_user.is_authenticated:
-        return redirect(url_for('user', username=current_user.username))
+        return redirect(url_for('dashboard'))
     return render_template('home.html')
 
 @app.route('/login')
@@ -81,6 +81,24 @@ def gallery():
     posts_data = get_posts_data(posts)
 
     return render_template('gallery.html', posts=posts_data)
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    following_ids = current_user.following.with_entities(Follow.target_id).all()
+    following_ids.append(current_user.id)
+
+    posts = Post.query.filter(Post.user_id.in_(following_ids)).order_by(Post.created.desc()).all()
+    posts_data = get_posts_data(posts)
+
+    # TODO this does not seem very performant - and no ordering
+    # my_posts = current_user.posts.all()
+    # following_posts = (follow.target.posts.all() for follow in current_user.following)
+    #
+    # for p in following_posts:
+    #     my_posts.append(p)
+
+    return render_template('dashboard.html', posts=posts_data)
 
 @app.route('/user/<username>')
 def user(username):

@@ -15,7 +15,7 @@
 					<button type="button" data-toggle="dropdown" class="nav-item btn btn-outline-info dropdown-toggle">
 						{{ current_user.username }}</button>
 					<div class="dropdown-menu">
-						<a href="{{ url_for('user', username=current_user.username) }}" class="dropdown-item">Blog</a>
+						<a href="{{ url_for('dashboard') }}" class="dropdown-item">Dashboard</a>
 						<a href="{{ url_for('settings') }}" class="dropdown-item">Settings</a>
 						<div class="dropdown-divider"></div><!-- dropdown-divider -->
 						<a href="{{ url_for('logout') }}" class="dropdown-item">Log out</a>
