@@ -8,6 +8,10 @@
 		{% for post in posts %}
 			{% include "component/post.html" %}
 		{% endfor %}
+
+		{% if more_posts %}
+			<a href="{{ url_for('gallery', page=offset) }}" class="btn btn-primary pull-xs-right">Next</a>
+		{% endif %}
 		
 	</div><!-- container -->
 </div><!-- home -->

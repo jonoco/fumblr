@@ -156,6 +156,11 @@ class Follow(db.Model):
     def __repr__(self):
         return '<Follow {} - {}>'.format(self.target, self.follower)
 
+    def get_data(self):
+        return {
+            'user': self.target.username
+        }
+
 class Tag(db.Model):
     __tablename__ = 'tags'
 

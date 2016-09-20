@@ -4818,6 +4818,9 @@ a {
 #blog .follow-btn.followed {
   background-color: #76ba30; }
 
+#gallery {
+  margin-bottom: 3rem; }
+
 #login .login-menu {
   padding: 3rem; }
   #login .login-menu .login-buttons {
@@ -4867,10 +4870,12 @@ a {
 
 .header {
   color: #ddd; }
-  .header .navbar-brand {
-    color: #eee; }
   .header nav {
     background-color: #236863;
     border-bottom: 1px solid rgba(0, 0, 0, 0.5); }
+  .header input {
+    background-color: rgba(0, 0, 0, 0.2); }
+  .header .navbar-brand {
+    color: #eee; }
   .header #search-bar {
     display: inline; }

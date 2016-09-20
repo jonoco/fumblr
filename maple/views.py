@@ -76,11 +76,18 @@ def view_post(id):
     return render_template('view_post.html', post=post_data)
 
 @app.route('/gallery')
-def gallery():
-    posts = Post.query.order_by(Post.created.desc()).limit(20).all()
+@app.route('/gallery/<int:page>')
+def gallery(page=0):
+    PAGE_LIMIT = 20
+
+    posts = Post.query.order_by(Post.created.desc()).offset(page).limit(PAGE_LIMIT).all()
     posts_data = get_posts_data(posts)
 
-    return render_template('gallery.html', posts=posts_data)
+    total_count = Post.query.count()
+    offset = len(posts_data) + page
+    more_posts = total_count > offset
+
+    return render_template('gallery.html', posts=posts_data, more_posts=more_posts, offset=offset)
 
 @app.route('/dashboard')
 @login_required
@@ -128,14 +135,19 @@ def follow():
 
     req = request.get_json()
     username = req['user']
-    following = current_user.following_user(username)
 
-    if following:
+    if username == current_user.username:
+        flash('Cannot follow yourself')
+        return ('', 403)
+
+    is_following = current_user.following_user(username)
+
+    if is_following:
         current_user.stop_following_user(username)
     else:
         current_user.follow_user(username)
 
-    return jsonify(following=following)
+    return jsonify(following=is_following)
 
 @app.route('/like', methods=['post'])
 @login_required
@@ -188,8 +200,16 @@ def tag(tag_name):
 
     return render_template('search.html', tag=tag_name, posts=posts_data)
 
+@app.route('/following')
+@login_required
+def following():
+    followings = current_user.following
+    following_data = [f.get_data() for f in followings]
+
+    return render_template('following.html', following=following_data)
+
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('404.html')
+    return render_template('not_found.html')
 
 

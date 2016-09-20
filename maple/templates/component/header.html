@@ -2,8 +2,8 @@
 	<nav class="navbar">
 		<div class="nav navbar-nav">
 			<a href="{{ url_for('index') }}" class="navbar-brand">Fumblr</a>
-			<form action="/search" id="search-bar">
-				<input type="text" name="q" placeholder="Search Fumblr" />	
+			<form action="/search" id="search-bar" class="form-inline">
+				<input class="form-control" type="text" name="q" placeholder="Search Fumblr" />
 			</form>
 
 			<div class="pull-xs-right">
@@ -17,6 +17,8 @@
 					<div class="dropdown-menu">
 						<a href="{{ url_for('dashboard') }}" class="dropdown-item">Dashboard</a>
 						<a href="{{ url_for('settings') }}" class="dropdown-item">Settings</a>
+						<div class="dropdown-divider"></div><!-- dropdown-divider -->
+						<a href="{{ url_for('following') }}" class="dropdown-item">Following</a>
 						<div class="dropdown-divider"></div><!-- dropdown-divider -->
 						<a href="{{ url_for('logout') }}" class="dropdown-item">Log out</a>
 					</div><!-- dropdown-menu -->

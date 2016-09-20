@@ -1,13 +1,17 @@
 .header {
-	color: #ddd;
+    color: #ddd;
+
+    nav {
+		background-color: $primary-color;
+		border-bottom: 1px solid rgba(0, 0, 0, .5);
+	}
+
+    input {
+        background-color: rgba(0,0,0,0.2);
+    }
 
 	.navbar-brand {
 		color: #eee;
-	}
-
-  nav {
-		background-color: $primary-color;
-		border-bottom: 1px solid rgba(0, 0, 0, .5);
 	}
 	
 	#search-bar {
