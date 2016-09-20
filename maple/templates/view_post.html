@@ -6,16 +6,7 @@
 		<h1>Post</h1>
 
 		{% include 'component/post.html' %}
-
-		{% with messages = get_flashed_messages(with_categories=true) %}
-			{% if messages %}
-				<ul class="flash">
-					{% for category, message in messages %}
-						<li class='{{ category }}'>{{ message }}</li>
-					{% endfor %}
-				</ul>
-			{% endif %}
-		{% endwith %}
+		
 	</div><!-- container -->
 </div><!-- home -->
 {% endblock %}

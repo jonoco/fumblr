@@ -4,23 +4,12 @@
 <div id="login">
 	<div class="container">
 		<h1>Login</h1>
-
-        <div class="login-menu">
-            <div class="login-buttons">
-                <a href="{{ url_for('twitter.login') }}" class="btn btn-info">Login with Twitter</a>
-                <a href="{{ url_for('google.login') }}" class="btn btn-info">Login with Google</a>
-            </div>
+    <div class="login-menu">
+        <div class="login-buttons">
+            <a href="{{ url_for('twitter.login') }}" class="btn btn-info">Login with Twitter</a>
+            <a href="{{ url_for('google.login') }}" class="btn btn-info">Login with Google</a>
         </div>
-
-		{% with messages = get_flashed_messages(with_categories=true) %}
-			{% if messages %}
-				<ul class="flash">
-					{% for category, message in messages %}
-						<li class='{{ category }}'>{{ message }}</li>
-					{% endfor %}
-				</ul>
-			{% endif %}
-		{% endwith %}
+    </div>
 	</div><!-- container -->
 </div><!-- home -->
 {% endblock %}

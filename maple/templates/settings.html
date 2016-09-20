@@ -11,16 +11,6 @@
 			<input type="text" name="username">
 			<button class="update-btn">Update</button>
 		</form>
-
-		{% with messages = get_flashed_messages(with_categories=true) %}
-			{% if messages %}
-				<ul class="flash">
-					{% for category, message in messages %}
-						<li class='{{ category }}'>{{ message }}</li>
-					{% endfor %}
-				</ul>
-			{% endif %}
-		{% endwith %}
 	</div><!-- container -->
 </div><!-- home -->
 {% endblock %}
