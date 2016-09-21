@@ -1,0 +1,20 @@
+{% extends "layout/base.html" %}
+{% block title %}Followers{% endblock %}
+{% block content %}
+<div id="followers">
+	<div class="container">
+		<h1>Followers</h1>
+
+        <ul class="list-group">
+        {% for follow in followers %}
+			<li class="list-group-item">
+                <a href="{{ url_for('user', username=follow.follower) }}">{{ follow.follower }}</a>
+            </li>
+        {% else %}
+            <li class="list-group-item"><em>None is following you :(</em></li>
+		{% endfor %}
+        </ul>
+
+	</div><!-- container -->
+</div><!-- home -->
+{% endblock %}

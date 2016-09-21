@@ -180,7 +180,8 @@ class Follow(db.Model):
 
     def get_data(self):
         return {
-            'user': self.target.username
+            'target': self.target.username,
+            'follower': self.follower.username
         }
 
 class Tag(db.Model):

@@ -208,6 +208,14 @@ def following():
 
     return render_template('following.html', following=following_data)
 
+@app.route('/followers')
+@login_required
+def followers():
+    followers_query = current_user.followers
+    followers_data = [f.get_data() for f in followers_query]
+
+    return render_template('followers.html', followers=followers_data)
+
 @app.route('/likes')
 @login_required
 def likes():
