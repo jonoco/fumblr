@@ -113,7 +113,12 @@ def user(username):
     posts = user.posts.order_by(Post.created.desc())
     posts_data = get_posts_data(posts)
 
-    return render_template('blog.html', posts=posts_data, user=username)
+    if current_user.is_authenticated:
+        is_following = current_user.following_user(username)
+    else:
+        is_following = False
+
+    return render_template('blog.html', posts=posts_data, user=username, is_following=is_following)
 
 @app.route('/image/<id>')
 def get_image(id):

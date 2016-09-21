@@ -25,7 +25,7 @@
             user: user
         }).then(function (res) {
             console.log(res.data.following);
-            btn.classList.toggle('followed');
+            btn.classList.toggle('following');
         }).catch(function (err) {
             console.log(err);
         });

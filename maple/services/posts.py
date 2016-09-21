@@ -82,7 +82,7 @@ def get_post_like(post_id):
     return like
 
 def get_post_data(post):
-    if not current_user.is_anonymous:
+    if current_user.is_authenticated:
         user = current_user.username
     else:
         user = ''

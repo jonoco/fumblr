@@ -5,7 +5,8 @@
 	<div class="container">
 		<h1>Blog</h1>
 		
-		<button class="btn follow-btn" data-user="{{ user }}">Follow</button>
+		{% set class = 'following' if is_following else '' %}
+		<button class="btn follow-btn {{ class }}" data-user="{{ user }}">Follow</button>
 
 		{% for post in posts %}
 			{% include "component/post.html" %}

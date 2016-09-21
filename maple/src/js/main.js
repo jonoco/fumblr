@@ -23,7 +23,7 @@
             user
         }).then(res => {
             console.log(res.data.following);
-            btn.classList.toggle('followed')
+            btn.classList.toggle('following')
         }).catch(err => {
             console.log(err);
         });
