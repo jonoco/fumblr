@@ -4,7 +4,7 @@ from maple import app
 from flask_login import login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
 from .services.posts import allowed_file, create_post, like_post, get_post_like, get_posts_data, get_post_data
-from .models import Post, User, Image, Tag, Follow
+from .models import Post, User, Image, Tag, Follow, Like
 from .database import db
 
 @app.route('/')
@@ -207,6 +207,14 @@ def following():
     following_data = [f.get_data() for f in followings]
 
     return render_template('following.html', following=following_data)
+
+@app.route('/likes')
+@login_required
+def likes():
+    likes_query = current_user.likes.order_by(Like.created.desc())
+    posts_data = [l.post.get_data() for l in likes_query]
+
+    return render_template('likes.html', posts=posts_data)
 
 @app.errorhandler(404)
 def page_not_found(error):

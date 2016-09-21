@@ -4872,7 +4872,7 @@ a {
   color: #ddd; }
   .header nav {
     background-color: #236863;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.5); }
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
   .header input {
     background-color: rgba(0, 0, 0, 0.2); }
   .header .navbar-brand {

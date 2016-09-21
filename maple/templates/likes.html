@@ -1,0 +1,14 @@
+{% extends "layout/base.html" %}
+{% block title %}Likes{% endblock %}
+{% block content %}
+<div id="likes">
+	<div class="container">
+		<h1>Likes</h1>
+
+		{% for post in posts %}
+			{% include "component/post.html" %}
+		{% endfor %}
+
+	</div><!-- container -->
+</div><!-- home -->
+{% endblock %}

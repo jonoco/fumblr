@@ -1,6 +1,6 @@
 from .database import db
 from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from datetime import datetime
 from sqlalchemy import exists
 
@@ -52,6 +52,23 @@ class Post(db.Model):
     def __repr__(self):
         return '<Post {} - {}>'.format(self.user, self.image)
 
+    def get_data(self):
+        if not current_user.is_anonymous:
+            user = current_user.username
+        else:
+            user = ''
+
+        return {
+            'id': self.id,
+            'link': self.image.link,
+            'text': self.text or '',
+            'user': self.user.username,
+            'likes': self.likes.count(),
+            'liked': any(l.user.username == user for l in self.likes),
+            'tags': [tag.name for tag in self.tags],
+            'created': self.created
+        }
+
 class Like(db.Model):
     __tablename__ = 'likes'
 
@@ -72,6 +89,11 @@ class Like(db.Model):
 
     def __repr__(self):
         return '<Like {} - {}>'.format(self.user, self.post)
+
+    def get_data(self):
+        return {
+            'post': self.post
+        }
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
