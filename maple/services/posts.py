@@ -81,6 +81,7 @@ def get_post_like(post_id):
 
     return like
 
+#DEPRECATED - use Post method
 def get_post_data(post):
     if current_user.is_authenticated:
         user = current_user.username
@@ -98,6 +99,7 @@ def get_post_data(post):
             'created': post.created
         }
 
+#DEPRECATED - use Post method
 def get_posts_data(posts):
     """ Strips post data off of array of Posts """
     return [get_post_data(post) for post in posts]

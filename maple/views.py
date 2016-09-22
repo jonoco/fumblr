@@ -3,7 +3,7 @@ from flask import render_template, redirect, url_for, flash, request, jsonify, c
 from maple import app
 from flask_login import login_required, logout_user, current_user, user_needs_refresh
 from werkzeug.utils import secure_filename
-from .services.posts import allowed_file, create_post, like_post, get_post_like, get_posts_data, get_post_data
+from .services.posts import allowed_file, create_post, like_post, get_post_like
 from .models import Post, User, Image, Tag, Follow, Like
 from .database import db
 
@@ -83,7 +83,7 @@ def settings():
 @app.route('/post/<id>')
 def view_post(id):
     post = Post.query.get(id)
-    post_data = get_post_data(post)
+    post_data = post.get_post_data()
 
     return render_template('view_post.html', post=post_data)
 
@@ -93,7 +93,7 @@ def gallery(page=0):
     PAGE_LIMIT = 20
 
     posts = Post.query.order_by(Post.created.desc()).offset(page).limit(PAGE_LIMIT).all()
-    posts_data = get_posts_data(posts)
+    posts_data = Post.get_posts_data(posts)
 
     total_count = Post.query.count()
     offset = len(posts_data) + page
@@ -108,7 +108,7 @@ def dashboard():
     following_ids.append(current_user.id)
 
     posts = Post.query.filter(Post.user_id.in_(following_ids)).order_by(Post.created.desc()).all()
-    posts_data = get_posts_data(posts)
+    posts_data = Post.get_posts_data(posts)
 
     return render_template('dashboard.html', posts=posts_data)
 
@@ -116,7 +116,7 @@ def dashboard():
 def user(username):
     user = User.query.filter_by(username=username).first()
     posts = user.posts.order_by(Post.created.desc())
-    posts_data = get_posts_data(posts)
+    posts_data = Post.get_posts_data(posts)
 
     if current_user.is_authenticated:
         is_following = current_user.following_user(username)
@@ -193,7 +193,7 @@ def search():
     tags = Tag.query.filter(Tag.name.like(query)).all()
 
     users_data = [user.get_user_info() for user in users]
-    posts_data = get_posts_data(posts)
+    posts_data = Post.get_posts_data(posts)
     tags_data = [tag.name for tag in tags]
 
     return render_template('search.html', posts=posts_data, users=users_data, tags=tags_data, search=q)
@@ -206,7 +206,7 @@ def tag(tag_name):
 
     posts = tag.posts.order_by(Post.created.desc())
 
-    posts_data = get_posts_data(posts)
+    posts_data = Post.get_posts_data(posts)
 
     return render_template('search.html', tag=tag_name, posts=posts_data)
 

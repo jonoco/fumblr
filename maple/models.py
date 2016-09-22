@@ -53,10 +53,12 @@ class Post(db.Model):
         return '<Post {} - {}>'.format(self.user, self.image)
 
     def get_data(self):
-        if not current_user.is_anonymous:
-            user = current_user.username
+        if current_user.is_authenticated:
+            liked = any(l.user.username == current_user.username for l in self.likes)
+            owned = current_user == self.user
         else:
-            user = ''
+            liked = False
+            owned = False
 
         return {
             'id': self.id,
@@ -64,10 +66,15 @@ class Post(db.Model):
             'text': self.text or '',
             'user': self.user.username,
             'likes': self.likes.count(),
-            'liked': any(l.user.username == user for l in self.likes),
+            'liked': liked,
             'tags': [tag.name for tag in self.tags],
-            'created': self.created
+            'created': self.created,
+            'owned': owned
         }
+
+    @classmethod
+    def get_posts_data(cls, posts):
+        return [post.get_post_data() for post in posts]
 
 class Like(db.Model):
     __tablename__ = 'likes'
