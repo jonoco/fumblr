@@ -83,7 +83,7 @@ def settings():
 @app.route('/post/<id>')
 def view_post(id):
     post = Post.query.get(id)
-    post_data = post.get_post_data()
+    post_data = post.get_data()
 
     return render_template('view_post.html', post=post_data)
 

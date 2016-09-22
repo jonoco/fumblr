@@ -74,7 +74,7 @@ class Post(db.Model):
 
     @classmethod
     def get_posts_data(cls, posts):
-        return [post.get_post_data() for post in posts]
+        return [post.get_data() for post in posts]
 
 class Like(db.Model):
     __tablename__ = 'likes'
