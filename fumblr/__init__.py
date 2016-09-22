@@ -1,5 +1,5 @@
 from flask import Flask
-from maple.database import db
+from fumblr.database import db
 from .keys import *
 
 ## initialize app
@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.secret_key = keys.APP_SECRET_KEY
 app.config.from_pyfile('default_settings.py')
 
-from maple import views
+from fumblr import views
 from .manager import twitter_blueprint, google_blueprint, login_manager
 
 # hook up extensions

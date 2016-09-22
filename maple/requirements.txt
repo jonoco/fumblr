@@ -1,9 +1,0 @@
-oauth2
-psycopg2
-Flask==0.10.1
-requests
-imgurpython
-Flask-SQLAlchemy
-Flask-Dance
-Flask-Login
-SQLAlchemy

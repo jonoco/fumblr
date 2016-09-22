@@ -1,6 +1,6 @@
 import os
 from flask import render_template, redirect, url_for, flash, request, jsonify, current_app
-from maple import app
+from fumblr import app
 from flask_login import login_required, logout_user, current_user, user_needs_refresh
 from werkzeug.utils import secure_filename
 from .services.posts import allowed_file, create_post, like_post, get_post_like
@@ -86,6 +86,11 @@ def view_post(id):
     post_data = post.get_data()
 
     return render_template('view_post.html', post=post_data)
+
+@app.route('/post/delete/<id>')
+@login_required
+def delete_post(id):
+    return ''
 
 @app.route('/gallery')
 @app.route('/gallery/<int:page>')

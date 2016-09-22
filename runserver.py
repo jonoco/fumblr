@@ -1,7 +1,7 @@
 import sys
 import os
-from maple import app
-from maple.database import db
+from fumblr import app
+from fumblr.database import db
 
 if __name__ == '__main__':
     if '--setup' in sys.argv:

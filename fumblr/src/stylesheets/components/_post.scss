@@ -22,7 +22,10 @@
             }
         }
         .post-menu {
-            float: right;
+            .likes {
+                display: inline-block;
+                margin-top: .5rem;
+             }
             .like-btn {
                 outline: none; 
                 transition: .2s all ease;

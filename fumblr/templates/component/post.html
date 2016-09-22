@@ -16,8 +16,18 @@
 		</div>
 		<div class="post-menu">
 			<span class="likes">likes - {{ post.likes }}</span>
+			{% if post.owned %}
+			<div class="btn-group  pull-xs-right">
+				<button class="btn btn-info dropdown-toggle" data-toggle="dropdown">edit</button>
+				<div class="dropdown-menu">
+					<a href="#" class="dropdown-item">edit</a>
+					<a href="#" class="dropdown-item">delete</a>
+				</div>
+			</div>
+			{% else %}
 			{% set class = 'liked' if post.liked else '' %}
-			<button class="like-btn {{ class }}" data-post="{{ post.id }}">Like</button>
+			<button class="like-btn pull-xs-right {{ class }}" data-post="{{ post.id }}">Like</button>
+			{% endif %}
 		</div><!-- post-menu -->
 	</div><!-- bottom-bar -->
 </div>

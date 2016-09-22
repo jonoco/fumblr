@@ -1,9 +1,7 @@
-'use strict';
-
 (function () {
 
     // Search bar
-    var searchBar = document.querySelector('#search-bar');
+    const searchBar = document.querySelector('#search-bar');
     searchBar.addEventListener('submit', search);
 
     function search(e) {
@@ -11,43 +9,43 @@
     }
 
     // Follow button
-    var followButtons = document.querySelectorAll('.follow-btn');
+    const followButtons = document.querySelectorAll('.follow-btn');
     if (followButtons) {
-        followButtons.forEach(function (btn) {
+        followButtons.forEach(btn => {
             btn.addEventListener('click', followUser);
         });
     }
     function followUser(e) {
-        var btn = e.currentTarget;
-        var user = btn.dataset.user;
+        const btn = e.currentTarget;
+        const user = btn.dataset.user;
 
         axios.post('/follow', {
-            user: user
-        }).then(function (res) {
+            user
+        }).then(res => {
             console.log(res.data.following);
             btn.classList.toggle('following');
-        }).catch(function (err) {
+        }).catch(err => {
             console.log(err);
         });
     }
 
     // Like buttons
-    var likeButtons = document.querySelectorAll('.like-btn');
+    const likeButtons = document.querySelectorAll('.like-btn');
     if (likeButtons) {
-        likeButtons.forEach(function (btn) {
+        likeButtons.forEach(btn => {
             btn.addEventListener('click', likePost);
         });
     }
 
     function likePost(e) {
-        var btn = e.currentTarget;
-        var postID = btn.dataset.post;
+        const btn = e.currentTarget;
+        const postID = btn.dataset.post;
 
         axios.post('/like', {
             post: postID
-        }).then(function (res) {
+        }).then(res => {
             btn.classList.toggle('liked');
-        }).catch(function (err) {
+        }).catch(err => {
             console.log(err);
         });
     }

@@ -1,4 +1,4 @@
-from maple.keys import IMGUR_SECRET, IMGUR_ID
+from fumblr.keys import IMGUR_SECRET, IMGUR_ID
 from imgurpython import ImgurClient
 import os
 

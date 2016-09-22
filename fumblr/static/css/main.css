@@ -4863,19 +4863,20 @@ a {
       font-size: 20px; }
     .post .bottom-bar .tags .tag {
       color: #555; }
-    .post .bottom-bar .post-menu {
-      float: right; }
-      .post .bottom-bar .post-menu .like-btn {
-        outline: none;
-        -webkit-transition: .2s all ease;
-        transition: .2s all ease;
-        border: none;
-        padding: .5rem 1rem; }
-        .post .bottom-bar .post-menu .like-btn:hover {
-          opacity: .8; }
-        .post .bottom-bar .post-menu .like-btn.liked {
-          color: #eee;
-          background-color: #76ba30; }
+    .post .bottom-bar .post-menu .likes {
+      display: inline-block;
+      margin-top: .5rem; }
+    .post .bottom-bar .post-menu .like-btn {
+      outline: none;
+      -webkit-transition: .2s all ease;
+      transition: .2s all ease;
+      border: none;
+      padding: .5rem 1rem; }
+      .post .bottom-bar .post-menu .like-btn:hover {
+        opacity: .8; }
+      .post .bottom-bar .post-menu .like-btn.liked {
+        color: #eee;
+        background-color: #76ba30; }
 
 .header {
   color: #ddd; }

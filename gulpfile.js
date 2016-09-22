@@ -10,38 +10,38 @@ var
   livereload = require('gulp-livereload');
 
 gulp.task('js', function() {
-  gulp.src('maple/src/js/main.js')
+  gulp.src('fumblr/src/js/main.js')
     .pipe(babel())
-    .pipe(gulp.dest('maple/static/js'));
+    .pipe(gulp.dest('fumblr/static/js'));
 });
 
 gulp.task('js-min', function() {
-  gulp.src('maple/src/js/main.js')
+  gulp.src('fumblr/src/js/main.js')
     .pipe(babel())
     .pipe(uglify())
-    .pipe(gulp.dest('maple/static/js'));
+    .pipe(gulp.dest('fumblr/static/js'));
 });
 
 gulp.task('sass', function() {
-  gulp.src('maple/src/stylesheets/main.scss')
+  gulp.src('fumblr/src/stylesheets/main.scss')
     .pipe(sass().on('error', sass.logError))
     .pipe(prefix())
     .pipe(rename('main.css'))
-    .pipe(gulp.dest('maple/static/css'));
+    .pipe(gulp.dest('fumblr/static/css'));
 });
 
 gulp.task('sass-min', function() {
-  gulp.src('maple/src/stylesheets/main.scss')
+  gulp.src('fumblr/src/stylesheets/main.scss')
     .pipe(sass().on('error', sass.logError))
     .pipe(prefix())
     .pipe(cleanCSS())
     .pipe(rename('main.css'))
-    .pipe(gulp.dest('maple/static/css'));
+    .pipe(gulp.dest('fumblr/static/css'));
 });
 
 gulp.task('watch', function() {
-  gulp.watch('maple/src/stylesheets/*/*.scss', ['sass']);
-  gulp.watch('maple/src/js/*.js', ['js']);
+  gulp.watch('fumblr/src/stylesheets/*/*.scss', ['sass']);
+  gulp.watch('fumblr/src/js/*.js', ['js']);
 });
 
 gulp.task('default', ['watch', 'js', 'sass']);
