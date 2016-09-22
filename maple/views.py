@@ -62,18 +62,23 @@ def upload():
 @login_required
 def settings():
     if request.method == 'GET':
-        user = current_user.get_user_info()
+        return render_template('settings.html', user=current_user.get_user_info(), error={})
 
-        return render_template('settings.html', user=user)
-
-    user = current_user
-    user.username = request.form['username']
-    db.session.commit()
+    new_username = request.form['username']
+    if User.username_taken(new_username):
+        error = {
+            'username': '{} is already taken'.format(new_username)
+        }
+        return render_template('settings.html', user=current_user.get_user_info(), error=error)
+    else:
+        user = current_user
+        user.username = new_username
+        db.session.commit()
 
     #refresh login manager
     user_needs_refresh.send(current_app._get_current_object())
 
-    return render_template('settings.html', user=current_user.get_user_info())
+    return render_template('settings.html', user=current_user.get_user_info(), error={})
 
 @app.route('/post/<id>')
 def view_post(id):

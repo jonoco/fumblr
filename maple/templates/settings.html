@@ -4,13 +4,15 @@
 <div id="settings">
 	<div class="container">
 		<h1>Settings</h1>
-		
-		<p>this is where i'd put my settings, IF I HAD THEM</p>
+
 		<div class="menu">
 			<form action="" method="post">
 				<div class="form-group">
 					<label for="settings-username">Change username</label>
 					<input type="text" id="settings-username" class="form-control" name="username" value="{{ user.username }}">
+					{% if error.username %}
+						<span class="form-error">{{ error.username }}</span>
+					{% endif %}
 				</div>
 
 				<button class="btn update-btn">Update</button>

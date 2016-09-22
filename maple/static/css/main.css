@@ -4840,6 +4840,10 @@ a {
   width: 640px;
   padding: 1rem; }
 
+#settings .form-error {
+  font-size: .8rem;
+  color: #FF2466; }
+
 .post {
   background-color: #eeeeee;
   width: 640px;
