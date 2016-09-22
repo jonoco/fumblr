@@ -1,7 +1,7 @@
 import os
-from flask import render_template, redirect, url_for, flash, request, jsonify
+from flask import render_template, redirect, url_for, flash, request, jsonify, current_app
 from maple import app
-from flask_login import login_required, logout_user, current_user
+from flask_login import login_required, logout_user, current_user, user_needs_refresh
 from werkzeug.utils import secure_filename
 from .services.posts import allowed_file, create_post, like_post, get_post_like, get_posts_data, get_post_data
 from .models import Post, User, Image, Tag, Follow, Like
@@ -62,11 +62,18 @@ def upload():
 @login_required
 def settings():
     if request.method == 'GET':
-        return render_template('settings.html')
+        user = current_user.get_user_info()
 
-    #TODO get new user settings and update user info
+        return render_template('settings.html', user=user)
 
-    return render_template('settings.html')
+    user = current_user
+    user.username = request.form['username']
+    db.session.commit()
+
+    #refresh login manager
+    user_needs_refresh.send(current_app._get_current_object())
+
+    return render_template('settings.html', user=current_user.get_user_info())
 
 @app.route('/post/<id>')
 def view_post(id):
@@ -97,13 +104,6 @@ def dashboard():
 
     posts = Post.query.filter(Post.user_id.in_(following_ids)).order_by(Post.created.desc()).all()
     posts_data = get_posts_data(posts)
-
-    # TODO this does not seem very performant - and no ordering
-    # my_posts = current_user.posts.all()
-    # following_posts = (follow.target.posts.all() for follow in current_user.following)
-    #
-    # for p in following_posts:
-    #     my_posts.append(p)
 
     return render_template('dashboard.html', posts=posts_data)
 

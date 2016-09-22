@@ -6,11 +6,16 @@
 		<h1>Settings</h1>
 		
 		<p>this is where i'd put my settings, IF I HAD THEM</p>
+		<div class="menu">
+			<form action="" method="post">
+				<div class="form-group">
+					<label for="settings-username">Change username</label>
+					<input type="text" id="settings-username" class="form-control" name="username" value="{{ user.username }}">
+				</div>
 
-		<form action="" method="post">
-			<input type="text" name="username">
-			<button class="update-btn">Update</button>
-		</form>
+				<button class="btn update-btn">Update</button>
+			</form>
+		</div>
 	</div><!-- container -->
 </div><!-- home -->
 {% endblock %}
