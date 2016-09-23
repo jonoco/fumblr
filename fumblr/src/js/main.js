@@ -1,11 +1,67 @@
 (function(){
 
-    // Search bar
-    const searchBar = document.querySelector('#search-bar');
-    searchBar.addEventListener('submit', search);
+    // Upload modal
+    const uploadModal = document.querySelector('#upload-modal');
+    if (uploadModal) {
+        (function(){
+            //TODO validate form behavior here
+            const data = {}; 
+            
+            const form = uploadModal.querySelector('#upload-form');
+            const droparea = uploadModal.querySelector('.droparea');
+            const dropbox = uploadModal.querySelector('#dropbox');
+                  dropbox.addEventListener('dragenter', dragenter, false);
+                  dropbox.addEventListener('dragover', dragover, false);
+                  dropbox.addEventListener('dragleave', dragleave, false);
+                  dropbox.addEventListener('drop', drop, false);
 
-    function search(e) {
-        console.log(e);
+            const uploadBtn = uploadModal.querySelector('#upload-btn');
+                  uploadBtn.addEventListener('click', upload);
+            
+            const file = uploadModal.querySelector('#photo');
+            const text = uploadModal.querySelector('#text');
+            const tags = uploadModal.querySelector('#tags');
+
+            function upload(e) {
+                data.text = text.value;
+                data.tags = tags.value;
+                data.file = file.files[0];
+
+                form.submit()
+            }
+
+            function handleFiles(files) {
+                file.files = files;
+            }
+
+            function drop(e) {
+                e.stopPropagation();
+                e.preventDefault();
+
+                var dt = e.dataTransfer;
+                var files = dt.files;
+
+                handleFiles(files);
+            }
+
+            function dragenter(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                droparea.classList.add('dragover');
+            }
+
+            function dragleave(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                droparea.classList.remove('dragover');
+            }
+
+            function dragover(e) {
+                e.stopPropagation();
+                e.preventDefault();
+
+            }
+        }())
     }
 
     // Follow button

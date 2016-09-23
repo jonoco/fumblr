@@ -80,6 +80,26 @@ def settings():
 
     return render_template('settings.html', user=current_user.get_user_info(), error={})
 
+@app.route('/post', methods=['post'])
+@login_required
+def new_post():
+    file = request.files['file']
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(image_path)
+
+        tags_string = request.form['tags']
+        tags = [s.strip().lower() for s in tags_string.split(',')]
+        text = request.form['text']
+
+        post = create_post(current_user, image_path, text, tags=tags)
+
+        ## delete image after uploading it
+        os.remove(image_path)
+
+        return redirect(url_for('view_post', id=post.id))
+
 @app.route('/post/<id>')
 def view_post(id):
     post = Post.query.get(id)
@@ -90,6 +110,13 @@ def view_post(id):
 @app.route('/post/delete/<id>')
 @login_required
 def delete_post(id):
+    print ('delete {}'.format(id))
+    return ''
+
+@app.route('/post/edit/<id>')
+@login_required
+def edit_post(id):
+    print('edit {}'.format(id))
     return ''
 
 @app.route('/gallery')

@@ -11,7 +11,7 @@ var
 
 gulp.task('js', function() {
   gulp.src('fumblr/src/js/main.js')
-    .pipe(babel())
+    .pipe(babel().on('error', function(e) { console.log(e.message) }))
     .pipe(gulp.dest('fumblr/static/js'));
 });
 

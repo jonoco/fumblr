@@ -5,6 +5,9 @@
 	<div class="container">
 		<h1>Dashboard</h1>
 
+		<button class="btn btn-primary" data-toggle="modal" data-target="#upload-modal">New Post</button>
+		{% include "component/upload-modal.html" %}
+
 		{% for post in posts %}
 			{% include "component/post.html" %}
 		{% endfor %}
