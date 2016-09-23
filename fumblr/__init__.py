@@ -9,6 +9,7 @@ app.secret_key = keys.APP_SECRET_KEY
 app.config.from_pyfile('default_settings.py')
 
 from fumblr import views
+from fumblr import filters
 from .manager import twitter_blueprint, google_blueprint, login_manager
 
 # hook up extensions

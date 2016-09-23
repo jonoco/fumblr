@@ -102,6 +102,9 @@ def new_post():
 @app.route('/post/<id>')
 def view_post(id):
     post = Post.query.get(id)
+    if not post:
+        return redirect(url_for('index'))
+
     post_data = post.get_data()
 
     return render_template('view_post.html', post=post_data)
@@ -109,8 +112,15 @@ def view_post(id):
 @app.route('/post/delete/<id>')
 @login_required
 def delete_post(id):
-    print ('delete {}'.format(id))
-    return ''
+    #TODO ask to confirm before delete
+    post = current_user.posts.filter_by(id=id).one_or_none()
+    if not post:
+        return ('Cannot delete, post does not belong to user', 403)
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return ('Post deleted', 204)
 
 @app.route('/post/edit/<id>', methods=['get', 'post'])
 @login_required

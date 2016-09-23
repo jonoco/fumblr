@@ -2,7 +2,7 @@
 
     // Upload modal
     const uploadModal = document.querySelector('#upload-modal');
-    if (uploadModal) {
+    if (!!uploadModal) {
         (function(){
             //TODO validate form behavior here
             const data = {}; 
@@ -65,7 +65,7 @@
 
     // Edit modal
     const editModal = $('#edit-modal');
-    if (editModal) {
+    if (!!editModal) {
         (function(){
             const file = editModal.find('#photo');
             const text = editModal.find('#text');
@@ -95,8 +95,6 @@
 
             function editPost(post) {
                 // update form fields from the post data received from server
-                console.log(post);
-                
                 text.val(post.text);
                 tags.val(post.tags.join(', '));
             }
@@ -120,9 +118,67 @@
         }())
     }
 
+    // const confirmModal = $('#confirm-modal');
+    // if (!!confirmModal) {
+    //     console.log('confirm modal loading')
+    //     (function(){
+    //         const title = confirmModal.find('.modal-title');
+    //         const text = confirmModal.find('#text');
+    //         const submitBtn = confirmModal.find('#submit-btn');
+    //         submitBtn.on('click', deletePost);
+    //     }())
+    // }
+
+    // Confirmation modal
+    function askConfirm({ text='Are you sure you want to do that?', title='Are you sure?', btn='Confirm' }) {
+        return new Promise(function(resolve, reject){
+            const confirmModal = $('#confirm-modal');
+            if (!!confirmModal) {
+                confirmModal.find('.modal-title').text(title);
+                confirmModal.find('#text').text(text);
+                
+                const submitBtn = confirmModal.find('#submit-btn');
+                submitBtn.text(btn);
+                submitBtn.on('click', resolve);
+
+                const cancelBtn = confirmModal.find('#cancel-btn');
+                cancelBtn.on('click', reject);
+
+                confirmModal.modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            }   
+        });      
+    }
+
+    // Delete button
+    const deleteBtn = $('.delete-btn');
+    if (!!deleteBtn) {
+        deleteBtn.on('click', (e) => {
+            const btn = e.currentTarget;
+            const postID = btn.dataset.post;
+
+            askConfirm({ title: 'Delete post?', btn: 'Delete' }).then(() => {
+                console.log('delete confirmed');
+
+                axios.get(`/post/delete/${postID}`)
+                .then(res => {
+                    console.log(res);
+                    document.location.reload(true);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            }).catch(() => {
+                console.log('delete cancelled');
+            });
+        });
+    }
+
     // Follow button
     const followButtons = document.querySelectorAll('.follow-btn');
-    if (followButtons) {
+    if (!!followButtons) {
         followButtons.forEach(btn => {
             btn.addEventListener('click', followUser);
         });
@@ -143,7 +199,7 @@
 
     // Like buttons
     const likeButtons = document.querySelectorAll('.like-btn');
-    if (likeButtons) {
+    if (!!likeButtons) {
         likeButtons.forEach( btn => {
             btn.addEventListener('click', likePost);
         });

@@ -2,7 +2,7 @@
 <div class="post">
 	<div class="top-bar">
 		<a class="user" href="{{ url_for('user', username=post.user) }}">{{ post.user }}</a>
-		<span class="created">{{ post.created }}</span>
+		<span class="created pull-xs-right">{{ post.created|timesince }}</span>
 	</div>
 	<a href="{{ url_for('view_post', id=post.id) }}">
 		<img class="img" src="{{ post.link }}">
@@ -11,7 +11,7 @@
 		<p class="text">{{ post.text }}</p>
 		<div class="tags">
 			{% for tag in post.tags %}
-			<a href="{{ url_for('tag', tag_name=tag) }}" class="tag">#{{ tag }}</a>
+				<a href="{{ url_for('tag', tag_name=tag) }}" class="tag">#{{ tag }}</a>
 			{% endfor %}
 		</div>
 		<div class="post-menu">
@@ -21,7 +21,7 @@
 				<button class="btn btn-info dropdown-toggle" data-toggle="dropdown">edit</button>
 				<div class="dropdown-menu">
 					<button type="button" class="edit-btn dropdown-item" data-post="{{ post.id }}">edit</button>
-					<a href="{{ url_for('delete_post', id=post.id) }}" class="dropdown-item">delete</a>
+					<button type="button" class="delete-btn dropdown-item" data-post="{{ post.id }}">delete</button>
 				</div>
 			</div>
 			{% else %}

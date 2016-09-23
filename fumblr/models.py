@@ -291,8 +291,8 @@ class Tag(db.Model):
 
     @classmethod
     def get_tag_list(cls, tags):
-        """ Generate a list of Tag models from a list of tag names """
-        return [cls.get_or_create_tag(tag) for tag in tags]
+        """ Generate a list of Tag models from a list of tag names, stripping out empty tag strings """
+        return [cls.get_or_create_tag(tag) for tag in tags if tag]
 
 class OAuth(db.Model, OAuthConsumerMixin):
     __tablename__ = 'oauths'
