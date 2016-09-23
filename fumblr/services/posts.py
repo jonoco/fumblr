@@ -65,6 +65,7 @@ def create_image(image_path):
 
     return image
 
+#DEPRECATED
 def like_post(post_id):
     """ create a like for a post """
     post = Post.query.get(post_id)
@@ -75,8 +76,12 @@ def like_post(post_id):
 
     return like
 
+#DEPRECATED
 def get_post_like(post_id):
     """ return like of post liked by user """
+    if not current_user.is_authenticated:
+        return False
+
     like = Like.query.filter_by(user_id=current_user.id, post_id=post_id).first()
 
     return like

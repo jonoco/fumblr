@@ -2,7 +2,7 @@ from .database import db
 from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
 from flask_login import UserMixin, current_user
 from datetime import datetime
-from sqlalchemy import exists
+from sqlalchemy import exists, and_
 
 tags = db.Table('tag_post_association',
                 db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
@@ -53,24 +53,40 @@ class Post(db.Model):
         return '<Post {} - {}>'.format(self.user, self.image)
 
     def get_data(self):
-        if current_user.is_authenticated:
-            liked = any(l.user.username == current_user.username for l in self.likes)
-            owned = current_user == self.user
-        else:
-            liked = False
-            owned = False
-
         return {
             'id': self.id,
             'link': self.image.link,
             'text': self.text or '',
             'user': self.user.username,
             'likes': self.likes.count(),
-            'liked': liked,
+            'liked': self.is_liked(),
             'tags': [tag.name for tag in self.tags],
             'created': self.created,
-            'owned': owned
+            'owned': self.is_owned()
         }
+
+    def like(self):
+        post_like = Like(user=current_user, post=self)
+
+        db.session.add(post_like)
+        db.session.commit()
+
+        return post_like
+
+    def unlike(self):
+        return Like.query.filter_by(user_id=current_user.id, post_id=self.id).one()
+
+    def is_liked(self):
+        if not current_user.is_authenticated:
+            return False
+
+        return db.session.query(exists().where(and_(Like.user_id == current_user.id, Like.post_id == self.id))).scalar()
+
+    def is_owned(self):
+        if not current_user.is_authenticated:
+            return False
+
+        return current_user.id == self.user_id
 
     @classmethod
     def get_posts_data(cls, posts):

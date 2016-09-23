@@ -3,7 +3,7 @@ from flask import render_template, redirect, url_for, flash, request, jsonify, c
 from fumblr import app
 from flask_login import login_required, logout_user, current_user, user_needs_refresh
 from werkzeug.utils import secure_filename
-from .services.posts import allowed_file, create_post, like_post, get_post_like
+from .services.posts import allowed_file, create_post
 from .models import Post, User, Image, Tag, Follow, Like
 from .database import db
 
@@ -201,17 +201,15 @@ def like():
 
     req = request.get_json()
     post_id = int(req['post'])
+    post = Post.query.get(post_id)
 
-    liked = get_post_like(post_id)
+    liked = post.is_liked()
     if liked:
-        db.session.delete(liked)
-        db.session.commit()
-        like = False
+        post.unlike()
     else:
-        like_post(post_id)
-        like = True
+        post.like()
 
-    return jsonify(like=like)
+    return jsonify(like=liked)
 
 @app.route('/search')
 def search():

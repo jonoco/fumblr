@@ -59,7 +59,6 @@
             function dragover(e) {
                 e.stopPropagation();
                 e.preventDefault();
-
             }
         }())
     }
