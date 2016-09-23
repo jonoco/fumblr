@@ -80,8 +80,6 @@ class Post(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String())
-    created = db.Column(db.DateTime, default=datetime.utcnow)
-
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship('User', backref=db.backref('posts', lazy='dynamic'), uselist=False)
 
@@ -89,6 +87,7 @@ class Post(db.Model):
     image = db.relationship('Image', backref=db.backref('post', uselist=False), uselist=False)
 
     tags = db.relationship('Tag', secondary=tags, backref=db.backref('posts', lazy='dynamic'))
+    created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self, image, user, tags, text=None, created=None):
         self.image = image
@@ -155,14 +154,12 @@ class Like(db.Model):
     __tablename__ = 'likes'
 
     id = db.Column(db.Integer, primary_key=True)
-    created = db.Column(db.DateTime, default=datetime.utcnow)
-
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship('User', backref=db.backref('likes', lazy='dynamic'), uselist=False)
 
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
     post = db.relationship('Post', backref=db.backref('likes', lazy='dynamic'), uselist=False)
-
+    created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self, user, post, created=None):
         self.user = user
@@ -297,3 +294,22 @@ class OAuth(db.Model, OAuthConsumerMixin):
     user = db.relationship(User)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+class Message(db.Model):
+    __tablename__ = 'messages'
+
+    id = db.Column(db.Integer, primary_key=True)
+    target_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    target = db.relationship('User', foreign_keys='Message.target_id', backref=db.backref('messages_to', lazy='dynamic'),
+                             uselist=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', foreign_keys='Message.user_id',
+                               backref=db.backref('messages_from', lazy='dynamic'), uselist=False)
+    text = db.Column(db.String, nullable=False)
+    read = db.Column(db.Boolean, default=False)
+    created = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, target, user, text, created=None):
+        self.target = target
+        self.user = user
+        self.text = text
+        self.created = created
