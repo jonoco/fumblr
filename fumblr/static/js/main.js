@@ -116,17 +116,6 @@
         })();
     }
 
-    // const confirmModal = $('#confirm-modal');
-    // if (!!confirmModal) {
-    //     console.log('confirm modal loading')
-    //     (function(){
-    //         const title = confirmModal.find('.modal-title');
-    //         const text = confirmModal.find('#text');
-    //         const submitBtn = confirmModal.find('#submit-btn');
-    //         submitBtn.on('click', deletePost);
-    //     }())
-    // }
-
     // Confirmation modal
     function askConfirm(_ref) {
         var _ref$text = _ref.text;
@@ -153,6 +142,8 @@
                     backdrop: 'static',
                     keyboard: false
                 });
+            } else {
+                reject('No confirm modal found');
             }
         });
     }
@@ -165,8 +156,6 @@
             var postID = btn.dataset.post;
 
             askConfirm({ title: 'Delete post?', btn: 'Delete' }).then(function () {
-                console.log('delete confirmed');
-
                 axios.get('/post/delete/' + postID).then(function (res) {
                     console.log(res);
                     document.location.reload(true);

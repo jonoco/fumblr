@@ -11,6 +11,10 @@
 
 		{% for post in posts %}
 			{% include "component/post.html" %}
+		{% else %}
+			<div class="no-posts">
+				<p>You don't have any posts, why not <a href="#" data-toggle="modal" data-target="#upload-modal">make a post?</a></p>
+			</div><!-- no-posts -->
 		{% endfor %}
 		
 	</div><!-- container -->
