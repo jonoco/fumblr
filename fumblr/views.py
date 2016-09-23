@@ -3,7 +3,6 @@ from flask import render_template, redirect, url_for, flash, request, jsonify, c
 from fumblr import app
 from flask_login import login_required, logout_user, current_user, user_needs_refresh
 from werkzeug.utils import secure_filename
-from .services.posts import allowed_file, create_post
 from .models import Post, User, Image, Tag, Follow, Like
 from .database import db
 
@@ -42,7 +41,7 @@ def upload():
         flash('No file selected')
         return redirect(url_for('upload'))
 
-    if file and allowed_file(file.filename):
+    if file and Image.allowed_file(file.filename):
         filename = secure_filename(file.filename)
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(image_path)
@@ -51,7 +50,7 @@ def upload():
         tags = [s.strip().lower() for s in tags_string.split(',')]
         text = request.form['text']
 
-        post = create_post(current_user, image_path, text, tags=tags)
+        post = Post.submit_post(current_user, image_path, text, tags=tags)
 
         ## delete image after uploading it
         os.remove(image_path)
@@ -84,7 +83,7 @@ def settings():
 @login_required
 def new_post():
     file = request.files['file']
-    if file and allowed_file(file.filename):
+    if file and Image.allowed_file(file.filename):
         filename = secure_filename(file.filename)
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(image_path)
@@ -93,7 +92,7 @@ def new_post():
         tags = [s.strip().lower() for s in tags_string.split(',')]
         text = request.form['text']
 
-        post = create_post(current_user, image_path, text, tags=tags)
+        post = Post.submit_post(current_user, image_path, text, tags=tags)
 
         ## delete image after uploading it
         os.remove(image_path)
