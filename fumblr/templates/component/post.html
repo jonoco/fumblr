@@ -20,7 +20,7 @@
 			<div class="btn-group  pull-xs-right">
 				<button class="btn btn-info dropdown-toggle" data-toggle="dropdown">edit</button>
 				<div class="dropdown-menu">
-					<a href="{{ url_for('edit_post', id=post.id) }}" class="dropdown-item">edit</a>
+					<button type="button" class="edit-btn dropdown-item" data-post="{{ post.id }}">edit</button>
 					<a href="{{ url_for('delete_post', id=post.id) }}" class="dropdown-item">delete</a>
 				</div>
 			</div>

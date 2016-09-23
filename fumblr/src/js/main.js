@@ -15,7 +15,7 @@
                   dropbox.addEventListener('dragleave', dragleave, false);
                   dropbox.addEventListener('drop', drop, false);
 
-            const uploadBtn = uploadModal.querySelector('#upload-btn');
+            const uploadBtn = uploadModal.querySelector('#submit-btn');
                   uploadBtn.addEventListener('click', upload);
             
             const file = uploadModal.querySelector('#photo');
@@ -59,6 +59,63 @@
             function dragover(e) {
                 e.stopPropagation();
                 e.preventDefault();
+            }
+        }())
+    }
+
+    // Edit modal
+    const editModal = $('#edit-modal');
+    if (editModal) {
+        (function(){
+            const file = editModal.find('#photo');
+            const text = editModal.find('#text');
+            const tags = editModal.find('#tags');
+            const submitBtn = editModal.find('#submit-btn');
+                  submitBtn.on('click', submitEdit);
+
+            var postID;
+
+            $('.edit-btn').on('click', openPost);
+
+            function openPost(e) {
+                const btn = e.currentTarget;
+                postID = btn.dataset.post;
+
+                axios.get(`/post/edit/${postID}`)
+                    .then(res => {
+                        console.log(res);
+                        editPost(JSON.parse(res.data.post));
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    });
+                
+                $(editModal).modal('show');
+            }
+
+            function editPost(post) {
+                // update form fields from the post data received from server
+                console.log(post);
+                
+                text.val(post.text);
+                tags.val(post.tags.join(', '));
+            }
+
+            function submitEdit() {
+                const post = {
+                    id: postID,
+                    text: text.val(),
+                    tags: tags.val()
+                };
+                
+                axios.post(`/post/edit/${postID}`, post)
+                    .then(res => {
+                        console.log(res);
+                        document.location.reload(true);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
             }
         }())
     }

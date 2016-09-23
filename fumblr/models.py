@@ -135,6 +135,13 @@ class Post(db.Model):
 
         return current_user.id == self.user_id
 
+    def update(self, image=None, text=None, tags=None):
+        self.image = image or self.image
+        self.text = text or self.text
+        if tags:
+            tag_list = Tag.get_tag_list(tags)
+            self.tags = tag_list
+
     @classmethod
     def get_posts_data(cls, posts):
         return [post.get_data() for post in posts]

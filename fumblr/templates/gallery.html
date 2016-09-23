@@ -5,6 +5,9 @@
 	<div class="container">
 		<h1>Gallery</h1>
 
+		{% include "component/upload-modal.html" %}
+		{% include "component/edit-modal.html" %}
+
 		{% for post in posts %}
 			{% include "component/post.html" %}
 		{% endfor %}

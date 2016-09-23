@@ -1,5 +1,5 @@
 import os
-from flask import render_template, redirect, url_for, flash, request, jsonify, current_app
+from flask import render_template, redirect, url_for, flash, request, jsonify, current_app, json
 from fumblr import app
 from flask_login import login_required, logout_user, current_user, user_needs_refresh
 from werkzeug.utils import secure_filename
@@ -112,11 +112,28 @@ def delete_post(id):
     print ('delete {}'.format(id))
     return ''
 
-@app.route('/post/edit/<id>')
+@app.route('/post/edit/<id>', methods=['get', 'post'])
 @login_required
 def edit_post(id):
-    print('edit {}'.format(id))
-    return ''
+    if request.method == 'GET':
+        post = current_user.posts.filter_by(id=id).one_or_none()
+        if not post:
+            return ('Cannot edit, post does not belong to user', 403)
+        post_data = post.get_data()
+        post_json = json.dumps(post_data)
+
+        return jsonify(post=post_json)
+
+    req = request.get_json()
+    post = current_user.posts.filter_by(id=req['id']).one_or_none()
+    if not post:
+        return ('Cannot edit, post does not belong to user', 403)
+
+    tags = [s.strip().lower() for s in req['tags'].split(',')]
+    post.update(text=req['text'], tags=tags)
+    db.session.commit()
+
+    return ('Post updated', 204)
 
 @app.route('/gallery')
 @app.route('/gallery/<int:page>')

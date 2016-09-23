@@ -17,7 +17,7 @@
             dropbox.addEventListener('dragleave', dragleave, false);
             dropbox.addEventListener('drop', drop, false);
 
-            var uploadBtn = uploadModal.querySelector('#upload-btn');
+            var uploadBtn = uploadModal.querySelector('#submit-btn');
             uploadBtn.addEventListener('click', upload);
 
             var file = uploadModal.querySelector('#photo');
@@ -61,6 +61,59 @@
             function dragover(e) {
                 e.stopPropagation();
                 e.preventDefault();
+            }
+        })();
+    }
+
+    // Edit modal
+    var editModal = $('#edit-modal');
+    if (editModal) {
+        (function () {
+            var file = editModal.find('#photo');
+            var text = editModal.find('#text');
+            var tags = editModal.find('#tags');
+            var submitBtn = editModal.find('#submit-btn');
+            submitBtn.on('click', submitEdit);
+
+            var postID;
+
+            $('.edit-btn').on('click', openPost);
+
+            function openPost(e) {
+                var btn = e.currentTarget;
+                postID = btn.dataset.post;
+
+                axios.get('/post/edit/' + postID).then(function (res) {
+                    console.log(res);
+                    editPost(JSON.parse(res.data.post));
+                }).catch(function (err) {
+                    console.log(err);
+                });
+
+                $(editModal).modal('show');
+            }
+
+            function editPost(post) {
+                // update form fields from the post data received from server
+                console.log(post);
+
+                text.val(post.text);
+                tags.val(post.tags.join(', '));
+            }
+
+            function submitEdit() {
+                var post = {
+                    id: postID,
+                    text: text.val(),
+                    tags: tags.val()
+                };
+
+                axios.post('/post/edit/' + postID, post).then(function (res) {
+                    console.log(res);
+                    document.location.reload(true);
+                }).catch(function (err) {
+                    console.log(err);
+                });
             }
         })();
     }
