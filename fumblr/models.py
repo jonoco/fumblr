@@ -284,6 +284,11 @@ class Tag(db.Model):
     def __repr__(self):
         return '<Tag - {}>'.format(self.name)
 
+    @staticmethod
+    def format_tags_string(tags_string):
+        """ Converts string of tag names to list of tag names """
+        return [t.strip() for t in tags_string.lower().split(',')]
+
     @classmethod
     def get_or_create_tag(cls, name):
         """ Create or find a Tag from the given tag name """

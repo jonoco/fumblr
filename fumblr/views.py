@@ -47,7 +47,7 @@ def upload():
         file.save(image_path)
 
         tags_string = request.form['tags']
-        tags = [s.strip().lower() for s in tags_string.split(',')]
+        tags = Tag.format_tags_string(tags_string)
         text = request.form['text']
 
         post = Post.submit_post(current_user, image_path, text, tags=tags)
@@ -89,7 +89,7 @@ def new_post():
         file.save(image_path)
 
         tags_string = request.form['tags']
-        tags = [s.strip().lower() for s in tags_string.split(',')]
+        tags = Tag.format_tags_string(tags_string)
         text = request.form['text']
 
         post = Post.submit_post(current_user, image_path, text, tags=tags)
@@ -112,7 +112,6 @@ def view_post(id):
 @app.route('/post/delete/<id>')
 @login_required
 def delete_post(id):
-    #TODO ask to confirm before delete
     post = current_user.posts.filter_by(id=id).one_or_none()
     if not post:
         return ('Cannot delete, post does not belong to user', 403)
