@@ -79,17 +79,51 @@
     var editModal = $('#edit-modal');
     if (!!editModal) {
         (function () {
-            var file = editModal.find('#photo');
-            var text = editModal.find('#text');
-            var tags = editModal.find('#tags');
-            var submitBtn = editModal.find('#submit-btn');
+            var file = editModal.find('.photo');
+            file.change(function (e) {
+                handleFiles(e.currentTarget.files);
+            });
+            var form = editModal.find('#edit-form');
+            var text = editModal.find('.text');
+            var tags = editModal.find('.tags');
+            var preview = editModal.find('.preview');
+            var submitBtn = editModal.find('.submit-btn');
             submitBtn.on('click', submitEdit);
 
-            var postID;
+            var dropbox = document.querySelector('#edit-modal .dropbox');
+            dropbox.addEventListener('dragenter', dragenter, false);
+            dropbox.addEventListener('dragover', dragover, false);
+            dropbox.addEventListener('dragleave', dragleave, false);
+            dropbox.addEventListener('drop', drop, false);
+
+            var postID = void 0;
 
             $('.edit-btn').on('click', openPost);
 
+            function addPreviewImage(src) {
+                preview.empty();
+                var img = $('<img class="image" />');
+                img.attr('src', src);
+                img.appendTo(preview);
+            }
+
+            function handleFiles(files) {
+                preview.empty();
+                var img = $('<img class="image" />');
+
+                var reader = new FileReader();
+                reader.onload = function (aImg) {
+                    return function (e) {
+                        aImg.attr('src', e.target.result);
+                    };
+                }(img);
+                reader.readAsDataURL(files[0]);
+
+                img.appendTo(preview);
+            }
+
             function openPost(e) {
+                console.log(e);
                 var btn = e.currentTarget;
                 postID = btn.dataset.post;
 
@@ -105,23 +139,14 @@
 
             function editPost(post) {
                 // update form fields from the post data received from server
+                form.attr('action', '/post/edit/' + post.id);
                 text.val(post.text);
                 tags.val(post.tags.join(', '));
+                addPreviewImage(post.link);
             }
 
             function submitEdit() {
-                var post = {
-                    id: postID,
-                    text: text.val(),
-                    tags: tags.val()
-                };
-
-                axios.post('/post/edit/' + postID, post).then(function (res) {
-                    console.log(res);
-                    document.location.reload(true);
-                }).catch(function (err) {
-                    console.log(err);
-                });
+                form.submit();
             }
         })();
     }

@@ -4913,6 +4913,11 @@ a {
     position: absolute;
     top: 0; }
 
+#edit-modal .preview {
+  width: 100%; }
+  #edit-modal .preview .image {
+    width: 100%; }
+
 #edit-modal .droparea {
   background-color: rgba(0, 0, 0, 0.1);
   text-align: center;

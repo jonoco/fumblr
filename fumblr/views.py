@@ -42,18 +42,18 @@ def upload():
         return redirect(url_for('upload'))
 
     if file and Image.allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(image_path)
+        # filename = secure_filename(file.filename)
+        # image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        # file.save(image_path)
 
         tags_string = request.form['tags']
         tags = Tag.format_tags_string(tags_string)
         text = request.form['text']
 
-        post = Post.submit_post(current_user, image_path, text, tags=tags)
+        post = Post.submit_post(current_user, file, text, tags=tags)
 
         ## delete image after uploading it
-        os.remove(image_path)
+        # os.remove(image_path)
 
         return redirect(url_for('view_post', id=post.id))
 
@@ -84,18 +84,18 @@ def settings():
 def new_post():
     file = request.files['file']
     if file and Image.allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(image_path)
+        # filename = secure_filename(file.filename)
+        # image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        # file.save(image_path)
 
         tags_string = request.form['tags']
         tags = Tag.format_tags_string(tags_string)
         text = request.form['text']
 
-        post = Post.submit_post(current_user, image_path, text, tags=tags)
+        post = Post.submit_post(current_user, file, text, tags=tags)
 
         ## delete image after uploading it
-        os.remove(image_path)
+        # os.remove(image_path)
 
         return redirect(url_for('view_post', id=post.id))
 
@@ -133,16 +133,16 @@ def edit_post(id):
 
         return jsonify(post=post_json)
 
-    req = request.get_json()
-    post = current_user.posts.filter_by(id=req['id']).one_or_none()
+    post = current_user.posts.filter_by(id=id).one_or_none()
     if not post:
         return ('Cannot edit, post does not belong to user', 403)
 
-    tags = [s.strip().lower() for s in req['tags'].split(',')]
-    post.update(text=req['text'], tags=tags)
-    db.session.commit()
+    tags = Tag.format_tags_string(request.form['tags'])
+    file = request.files['file'] if request.files['file'].filename else None
+    post.update(text=request.form['text'], tags=tags, image=file)
 
-    return ('Post updated', 204)
+    return redirect(url_for('view_post', id=id))
+    # return ('Post updated', 204)
 
 @app.route('/gallery')
 @app.route('/gallery/<int:page>')

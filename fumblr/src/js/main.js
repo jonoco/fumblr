@@ -25,7 +25,7 @@
             const tags = uploadModal.querySelector('#tags');
 
             function upload(e) {
-                form.submit()
+                form.submit();
             }
 
             function handleFiles(files) {
@@ -75,17 +75,49 @@
     const editModal = $('#edit-modal');
     if (!!editModal) {
         (function(){
-            const file = editModal.find('#photo');
-            const text = editModal.find('#text');
-            const tags = editModal.find('#tags');
-            const submitBtn = editModal.find('#submit-btn');
+            const file = editModal.find('.photo');
+                file.change(e => {
+                    handleFiles(e.currentTarget.files);
+                });
+            const form = editModal.find('#edit-form');
+            const text = editModal.find('.text');
+            const tags = editModal.find('.tags');
+            const preview = editModal.find('.preview');
+            const submitBtn = editModal.find('.submit-btn');
                   submitBtn.on('click', submitEdit);
 
-            var postID;
+            const dropbox = document.querySelector('#edit-modal .dropbox');
+                  dropbox.addEventListener('dragenter', dragenter, false);
+                  dropbox.addEventListener('dragover', dragover, false);
+                  dropbox.addEventListener('dragleave', dragleave, false);
+                  dropbox.addEventListener('drop', drop, false);
+
+            let postID;
 
             $('.edit-btn').on('click', openPost);
 
+            function addPreviewImage(src) {
+                preview.empty();
+                const img = $('<img class="image" />');
+                img.attr('src', src);
+                img.appendTo(preview);
+            }
+
+            function handleFiles(files) {
+                preview.empty();
+                const img = $('<img class="image" />');
+
+                const reader = new FileReader();
+                reader.onload = (function (aImg) { 
+                    return function (e) { aImg.attr('src', e.target.result); }; 
+                })(img);
+                reader.readAsDataURL(files[0]);
+
+                img.appendTo(preview);
+            }
+
             function openPost(e) {
+                console.log(e);
                 const btn = e.currentTarget;
                 postID = btn.dataset.post;
 
@@ -103,25 +135,14 @@
 
             function editPost(post) {
                 // update form fields from the post data received from server
+                form.attr('action', `/post/edit/${post.id}`)
                 text.val(post.text);
                 tags.val(post.tags.join(', '));
+                addPreviewImage(post.link);
             }
 
             function submitEdit() {
-                const post = {
-                    id: postID,
-                    text: text.val(),
-                    tags: tags.val()
-                };
-                
-                axios.post(`/post/edit/${postID}`, post)
-                    .then(res => {
-                        console.log(res);
-                        document.location.reload(true);
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
+                form.submit();
             }
         }())
     }

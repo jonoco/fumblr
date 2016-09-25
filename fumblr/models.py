@@ -1,9 +1,12 @@
+from flask import current_app
 from .database import db
 from .services.imgur import upload_image
 from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
 from flask_login import UserMixin, current_user
 from datetime import datetime
 from sqlalchemy import exists, and_
+from werkzeug.utils import secure_filename
+import os
 
 tags = db.Table('tag_post_association',
                 db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
@@ -36,7 +39,7 @@ class Image(db.Model):
                filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
     @classmethod
-    def submit_image(cls, image_path):
+    def submit_image(cls, file):
         """
         Example:
 
@@ -67,13 +70,30 @@ class Image(db.Model):
         :return Image:
         """
 
+        image_path = cls.save_image(file)
+
         image_data = upload_image(image_path)
         image = Image(image_data['id'], image_data['deletehash'], image_data['link'])
 
         db.session.add(image)
         db.session.commit()
 
+        cls.delete_image(file)
+
         return image
+
+    @classmethod
+    def save_image(cls, file):
+        filename = secure_filename(file.filename)
+        image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+        file.save(image_path)
+
+        return image_path
+
+    @classmethod
+    def delete_image(cls, file):
+        image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], file.filename)
+        os.remove(image_path)
 
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -136,19 +156,23 @@ class Post(db.Model):
         return current_user.id == self.user_id
 
     def update(self, image=None, text=None, tags=None):
-        self.image = image or self.image
+        if image:
+            new_image = Image.submit_image(image)
+            self.image = new_image
         self.text = text or self.text
         if tags:
             tag_list = Tag.get_tag_list(tags)
             self.tags = tag_list
+
+        db.session.commit()
 
     @classmethod
     def get_posts_data(cls, posts):
         return [post.get_data() for post in posts]
 
     @classmethod
-    def submit_post(cls, user, image_path, text=None, created=None, tags=[]):
-        image = Image.submit_image(image_path)
+    def submit_post(cls, user, file, text=None, created=None, tags=[]):
+        image = Image.submit_image(file)
         tag_list = Tag.get_tag_list(tags)
         post = Post(image=image, user=user, text=text, tags=tag_list, created=created)
 
