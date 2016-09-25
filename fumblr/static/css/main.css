@@ -4890,6 +4890,11 @@ a {
   .header #search-bar {
     display: inline; }
 
+#upload-modal .preview {
+  width: 100%; }
+  #upload-modal .preview .image {
+    width: 100%; }
+
 #upload-modal .droparea {
   background-color: rgba(0, 0, 0, 0.1);
   text-align: center;

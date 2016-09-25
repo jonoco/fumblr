@@ -3,12 +3,10 @@
     // Upload modal
     const uploadModal = document.querySelector('#upload-modal');
     if (!!uploadModal) {
-        (function(){
-            //TODO validate form behavior here
-            const data = {}; 
-            
+        (function() {
             const form = uploadModal.querySelector('#upload-form');
             const droparea = uploadModal.querySelector('.droparea');
+            const preview = $('#upload-modal').find('.preview');
             const dropbox = uploadModal.querySelector('#dropbox');
                   dropbox.addEventListener('dragenter', dragenter, false);
                   dropbox.addEventListener('dragover', dragover, false);
@@ -18,20 +16,30 @@
             const uploadBtn = uploadModal.querySelector('#submit-btn');
                   uploadBtn.addEventListener('click', upload);
             
-            const file = uploadModal.querySelector('#photo');
+            const file = $('#upload-modal').find('#photo');
+                file.change(e => {
+                    handleFiles(e.currentTarget.files);
+                });
+
             const text = uploadModal.querySelector('#text');
             const tags = uploadModal.querySelector('#tags');
 
             function upload(e) {
-                data.text = text.value;
-                data.tags = tags.value;
-                data.file = file.files[0];
-
                 form.submit()
             }
 
             function handleFiles(files) {
-                file.files = files;
+                preview.empty();
+                
+                const img = $('<img class="image" />');
+
+                const reader = new FileReader();
+                reader.onload = (function (aImg) { 
+                    return function (e) { aImg.attr('src', e.target.result); }; 
+                })(img);
+                reader.readAsDataURL(files[0]);
+
+                img.appendTo(preview);
             }
 
             function drop(e) {

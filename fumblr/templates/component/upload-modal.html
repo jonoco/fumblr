@@ -6,12 +6,13 @@
                 <h4 class="modal-title">New Post</h4>
             </div>
             <div class="modal-body">
+                <div class="preview"></div><!-- images -->
+                <div class="droparea">
+                    <p>Drop photo here</p>
+                    <div id="dropbox"></div><!-- dropbox -->    
+                </div><!-- droparea -->
+                
                 <form action="/post" method="post" id="upload-form" enctype="multipart/form-data" onsubmit="return false;">
-                    <div class="droparea">
-                        <p>Drop photo here</p>
-                        <div id="dropbox"></div><!-- dropbox -->    
-                    </div><!-- dropbox-area -->
-                    
 			        <div class="form-group">
 				        <label for="photo">Photo</label>
 				        <input class="form-control" id="photo" type="file" name="file">

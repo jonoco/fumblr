@@ -6,11 +6,9 @@
     var uploadModal = document.querySelector('#upload-modal');
     if (!!uploadModal) {
         (function () {
-            //TODO validate form behavior here
-            var data = {};
-
             var form = uploadModal.querySelector('#upload-form');
             var droparea = uploadModal.querySelector('.droparea');
+            var preview = $('#upload-modal').find('.preview');
             var dropbox = uploadModal.querySelector('#dropbox');
             dropbox.addEventListener('dragenter', dragenter, false);
             dropbox.addEventListener('dragover', dragover, false);
@@ -20,20 +18,32 @@
             var uploadBtn = uploadModal.querySelector('#submit-btn');
             uploadBtn.addEventListener('click', upload);
 
-            var file = uploadModal.querySelector('#photo');
+            var file = $('#upload-modal').find('#photo');
+            file.change(function (e) {
+                handleFiles(e.currentTarget.files);
+            });
+
             var text = uploadModal.querySelector('#text');
             var tags = uploadModal.querySelector('#tags');
 
             function upload(e) {
-                data.text = text.value;
-                data.tags = tags.value;
-                data.file = file.files[0];
-
                 form.submit();
             }
 
             function handleFiles(files) {
-                file.files = files;
+                preview.empty();
+
+                var img = $('<img class="image" />');
+
+                var reader = new FileReader();
+                reader.onload = function (aImg) {
+                    return function (e) {
+                        aImg.attr('src', e.target.result);
+                    };
+                }(img);
+                reader.readAsDataURL(files[0]);
+
+                img.appendTo(preview);
             }
 
             function drop(e) {
