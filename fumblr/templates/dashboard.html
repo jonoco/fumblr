@@ -5,14 +5,11 @@
 	<div class="container">
 		<h1>Dashboard</h1>
 
-		<!-- <button class="btn btn-primary" data-toggle="modal" data-target="#upload-modal">New Post</button> -->
-		<button class="btn btn-primary post-btn">New Post</button>
-
 		{% for post in posts %}
 			{% include "component/post.html" %}
 		{% else %}
 			<div class="no-posts">
-				<p>You don't have any posts, why not <a href="#" data-toggle="modal" data-target="#upload-modal">make a post?</a></p>
+				<p>You don't have any posts, why not <a href="#" class="post-btn">make a post?</a> Or <a href="{{ url_for('gallery') }}">find someone to follow?</a></p>
 			</div><!-- no-posts -->
 		{% endfor %}
 		

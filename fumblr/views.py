@@ -1,8 +1,6 @@
-import os
 from flask import render_template, redirect, url_for, flash, request, jsonify, current_app, json
 from fumblr import app
 from flask_login import login_required, logout_user, current_user, user_needs_refresh
-from werkzeug.utils import secure_filename
 from .models import Post, User, Image, Tag, Follow, Like
 from .database import db
 
