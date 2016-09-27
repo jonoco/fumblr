@@ -28,9 +28,11 @@
     function openUploadModal() {
         var postModal = $('#post-modal');
         postModal.find('.post-form').attr('action', '/post');
-
-        var preview = postModal.find('.preview');
-        preview.empty();
+        postModal.find('.modal-title').text('New Post');
+        postModal.find('.submit-btn').text('Submit');
+        postModal.find('.text').val('');
+        postModal.find('.tags').val('');
+        postModal.find('.preview').empty();
 
         openPostModal();
     }
@@ -38,11 +40,11 @@
     // Open post modal for editing
     function openEditModal(post) {
         var postModal = $('#post-modal');
+        postModal.find('.post-form').attr('action', '/post/edit/' + post.id);
         postModal.find('.modal-title').text('Edit Post');
         postModal.find('.submit-btn').text('Save Changes');
         postModal.find('.text').val(post.text);
         postModal.find('.tags').val(post.tags.join(', '));
-        postModal.find('.post-form').attr('action', '/post/edit/' + post.id);
 
         var preview = postModal.find('.preview');
         preview.empty();
@@ -114,7 +116,11 @@
 
             axios.post(url, formData).then(function (res) {
                 form.removeClass('is-uploading');
-                window.location.replace(res.request.responseURL);
+                if (res.data.reload) {
+                    document.location.reload(true);
+                } else if (res.data.redirect) {
+                    document.location.assign(res.data.redirect);
+                }
             }).catch(function (err) {
                 console.log(err);
             });

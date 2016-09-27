@@ -86,7 +86,7 @@ def new_post():
 
         post = Post.submit_post(current_user, file, text, tags=tags)
 
-        return redirect(url_for('view_post', id=post.id))
+        return jsonify(redirect=url_for('view_post', id=post.id))
 
 @app.route('/post/<id>')
 def view_post(id):
@@ -130,7 +130,7 @@ def edit_post(id):
     file = request.files.get('file')
     post.update(text=request.form.get('text'), tags=tags, image=file)
 
-    return redirect(url_for('view_post', id=id))
+    return jsonify(reload=True)
 
 @app.route('/gallery')
 @app.route('/gallery/<int:page>')

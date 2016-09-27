@@ -20,11 +20,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fumblr/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-360">
-              <caret line="79" column="25" selection-start-line="79" selection-start-column="25" selection-end-line="79" selection-end-column="25" />
+            <state relative-caret-position="1133">
+              <caret line="131" column="0" selection-start-line="131" selection-start-column="0" selection-end-line="131" selection-end-column="0" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -32,10 +32,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fumblr/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
+            <state relative-caret-position="586">
               <caret line="312" column="65" selection-start-line="312" selection-start-column="65" selection-end-line="312" selection-end-column="65" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
@@ -72,8 +72,8 @@
         <option value="$PROJECT_DIR$/fumblr/services/posts.py" />
         <option value="$PROJECT_DIR$/fumblr/__init__.py" />
         <option value="$PROJECT_DIR$/fumblr/filters.py" />
-        <option value="$PROJECT_DIR$/fumblr/views.py" />
         <option value="$PROJECT_DIR$/fumblr/models.py" />
+        <option value="$PROJECT_DIR$/fumblr/views.py" />
       </list>
     </option>
   </component>
@@ -345,6 +345,9 @@
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="234be504-e095-4eb5-b4fe-2550ec24da46" name="Default" comment="" />
@@ -556,22 +559,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fumblr/views.py">
+    <entry file="file://$PROJECT_DIR$/fumblr/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-360">
-          <caret line="79" column="25" selection-start-line="79" selection-start-column="25" selection-end-line="79" selection-end-column="25" />
+        <state relative-caret-position="586">
+          <caret line="312" column="65" selection-start-line="312" selection-start-column="65" selection-end-line="312" selection-end-column="65" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#0#29#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fumblr/models.py">
+    <entry file="file://$PROJECT_DIR$/fumblr/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="312" column="65" selection-start-line="312" selection-start-column="65" selection-end-line="312" selection-end-column="65" />
+        <state relative-caret-position="1133">
+          <caret line="131" column="0" selection-start-line="131" selection-start-column="0" selection-end-line="131" selection-end-column="0" />
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
