@@ -2,153 +2,118 @@
 
 (function () {
 
-    // Upload modal
-    var uploadModal = document.querySelector('#upload-modal');
-    if (!!uploadModal) {
-        (function () {
-            var form = uploadModal.querySelector('#upload-form');
-            var droparea = uploadModal.querySelector('.droparea');
-            var preview = $('#upload-modal').find('.preview');
-            var dropbox = uploadModal.querySelector('#dropbox');
-            dropbox.addEventListener('dragenter', dragenter, false);
-            dropbox.addEventListener('dragover', dragover, false);
-            dropbox.addEventListener('dragleave', dragleave, false);
-            dropbox.addEventListener('drop', drop, false);
+    // Post Button
+    $('.post-btn').on('click', openPostModal);
 
-            var uploadBtn = uploadModal.querySelector('#submit-btn');
-            uploadBtn.addEventListener('click', upload);
+    // Edit Button
+    $('.edit-btn').on('click', editPost);
 
-            var file = $('#upload-modal').find('#photo');
-            file.change(function (e) {
-                handleFiles(e.currentTarget.files);
-            });
+    function editPost() {
+        var postID = $(this).data('post');
 
-            var text = uploadModal.querySelector('#text');
-            var tags = uploadModal.querySelector('#tags');
-
-            function upload(e) {
-                form.submit();
-            }
-
-            function handleFiles(files) {
-                preview.empty();
-
-                var img = $('<img class="image" />');
-
-                var reader = new FileReader();
-                reader.onload = function (aImg) {
-                    return function (e) {
-                        aImg.attr('src', e.target.result);
-                    };
-                }(img);
-                reader.readAsDataURL(files[0]);
-
-                img.appendTo(preview);
-            }
-
-            function drop(e) {
-                e.stopPropagation();
-                e.preventDefault();
-
-                var dt = e.dataTransfer;
-                var files = dt.files;
-
-                handleFiles(files);
-            }
-
-            function dragenter(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                droparea.classList.add('dragover');
-            }
-
-            function dragleave(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                droparea.classList.remove('dragover');
-            }
-
-            function dragover(e) {
-                e.stopPropagation();
-                e.preventDefault();
-            }
-        })();
+        axios.get('/post/edit/' + postID).then(function (res) {
+            var post = JSON.parse(res.data.post);
+            openEditModal(post);
+        }).catch(function (err) {
+            console.log(err);
+        });
     }
 
-    // Edit modal
-    var editModal = $('#edit-modal');
-    if (!!editModal) {
-        (function () {
-            var file = editModal.find('.photo');
-            file.change(function (e) {
-                handleFiles(e.currentTarget.files);
-            });
-            var form = editModal.find('#edit-form');
-            var text = editModal.find('.text');
-            var tags = editModal.find('.tags');
-            var preview = editModal.find('.preview');
-            var submitBtn = editModal.find('.submit-btn');
-            submitBtn.on('click', submitEdit);
+    // Open post modal for editing
+    function openEditModal(post) {
+        var postModal = $('#post-modal');
+        postModal.find('.modal-title').text('Edit Post');
+        postModal.find('.submit-btn').text('Save Changes');
+        postModal.find('.text').val(post.text);
+        postModal.find('.tags').val(post.tags.join(', '));
+        postModal.find('.post-form').attr('action', '/post/edit/' + post.id);
 
-            var dropbox = document.querySelector('#edit-modal .dropbox');
-            dropbox.addEventListener('dragenter', dragenter, false);
-            dropbox.addEventListener('dragover', dragover, false);
-            dropbox.addEventListener('dragleave', dragleave, false);
-            dropbox.addEventListener('drop', drop, false);
+        var preview = postModal.find('.preview');
+        var img = $('<img class="image" />');
+        img.attr('src', post.link);
+        img.appendTo(preview);
 
-            var postID = void 0;
+        openPostModal();
+    }
 
-            $('.edit-btn').on('click', openPost);
+    // Post modal
+    function openPostModal() {
+        var postModal = $('#post-modal');
 
-            function addPreviewImage(src) {
-                preview.empty();
-                var img = $('<img class="image" />');
-                img.attr('src', src);
-                img.appendTo(preview);
-            }
+        var form = postModal.find('.post-form');
+        var text = postModal.find('.text');
+        var tags = postModal.find('.tags');
+        var preview = postModal.find('.preview');
+        var file = postModal.find('.photo');
+        file.change(function (e) {
+            handleFiles(e.currentTarget.files);
+        });
+        var submitBtn = postModal.find('.submit-btn');
+        submitBtn.on('click', submit);
 
-            function handleFiles(files) {
-                preview.empty();
-                var img = $('<img class="image" />');
+        var droparea = postModal.find('.droparea');
+        var dropbox = postModal.find('.dropbox');
+        dropbox.on('dragenter', dragenter);
+        dropbox.on('dragover', dragover);
+        dropbox.on('dragleave', dragleave);
+        dropbox.on('drop', drop);
 
-                var reader = new FileReader();
-                reader.onload = function (aImg) {
-                    return function (e) {
-                        aImg.attr('src', e.target.result);
-                    };
-                }(img);
-                reader.readAsDataURL(files[0]);
+        postModal.modal('show');
 
-                img.appendTo(preview);
-            }
+        function addPreviewImage(src) {
+            preview.empty();
+            var img = $('<img class="image" />');
+            img.attr('src', src);
+            img.appendTo(preview);
+        }
 
-            function openPost(e) {
-                console.log(e);
-                var btn = e.currentTarget;
-                postID = btn.dataset.post;
+        function handleFiles(files) {
+            preview.empty();
+            var img = $('<img class="image" />');
 
-                axios.get('/post/edit/' + postID).then(function (res) {
-                    console.log(res);
-                    editPost(JSON.parse(res.data.post));
-                }).catch(function (err) {
-                    console.log(err);
-                });
+            var reader = new FileReader();
+            reader.onload = function (aImg) {
+                return function (e) {
+                    aImg.attr('src', e.target.result);
+                };
+            }(img);
+            reader.readAsDataURL(files[0]);
 
-                $(editModal).modal('show');
-            }
+            img.appendTo(preview);
+        }
 
-            function editPost(post) {
-                // update form fields from the post data received from server
-                form.attr('action', '/post/edit/' + post.id);
-                text.val(post.text);
-                tags.val(post.tags.join(', '));
-                addPreviewImage(post.link);
-            }
+        function submit() {
+            form.submit();
+        }
 
-            function submitEdit() {
-                form.submit();
-            }
-        })();
+        function drop(e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            var files = e.originalEvent.dataTransfer.files;
+
+            file.files = files;
+            console.log(file.files);
+
+            handleFiles(files);
+        }
+
+        function dragenter(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            droparea.addClass('dragover');
+        }
+
+        function dragleave(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            droparea.removeClass('dragover');
+        }
+
+        function dragover(e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
     }
 
     // Confirmation modal

@@ -1,150 +1,117 @@
 (function(){
 
-    // Upload modal
-    const uploadModal = document.querySelector('#upload-modal');
-    if (!!uploadModal) {
-        (function() {
-            const form = uploadModal.querySelector('#upload-form');
-            const droparea = uploadModal.querySelector('.droparea');
-            const preview = $('#upload-modal').find('.preview');
-            const dropbox = uploadModal.querySelector('#dropbox');
-                  dropbox.addEventListener('dragenter', dragenter, false);
-                  dropbox.addEventListener('dragover', dragover, false);
-                  dropbox.addEventListener('dragleave', dragleave, false);
-                  dropbox.addEventListener('drop', drop, false);
+    // Post Button
+    $('.post-btn').on('click', openPostModal);
 
-            const uploadBtn = uploadModal.querySelector('#submit-btn');
-                  uploadBtn.addEventListener('click', upload);
-            
-            const file = $('#upload-modal').find('#photo');
-                file.change(e => {
-                    handleFiles(e.currentTarget.files);
-                });
+    // Edit Button
+    $('.edit-btn').on('click', editPost);
 
-            const text = uploadModal.querySelector('#text');
-            const tags = uploadModal.querySelector('#tags');
-
-            function upload(e) {
-                form.submit();
-            }
-
-            function handleFiles(files) {
-                preview.empty();
-                
-                const img = $('<img class="image" />');
-
-                const reader = new FileReader();
-                reader.onload = (function (aImg) { 
-                    return function (e) { aImg.attr('src', e.target.result); }; 
-                })(img);
-                reader.readAsDataURL(files[0]);
-
-                img.appendTo(preview);
-            }
-
-            function drop(e) {
-                e.stopPropagation();
-                e.preventDefault();
-
-                var dt = e.dataTransfer;
-                var files = dt.files;
-
-                handleFiles(files);
-            }
-
-            function dragenter(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                droparea.classList.add('dragover');
-            }
-
-            function dragleave(e) {
-                e.stopPropagation();
-                e.preventDefault();
-                droparea.classList.remove('dragover');
-            }
-
-            function dragover(e) {
-                e.stopPropagation();
-                e.preventDefault();
-            }
-        }())
+    function editPost() {
+        const postID = $(this).data('post');
+        
+        axios.get(`/post/edit/${postID}`)
+            .then(res => {
+                const post = JSON.parse(res.data.post);
+                openEditModal(post);
+            })
+            .catch(err => {
+                console.log(err)
+            });
     }
 
-    // Edit modal
-    const editModal = $('#edit-modal');
-    if (!!editModal) {
-        (function(){
-            const file = editModal.find('.photo');
-                file.change(e => {
-                    handleFiles(e.currentTarget.files);
-                });
-            const form = editModal.find('#edit-form');
-            const text = editModal.find('.text');
-            const tags = editModal.find('.tags');
-            const preview = editModal.find('.preview');
-            const submitBtn = editModal.find('.submit-btn');
-                  submitBtn.on('click', submitEdit);
+    // Open post modal for editing
+    function openEditModal(post) {
+        const postModal = $('#post-modal');
+              postModal.find('.modal-title').text('Edit Post');
+              postModal.find('.submit-btn').text('Save Changes');
+              postModal.find('.text').val(post.text);
+              postModal.find('.tags').val(post.tags.join(', '));
+              postModal.find('.post-form').attr('action', `/post/edit/${post.id}`);
+        
+        const preview = postModal.find('.preview');
+        const img = $('<img class="image" />');
+              img.attr('src', post.link);
+              img.appendTo(preview);
+     
+        openPostModal();
+    }
+    
+    // Post modal
+    function openPostModal() {
+        const postModal = $('#post-modal');
 
-            const dropbox = document.querySelector('#edit-modal .dropbox');
-                  dropbox.addEventListener('dragenter', dragenter, false);
-                  dropbox.addEventListener('dragover', dragover, false);
-                  dropbox.addEventListener('dragleave', dragleave, false);
-                  dropbox.addEventListener('drop', drop, false);
+        const form = postModal.find('.post-form');
+        const text = postModal.find('.text');
+        const tags = postModal.find('.tags');
+        const preview = postModal.find('.preview');
+        const file = postModal.find('.photo');
+            file.change(e => {
+                handleFiles(e.currentTarget.files);
+            });
+        const submitBtn = postModal.find('.submit-btn');
+              submitBtn.on('click', submit);
+        
+        const droparea = postModal.find('.droparea');
+        const dropbox = postModal.find('.dropbox');
+              dropbox.on('dragenter', dragenter);
+              dropbox.on('dragover', dragover);
+              dropbox.on('dragleave', dragleave);
+              dropbox.on('drop', drop);
 
-            let postID;
+        postModal.modal('show');
 
-            $('.edit-btn').on('click', openPost);
+        function addPreviewImage(src) {
+            preview.empty();
+            const img = $('<img class="image" />');
+            img.attr('src', src);
+            img.appendTo(preview);
+        }
 
-            function addPreviewImage(src) {
-                preview.empty();
-                const img = $('<img class="image" />');
-                img.attr('src', src);
-                img.appendTo(preview);
-            }
+        function handleFiles(files) {
+            preview.empty();
+            const img = $('<img class="image" />');
 
-            function handleFiles(files) {
-                preview.empty();
-                const img = $('<img class="image" />');
+            const reader = new FileReader();
+            reader.onload = (function (aImg) { 
+                return function (e) { aImg.attr('src', e.target.result); }; 
+            })(img);
+            reader.readAsDataURL(files[0]);
 
-                const reader = new FileReader();
-                reader.onload = (function (aImg) { 
-                    return function (e) { aImg.attr('src', e.target.result); }; 
-                })(img);
-                reader.readAsDataURL(files[0]);
+            img.appendTo(preview);
+        }
 
-                img.appendTo(preview);
-            }
+        function submit() {
+            form.submit();
+        }
 
-            function openPost(e) {
-                console.log(e);
-                const btn = e.currentTarget;
-                postID = btn.dataset.post;
+        function drop(e) {
+            e.stopPropagation();
+            e.preventDefault();
 
-                axios.get(`/post/edit/${postID}`)
-                    .then(res => {
-                        console.log(res);
-                        editPost(JSON.parse(res.data.post));
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    });
-                
-                $(editModal).modal('show');
-            }
+            var files = e.originalEvent.dataTransfer.files;
+            
+            file.files = files;
+            console.log(file.files);
 
-            function editPost(post) {
-                // update form fields from the post data received from server
-                form.attr('action', `/post/edit/${post.id}`)
-                text.val(post.text);
-                tags.val(post.tags.join(', '));
-                addPreviewImage(post.link);
-            }
+            handleFiles(files);
+        }
 
-            function submitEdit() {
-                form.submit();
-            }
-        }())
+        function dragenter(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            droparea.addClass('dragover');
+        }
+
+        function dragleave(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            droparea.removeClass('dragover');
+        }
+
+        function dragover(e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
     }
 
     // Confirmation modal

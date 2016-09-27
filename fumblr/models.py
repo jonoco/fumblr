@@ -311,6 +311,7 @@ class Tag(db.Model):
     @staticmethod
     def format_tags_string(tags_string):
         """ Converts string of tag names to list of tag names """
+        #TODO use set instead of list
         return [t.strip() for t in tags_string.lower().split(',')]
 
     @classmethod

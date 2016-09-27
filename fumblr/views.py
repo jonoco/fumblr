@@ -42,18 +42,12 @@ def upload():
         return redirect(url_for('upload'))
 
     if file and Image.allowed_file(file.filename):
-        # filename = secure_filename(file.filename)
-        # image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        # file.save(image_path)
 
         tags_string = request.form['tags']
         tags = Tag.format_tags_string(tags_string)
         text = request.form['text']
 
         post = Post.submit_post(current_user, file, text, tags=tags)
-
-        ## delete image after uploading it
-        # os.remove(image_path)
 
         return redirect(url_for('view_post', id=post.id))
 
@@ -84,18 +78,12 @@ def settings():
 def new_post():
     file = request.files['file']
     if file and Image.allowed_file(file.filename):
-        # filename = secure_filename(file.filename)
-        # image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        # file.save(image_path)
 
         tags_string = request.form['tags']
         tags = Tag.format_tags_string(tags_string)
         text = request.form['text']
 
         post = Post.submit_post(current_user, file, text, tags=tags)
-
-        ## delete image after uploading it
-        # os.remove(image_path)
 
         return redirect(url_for('view_post', id=post.id))
 
@@ -142,7 +130,6 @@ def edit_post(id):
     post.update(text=request.form['text'], tags=tags, image=file)
 
     return redirect(url_for('view_post', id=id))
-    # return ('Post updated', 204)
 
 @app.route('/gallery')
 @app.route('/gallery/<int:page>')

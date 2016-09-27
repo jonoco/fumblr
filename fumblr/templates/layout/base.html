@@ -15,7 +15,8 @@
     <div id="content">{% block content %}{% endblock %}</div>
 
     {% include 'component/message.html' %}
-    {% include "component/confirm-modal.html"   %}
+    {% include 'component/confirm-modal.html'   %}
+    {% include 'component/post-modal.html' %}
     <script src="{{ url_for('static', filename='js/main.js') }}" type="text/javascript"></script>
 </body>
 </html>

@@ -4935,3 +4935,26 @@ a {
     height: 100%;
     position: absolute;
     top: 0; }
+
+#post-modal .preview {
+  width: 100%; }
+  #post-modal .preview .image {
+    width: 100%; }
+
+#post-modal .droparea {
+  background-color: rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  height: 5rem;
+  margin-bottom: 2rem;
+  padding-top: 2rem;
+  -webkit-transition: .2s all ease;
+  transition: .2s all ease;
+  position: relative; }
+  #post-modal .droparea.dragover {
+    background-color: rgba(0, 0, 0, 0.2); }
+  #post-modal .droparea .dropbox {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0; }

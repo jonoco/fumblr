@@ -1,0 +1,37 @@
+<div class="modal fade" id="post-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                <h4 class="modal-title">New Post</h4>
+            </div>
+            <div class="modal-body">
+                <div class="preview"></div><!-- images -->
+                <div class="droparea">
+                    <p>Drop photo here</p>
+                    <div class="dropbox"></div><!-- dropbox -->    
+                </div><!-- dropbox-area -->
+                <form action="/post" method="post" class="post-form" enctype="multipart/form-data">
+			        <div class="form-group">
+				        <label for="photo">Photo</label>
+				        <input class="form-control photo" type="file" name="file">
+			        </div><!-- form-group -->
+
+			        <div class="form-group">
+				        <label for="text">Description</label>
+				        <input class="form-control text" type="text" name="text" placeholder="Description">
+			        </div><!-- form-group -->
+
+			        <div class="form-group">
+				        <label for="text">Tags</label>
+				        <input class="form-control tags" type="text" name="tags" placeholder="comedy, tragedy, romance, ...">
+			        </div><!-- form-group -->
+		        </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary pull-xs-left" data-dismiss="modal">Close</button>
+                <button type="button" class="submit-btn" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
