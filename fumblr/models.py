@@ -312,7 +312,7 @@ class Tag(db.Model):
     def format_tags_string(tags_string):
         """ Converts string of tag names to list of tag names """
         #TODO use set instead of list
-        return [t.strip() for t in tags_string.lower().split(',')]
+        return set(t.strip() for t in tags_string.lower().split(','))
 
     @classmethod
     def get_or_create_tag(cls, name):

@@ -81,7 +81,7 @@
 
         postModal.modal('show');
 
-        function addPreviewImage(src) {
+        function addPreviewImage(files) {
             preview.empty();
             const img = $('<img class="image" />');
 
