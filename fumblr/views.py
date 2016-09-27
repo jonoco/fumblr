@@ -23,6 +23,7 @@ def logout():
     flash('You have logged out')
     return redirect(url_for('index'))
 
+#DEPRECATED - use new_post() at /post instead
 @app.route('/upload', methods=['get', 'post'])
 @login_required
 def upload():
@@ -125,9 +126,9 @@ def edit_post(id):
     if not post:
         return ('Cannot edit, post does not belong to user', 403)
 
-    tags = Tag.format_tags_string(request.form['tags'])
-    file = request.files['file'] if request.files['file'].filename else None
-    post.update(text=request.form['text'], tags=tags, image=file)
+    tags = Tag.format_tags_string(request.form.get('tags'))
+    file = request.files.get('file')
+    post.update(text=request.form.get('text'), tags=tags, image=file)
 
     return redirect(url_for('view_post', id=id))
 

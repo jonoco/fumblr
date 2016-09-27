@@ -11,7 +11,7 @@
 					<a href="{{ url_for('gallery') }}" class="nav-item nav-link">Gallery</a>
 
 					{% if current_user.is_authenticated %}
-					<a href="{{ url_for('upload') }}" class="nav-item nav-link">New Post</a>
+					<a href="#" class="nav-item nav-link post-btn">New Post</a>
 					<div class="nav-item dropdown">
 						<button type="button" data-toggle="dropdown" class="nav-item btn btn-outline-info dropdown-toggle">
 							{{ current_user.username }}</button>

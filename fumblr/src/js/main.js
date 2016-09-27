@@ -1,7 +1,13 @@
 (function(){
 
+    const isAdvancedUpload = function() {
+      const div = document.createElement('div');
+      return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) 
+        && 'FormData' in window && 'FileReader' in window;
+    }();
+
     // Post Button
-    $('.post-btn').on('click', openPostModal);
+    $('.post-btn').on('click', openUploadModal);
 
     // Edit Button
     $('.edit-btn').on('click', editPost);
@@ -10,13 +16,24 @@
         const postID = $(this).data('post');
         
         axios.get(`/post/edit/${postID}`)
-            .then(res => {
-                const post = JSON.parse(res.data.post);
-                openEditModal(post);
-            })
-            .catch(err => {
-                console.log(err)
-            });
+        .then(res => {
+            const post = JSON.parse(res.data.post);
+            openEditModal(post);
+        })
+        .catch(err => {
+            console.log(err)
+        });
+    }
+
+    // Open post modal for uploading
+    function openUploadModal() {
+        const postModal = $('#post-modal');
+              postModal.find('.post-form').attr('action', `/post`);
+
+        const preview = postModal.find('.preview');
+              preview.empty();
+
+        openPostModal();
     }
 
     // Open post modal for editing
@@ -29,6 +46,8 @@
               postModal.find('.post-form').attr('action', `/post/edit/${post.id}`);
         
         const preview = postModal.find('.preview');
+              preview.empty();
+
         const img = $('<img class="image" />');
               img.attr('src', post.link);
               img.appendTo(preview);
@@ -58,16 +77,11 @@
               dropbox.on('dragleave', dragleave);
               dropbox.on('drop', drop);
 
+        const formData = new FormData();
+
         postModal.modal('show');
 
         function addPreviewImage(src) {
-            preview.empty();
-            const img = $('<img class="image" />');
-            img.attr('src', src);
-            img.appendTo(preview);
-        }
-
-        function handleFiles(files) {
             preview.empty();
             const img = $('<img class="image" />');
 
@@ -80,19 +94,38 @@
             img.appendTo(preview);
         }
 
+        function handleFiles(files) {
+            addPreviewImage(files);
+
+            $.each( files, (i, file) => {
+                formData.set( 'file', file );
+            });
+        }
+
         function submit() {
-            form.submit();
+            if (form.hasClass('is-uploading')) return false;
+
+            form.addClass('is-uploading');
+            formData.set('text', text.val());
+            formData.set('tags', tags.val());
+
+            const url = postModal.find('.post-form').attr('action'); 
+
+            axios.post(url, formData)
+            .then( res => {
+                form.removeClass('is-uploading');
+                window.location.replace(res.request.responseURL);
+            })
+            .catch( err => {
+                console.log(err);
+            });
         }
 
         function drop(e) {
             e.stopPropagation();
             e.preventDefault();
 
-            var files = e.originalEvent.dataTransfer.files;
-            
-            file.files = files;
-            console.log(file.files);
-
+            const files = e.originalEvent.dataTransfer.files;
             handleFiles(files);
         }
 

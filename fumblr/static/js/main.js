@@ -2,8 +2,13 @@
 
 (function () {
 
+    var isAdvancedUpload = function () {
+        var div = document.createElement('div');
+        return ('draggable' in div || 'ondragstart' in div && 'ondrop' in div) && 'FormData' in window && 'FileReader' in window;
+    }();
+
     // Post Button
-    $('.post-btn').on('click', openPostModal);
+    $('.post-btn').on('click', openUploadModal);
 
     // Edit Button
     $('.edit-btn').on('click', editPost);
@@ -19,6 +24,17 @@
         });
     }
 
+    // Open post modal for uploading
+    function openUploadModal() {
+        var postModal = $('#post-modal');
+        postModal.find('.post-form').attr('action', '/post');
+
+        var preview = postModal.find('.preview');
+        preview.empty();
+
+        openPostModal();
+    }
+
     // Open post modal for editing
     function openEditModal(post) {
         var postModal = $('#post-modal');
@@ -29,6 +45,8 @@
         postModal.find('.post-form').attr('action', '/post/edit/' + post.id);
 
         var preview = postModal.find('.preview');
+        preview.empty();
+
         var img = $('<img class="image" />');
         img.attr('src', post.link);
         img.appendTo(preview);
@@ -58,16 +76,11 @@
         dropbox.on('dragleave', dragleave);
         dropbox.on('drop', drop);
 
+        var formData = new FormData();
+
         postModal.modal('show');
 
         function addPreviewImage(src) {
-            preview.empty();
-            var img = $('<img class="image" />');
-            img.attr('src', src);
-            img.appendTo(preview);
-        }
-
-        function handleFiles(files) {
             preview.empty();
             var img = $('<img class="image" />');
 
@@ -82,8 +95,29 @@
             img.appendTo(preview);
         }
 
+        function handleFiles(files) {
+            addPreviewImage(files);
+
+            $.each(files, function (i, file) {
+                formData.set('file', file);
+            });
+        }
+
         function submit() {
-            form.submit();
+            if (form.hasClass('is-uploading')) return false;
+
+            form.addClass('is-uploading');
+            formData.set('text', text.val());
+            formData.set('tags', tags.val());
+
+            var url = postModal.find('.post-form').attr('action');
+
+            axios.post(url, formData).then(function (res) {
+                form.removeClass('is-uploading');
+                window.location.replace(res.request.responseURL);
+            }).catch(function (err) {
+                console.log(err);
+            });
         }
 
         function drop(e) {
@@ -91,10 +125,6 @@
             e.preventDefault();
 
             var files = e.originalEvent.dataTransfer.files;
-
-            file.files = files;
-            console.log(file.files);
-
             handleFiles(files);
         }
 
