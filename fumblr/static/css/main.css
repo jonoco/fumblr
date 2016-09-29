@@ -4818,6 +4818,9 @@ a {
 #blog .follow-btn.following {
   background-color: #76ba30; }
 
+#dashboard .no-posts a {
+  color: #999; }
+
 #gallery {
   margin-bottom: 3rem; }
 

@@ -1,5 +1,5 @@
 from fumblr.keys import IMGUR_SECRET, IMGUR_ID
-from imgurpython import ImgurClient
+from imgurpython import ImgurClient, helpers
 import os
 
 API_URL = 'https://api.imgur.com/3/'
@@ -7,7 +7,11 @@ API_URL = 'https://api.imgur.com/3/'
 __client_id = IMGUR_ID
 __client_secret = IMGUR_SECRET
 
-__client = ImgurClient(__client_id, __client_secret)
+try:
+    __client = ImgurClient(__client_id, __client_secret)
+except helpers.error.ImgurClientError:
+    print('Error: imgur client error')
+    __client = None
 
 def delete_image(deletehash):
     ''' Delete image with given deletehash '''

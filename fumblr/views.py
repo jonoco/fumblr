@@ -21,35 +21,6 @@ def logout():
     flash('You have logged out')
     return redirect(url_for('index'))
 
-#DEPRECATED - use new_post() at /post instead
-@app.route('/upload', methods=['get', 'post'])
-@login_required
-def upload():
-    if request.method == 'GET':
-        return render_template('upload.html')
-
-    # check if the post request has the file part
-    if 'file' not in request.files:
-        flash('No file not in request')
-        return redirect(url_for('upload'))
-
-    file = request.files['file']
-    # if user does not select file, browser also
-    # submit a empty part without filename
-    if file.filename == '':
-        flash('No file selected')
-        return redirect(url_for('upload'))
-
-    if file and Image.allowed_file(file.filename):
-
-        tags_string = request.form['tags']
-        tags = Tag.format_tags_string(tags_string)
-        text = request.form['text']
-
-        post = Post.submit_post(current_user, file, text, tags=tags)
-
-        return redirect(url_for('view_post', id=post.id))
-
 @app.route('/settings', methods=['get', 'post'])
 @login_required
 def settings():
