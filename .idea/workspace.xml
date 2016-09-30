@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="234be504-e095-4eb5-b4fe-2550ec24da46" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/services/imgur.py" afterPath="$PROJECT_DIR$/fumblr/services/imgur.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/src/js/main.js" afterPath="$PROJECT_DIR$/fumblr/src/js/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/src/stylesheets/pages/_dashboard.scss" afterPath="$PROJECT_DIR$/fumblr/src/stylesheets/pages/_dashboard.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/static/css/main.css" afterPath="$PROJECT_DIR$/fumblr/static/css/main.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/views.py" afterPath="$PROJECT_DIR$/fumblr/views.py" />
     </list>
     <ignored path="fumblr.iws" />
@@ -30,8 +27,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fumblr/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1395">
-              <caret line="21" column="37" selection-start-line="21" selection-start-column="37" selection-end-line="21" selection-end-column="37" />
+            <state relative-caret-position="540">
+              <caret line="36" column="31" selection-start-line="36" selection-start-column="31" selection-end-line="36" selection-end-column="31" />
               <folding>
                 <element signature="e#0#96#0" expanded="true" />
               </folding>
@@ -94,8 +91,8 @@
         <option value="$PROJECT_DIR$/fumblr/__init__.py" />
         <option value="$PROJECT_DIR$/fumblr/filters.py" />
         <option value="$PROJECT_DIR$/fumblr/models.py" />
-        <option value="$PROJECT_DIR$/fumblr/views.py" />
         <option value="$PROJECT_DIR$/fumblr/services/imgur.py" />
+        <option value="$PROJECT_DIR$/fumblr/views.py" />
       </list>
     </option>
   </component>
@@ -588,8 +585,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fumblr/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1395">
-          <caret line="21" column="37" selection-start-line="21" selection-start-column="37" selection-end-line="21" selection-end-column="37" />
+        <state relative-caret-position="540">
+          <caret line="36" column="31" selection-start-line="36" selection-start-column="31" selection-end-line="36" selection-end-column="31" />
           <folding>
             <element signature="e#0#96#0" expanded="true" />
           </folding>

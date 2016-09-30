@@ -6,17 +6,26 @@ from .database import db
 
 @app.route('/')
 def index():
+    """
+        Home page
+    """
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
     return render_template('home.html')
 
 @app.route('/login')
 def login():
+    """
+        Log in page
+    """
     return render_template('login.html')
 
 @app.route('/logout')
 @login_required
 def logout():
+    """
+        Log out
+    """
     logout_user()
     flash('You have logged out')
     return redirect(url_for('index'))
@@ -24,6 +33,9 @@ def logout():
 @app.route('/settings', methods=['get', 'post'])
 @login_required
 def settings():
+    """
+        User's account settings
+    """
     if request.method == 'GET':
         return render_template('settings.html', user=current_user.get_user_info(), error={})
 
@@ -46,6 +58,9 @@ def settings():
 @app.route('/post', methods=['post'])
 @login_required
 def new_post():
+    """
+        Create a new post
+    """
     file = request.files['file']
     if file and Image.allowed_file(file.filename):
 
@@ -59,6 +74,9 @@ def new_post():
 
 @app.route('/post/<id>')
 def view_post(id):
+    """
+        View a single post
+    """
     post = Post.query.get(id)
     if not post:
         return redirect(url_for('index'))
@@ -70,6 +88,9 @@ def view_post(id):
 @app.route('/post/delete/<id>')
 @login_required
 def delete_post(id):
+    """
+        Delete a post
+    """
     post = current_user.posts.filter_by(id=id).one_or_none()
     if not post:
         return ('Cannot delete, post does not belong to user', 403)
@@ -82,6 +103,9 @@ def delete_post(id):
 @app.route('/post/edit/<id>', methods=['get', 'post'])
 @login_required
 def edit_post(id):
+    """
+        Edit a post
+    """
     if request.method == 'GET':
         post = current_user.posts.filter_by(id=id).one_or_none()
         if not post:
@@ -104,6 +128,9 @@ def edit_post(id):
 @app.route('/gallery')
 @app.route('/gallery/<int:page>')
 def gallery(page=0):
+    """
+        Posts of all users
+    """
     PAGE_LIMIT = 20
 
     posts = Post.query.order_by(Post.created.desc()).offset(page).limit(PAGE_LIMIT).all()
@@ -118,6 +145,9 @@ def gallery(page=0):
 @app.route('/dashboard')
 @login_required
 def dashboard():
+    """
+        User's private facing page
+    """
     following_ids = current_user.following.with_entities(Follow.target_id).all()
     following_ids.append(current_user.id)
 
@@ -128,6 +158,9 @@ def dashboard():
 
 @app.route('/user/<username>')
 def user(username):
+    """
+        User's public facing page; posts and reblogs
+    """
     user = User.query.filter_by(username=username).first()
     posts = user.posts.order_by(Post.created.desc())
     posts_data = Post.get_posts_data(posts)
@@ -141,7 +174,9 @@ def user(username):
 
 @app.route('/image/<id>')
 def get_image(id):
-    # route for checking image properties
+    """
+        Check image properties
+    """
     image = Image.query.get(id)
     image_data = {
         'link': image.link,
@@ -195,6 +230,9 @@ def like():
 
 @app.route('/search')
 def search():
+    """
+        Search users, posts, and tags
+    """
     q = request.args.get('q')
     query = '%{}%'.format(q)
 
@@ -212,6 +250,9 @@ def search():
 
 @app.route('/tag/<tag_name>')
 def tag(tag_name):
+    """
+        All posts with given tag
+    """
     tag = Tag.query.filter_by(name=tag_name).first()
     if not tag:
         return render_template('search.html', no_results=True)
@@ -225,6 +266,9 @@ def tag(tag_name):
 @app.route('/following')
 @login_required
 def following():
+    """
+        All users the current user is following
+    """
     followings = current_user.following
     following_data = [f.get_data() for f in followings]
 
@@ -233,6 +277,9 @@ def following():
 @app.route('/followers')
 @login_required
 def followers():
+    """
+        All users following the current user
+    """
     followers_query = current_user.followers
     followers_data = [f.get_data() for f in followers_query]
 
@@ -241,6 +288,9 @@ def followers():
 @app.route('/likes')
 @login_required
 def likes():
+    """
+        All posts the user liked
+    """
     likes_query = current_user.likes.order_by(Like.created.desc())
     posts_data = [l.post.get_data() for l in likes_query]
 
@@ -248,6 +298,9 @@ def likes():
 
 @app.errorhandler(404)
 def page_not_found(error):
+    """
+        404 error page
+    """
     return render_template('not_found.html')
 
 
