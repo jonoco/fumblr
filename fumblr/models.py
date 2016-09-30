@@ -4,7 +4,7 @@ from .services.imgur import upload_image
 from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
 from flask_login import UserMixin, current_user
 from datetime import datetime
-from sqlalchemy import exists, and_
+from sqlalchemy import exists, and_, or_
 from werkzeug.utils import secure_filename
 import os
 
@@ -270,6 +270,9 @@ class User(db.Model, UserMixin):
         else:
             return False
 
+    def get_messages(self):
+        return Message.query.filter(or_(Message.target_id == self.id, Message.user_id == self.id)).all()
+
 class Follow(db.Model):
     __tablename__ = 'followers'
 
@@ -349,3 +352,27 @@ class Message(db.Model):
         self.user = user
         self.text = text
         self.created = created
+
+    def get_data(self):
+        return {
+            'from': self.user.username,
+            'to': self.target.username,
+            'text': self.text,
+            'created': self.created
+        }
+
+    @classmethod
+    def get_message_data(cls, messages):
+        return [m.get_data() for m in messages]
+
+    @classmethod
+    def send_message(cls, username, text):
+        target = User.query.filter_by(username=username).one_or_none()
+        if not target:
+            return False
+        message = cls(target, current_user, text)
+
+        db.session.add(message)
+        db.session.commit()
+
+        return message

@@ -7,6 +7,37 @@
         return ('draggable' in div || 'ondragstart' in div && 'ondrop' in div) && 'FormData' in window && 'FileReader' in window;
     }();
 
+    $('.msg-btn').on('click', openMsgModal);
+    function openMsgModal() {
+        var user = $(this).data('user');
+
+        var $msgModal = $('#message-modal');
+        $msgModal.find('.message-form').data('user', user);
+        $msgModal.find('.message-text').val('');
+
+        $msgModal.modal('show');
+    }
+
+    // Send message
+    $('.message-form').on('submit', sendMessage);
+
+    function sendMessage(e) {
+        e.preventDefault();
+
+        var $form = $('#message-modal').find('.message-form');
+        var user = $form.data('user');
+        var text = $form.find('.message-text').val();
+
+        axios.post('/message', {
+            user: user,
+            text: text
+        }).then(function (res) {
+            console.log(res);
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }
+
     // Post Button
     $('.post-btn').on('click', openUploadModal);
 
@@ -26,64 +57,64 @@
 
     // Open post modal for uploading
     function openUploadModal() {
-        var postModal = $('#post-modal');
-        postModal.find('.post-form').attr('action', '/post');
-        postModal.find('.modal-title').text('New Post');
-        postModal.find('.submit-btn').text('Submit');
-        postModal.find('.text').val('');
-        postModal.find('.tags').val('');
-        postModal.find('.preview').empty();
+        var $postModal = $('#post-modal');
+        $postModal.find('.post-form').attr('action', '/post');
+        $postModal.find('.modal-title').text('New Post');
+        $postModal.find('.submit-btn').text('Submit');
+        $postModal.find('.text').val('');
+        $postModal.find('.tags').val('');
+        $postModal.find('.preview').empty();
 
         openPostModal();
     }
 
     // Open post modal for editing
     function openEditModal(post) {
-        var postModal = $('#post-modal');
-        postModal.find('.post-form').attr('action', '/post/edit/' + post.id);
-        postModal.find('.modal-title').text('Edit Post');
-        postModal.find('.submit-btn').text('Save Changes');
-        postModal.find('.text').val(post.text);
-        postModal.find('.tags').val(post.tags.join(', '));
+        var $postModal = $('#post-modal');
+        $postModal.find('.post-form').attr('action', '/post/edit/' + post.id);
+        $postModal.find('.modal-title').text('Edit Post');
+        $postModal.find('.submit-btn').text('Save Changes');
+        $postModal.find('.text').val(post.text);
+        $postModal.find('.tags').val(post.tags.join(', '));
 
-        var preview = postModal.find('.preview');
-        preview.empty();
+        var $preview = $postModal.find('.preview');
+        $preview.empty();
 
-        var img = $('<img class="image" />');
-        img.attr('src', post.link);
-        img.appendTo(preview);
+        var $img = $('<img class="image" />');
+        $img.attr('src', post.link);
+        $img.appendTo(preview);
 
         openPostModal();
     }
 
     // Post modal
     function openPostModal() {
-        var postModal = $('#post-modal');
+        var $postModal = $('#post-modal');
 
-        var form = postModal.find('.post-form');
-        var text = postModal.find('.text');
-        var tags = postModal.find('.tags');
-        var preview = postModal.find('.preview');
-        var file = postModal.find('.photo');
-        file.change(function (e) {
+        var $form = $postModal.find('.post-form');
+        var $text = $postModal.find('.text');
+        var $tags = $postModal.find('.tags');
+        var $preview = $postModal.find('.preview');
+        var $file = $postModal.find('.photo');
+        $file.change(function (e) {
             handleFiles(e.currentTarget.files);
         });
-        var submitBtn = postModal.find('.submit-btn');
-        submitBtn.on('click', submit);
+        var $submitBtn = $postModal.find('.submit-btn');
+        $submitBtn.on('click', submit);
 
-        var droparea = postModal.find('.droparea');
-        var dropbox = postModal.find('.dropbox');
-        dropbox.on('dragenter', dragenter);
-        dropbox.on('dragover', dragover);
-        dropbox.on('dragleave', dragleave);
-        dropbox.on('drop', drop);
+        var $droparea = $postModal.find('.droparea');
+        var $dropbox = $postModal.find('.dropbox');
+        $dropbox.on('dragenter', dragenter);
+        $dropbox.on('dragover', dragover);
+        $dropbox.on('dragleave', dragleave);
+        $dropbox.on('drop', drop);
 
         var formData = new FormData();
 
-        postModal.modal('show');
+        $postModal.modal('show');
 
         function addPreviewImage(files) {
-            preview.empty();
+            $preview.empty();
             var img = $('<img class="image" />');
 
             var reader = new FileReader();
@@ -94,25 +125,25 @@
             }(img);
             reader.readAsDataURL(files[0]);
 
-            img.appendTo(preview);
+            img.appendTo($preview);
         }
 
         function handleFiles(files) {
             addPreviewImage(files);
 
-            $.each(files, function (i, file) {
-                formData.set('file', file);
+            $.each(files, function (i, f) {
+                formData.set('file', f);
             });
         }
 
         function submit() {
-            if (form.hasClass('is-uploading')) return false;
+            if ($form.hasClass('is-uploading')) return false;
 
-            form.addClass('is-uploading');
-            formData.set('text', text.val());
-            formData.set('tags', tags.val());
+            $form.addClass('is-uploading');
+            formData.set('text', $text.val());
+            formData.set('tags', $tags.val());
 
-            var url = postModal.find('.post-form').attr('action');
+            var url = $postModal.find('.post-form').attr('action');
 
             axios.post(url, formData).then(function (res) {
                 form.removeClass('is-uploading');
@@ -137,13 +168,13 @@
         function dragenter(e) {
             e.stopPropagation();
             e.preventDefault();
-            droparea.addClass('dragover');
+            $droparea.addClass('dragover');
         }
 
         function dragleave(e) {
             e.stopPropagation();
             e.preventDefault();
-            droparea.removeClass('dragover');
+            $droparea.removeClass('dragover');
         }
 
         function dragover(e) {
@@ -162,19 +193,19 @@
         var btn = _ref$btn === undefined ? 'Confirm' : _ref$btn;
 
         return new Promise(function (resolve, reject) {
-            var confirmModal = $('#confirm-modal');
-            if (!!confirmModal) {
-                confirmModal.find('.modal-title').text(title);
-                confirmModal.find('#text').text(text);
+            var $confirmModal = $('#confirm-modal');
+            if (!!$confirmModal) {
+                $confirmModal.find('.modal-title').text(title);
+                $confirmModal.find('#text').text(text);
 
-                var submitBtn = confirmModal.find('#submit-btn');
-                submitBtn.text(btn);
-                submitBtn.on('click', resolve);
+                var $submitBtn = $confirmModal.find('#submit-btn');
+                $submitBtn.text(btn);
+                $submitBtn.on('click', resolve);
 
-                var cancelBtn = confirmModal.find('#cancel-btn');
+                var cancelBtn = $confirmModal.find('#cancel-btn');
                 cancelBtn.on('click', reject);
 
-                confirmModal.modal({
+                $confirmModal.modal({
                     backdrop: 'static',
                     keyboard: false
                 });
@@ -185,15 +216,14 @@
     }
 
     // Delete button
-    var deleteBtn = $('.delete-btn');
-    if (!!deleteBtn) {
-        deleteBtn.on('click', function (e) {
+    var $deleteBtn = $('.delete-btn');
+    if (!!$deleteBtn) {
+        $deleteBtn.on('click', function (e) {
             var btn = e.currentTarget;
             var postID = btn.dataset.post;
 
             askConfirm({ title: 'Delete post?', btn: 'Delete' }).then(function () {
                 axios.get('/post/delete/' + postID).then(function (res) {
-                    console.log(res);
                     document.location.reload(true);
                 }).catch(function (err) {
                     console.log(err);
@@ -218,7 +248,6 @@
         axios.post('/follow', {
             user: user
         }).then(function (res) {
-            console.log(res.data.following);
             btn.classList.toggle('following');
         }).catch(function (err) {
             console.log(err);

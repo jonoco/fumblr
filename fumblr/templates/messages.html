@@ -1,0 +1,18 @@
+{% extends "layout/base.html" %}
+{% block title %}Messages{% endblock %}
+{% block content %}
+<div id="messages">
+	<div class="container">
+		<h1>Messages</h1>
+
+		<ul class="list-group">
+			{% for message in messages %}
+				<li class="list-group-item">
+				{{ message|tojson }}
+				</li>
+			{% endfor %}
+		</ul>
+		
+	</div><!-- container -->
+</div><!-- messages -->
+{% endblock %}

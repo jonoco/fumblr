@@ -7,10 +7,13 @@
 
 		{% set class = 'following' if is_following else '' %}
 		<button class="btn follow-btn {{ class }}" data-user="{{ user }}">Follow</button>
+		<button class="btn msg-btn" data-user="{{ user }}" >Message</button>
 
 		{% for post in posts %}
 			{% include "component/post.html" %}
 		{% endfor %}
+
+		{% include 'component/message-modal.html' %}
 
 	</div><!-- container -->
 </div><!-- home -->

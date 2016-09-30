@@ -6,6 +6,37 @@
         && 'FormData' in window && 'FileReader' in window;
     }();
 
+    $('.msg-btn').on('click', openMsgModal);
+    function openMsgModal() {
+        const user = $(this).data('user');
+
+        const $msgModal = $('#message-modal');
+              $msgModal.find('.message-form').data('user', user);
+              $msgModal.find('.message-text').val('');
+
+        $msgModal.modal('show');
+    }
+
+    // Send message
+    $('.message-form').on('submit', sendMessage);
+
+    function sendMessage(e) {
+        e.preventDefault();
+        
+        const $form = $('#message-modal').find('.message-form');
+        const user = $form.data('user');
+        const text = $form.find('.message-text').val();
+
+        axios.post('/message', {
+            user, 
+            text
+        }).then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
     // Post Button
     $('.post-btn').on('click', openUploadModal);
 

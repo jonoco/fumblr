@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request, jsonify, current_app, json
 from fumblr import app
 from flask_login import login_required, logout_user, current_user, user_needs_refresh
-from .models import Post, User, Image, Tag, Follow, Like
+from .models import Post, User, Image, Tag, Follow, Like, Message
 from .database import db
 
 @app.route('/')
@@ -54,6 +54,25 @@ def settings():
     user_needs_refresh.send(current_app._get_current_object())
 
     return render_template('settings.html', user=current_user.get_user_info(), error={})
+
+@app.route('/message', methods=['get', 'post'])
+@login_required
+def message():
+    """
+        Get and send messages
+    """
+    if request.method == 'GET':
+        messages = current_user.get_messages()
+        message_data = Message.get_message_data(messages)
+
+        return render_template('messages.html', messages=message_data)
+
+    req = request.get_json()
+    username = req['user']
+    text = req['text']
+    msg = Message.send_message(username, text)
+
+    return jsonify(message=msg.get_data())
 
 @app.route('/post', methods=['post'])
 @login_required
