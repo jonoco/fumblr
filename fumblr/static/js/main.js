@@ -7,6 +7,39 @@
         return ('draggable' in div || 'ondragstart' in div && 'ondrop' in div) && 'FormData' in window && 'FileReader' in window;
     }();
 
+    // Comment modal
+    $('.comment-btn').on('click', openCommentModal);
+    function openCommentModal() {
+        var post = $(this).data('post');
+
+        var $cmtModal = $('#comment-modal');
+        $cmtModal.find('.comment-form').data('post', post);
+        $cmtModal.find('.comment-text').val('');
+
+        $cmtModal.modal('show');
+    }
+
+    $('.comment-form').on('submit', sendComment);
+    function sendComment(e) {
+        e.preventDefault();
+
+        var $cmtModal = $('#comment-modal');
+        var $form = $cmtModal.find('.comment-form');
+        var post = $form.data('post');
+        var text = $form.find('.comment-text').val();
+
+        axios.post('/comment', {
+            post: post,
+            text: text
+        }).then(function (res) {
+            console.log(res);
+            $cmtModal.modal('hide');
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }
+
+    // Message modal
     $('.msg-btn').on('click', openMsgModal);
     function openMsgModal() {
         var user = $(this).data('user');
@@ -20,7 +53,6 @@
 
     // Send message
     $('.message-form').on('submit', sendMessage);
-
     function sendMessage(e) {
         e.preventDefault();
 

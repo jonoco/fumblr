@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request, jsonify, current_app, json
 from fumblr import app
 from flask_login import login_required, logout_user, current_user, user_needs_refresh
-from .models import Post, User, Image, Tag, Follow, Like, Message
+from .models import Post, User, Image, Tag, Follow, Like, Message, Comment
 from .database import db
 
 @app.route('/')
@@ -50,7 +50,7 @@ def settings():
         user.username = new_username
         db.session.commit()
 
-    #refresh login manager
+    ## refresh login manager
     user_needs_refresh.send(current_app._get_current_object())
 
     return render_template('settings.html', user=current_user.get_user_info(), error={})
@@ -73,6 +73,22 @@ def message():
     msg = Message.send_message(username, text)
 
     return jsonify(message=msg.get_data())
+
+@app.route('/comment', methods=['post'])
+@login_required
+def comment():
+    """
+        Create a new comment on a post
+    """
+    req = request.get_json()
+    print(req)
+    post_id = req.get('post')
+    text = req.get('text')
+
+    cmt = Comment.send_comment(post_id, text)
+
+    return jsonify(comment=cmt.get_data())
+
 
 @app.route('/post', methods=['post'])
 @login_required

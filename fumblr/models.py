@@ -376,3 +376,42 @@ class Message(db.Model):
         db.session.commit()
 
         return message
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', backref=db.backref('comments', lazy='dynamic'), uselist=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    post = db.relationship('Post', backref=db.backref('comments', lazy='joined'), uselist=False)
+    text = db.Column(db.String, nullable=False)
+    created = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, user, post, text, created=None):
+        self.user = user
+        self.post = post
+        self.text = text
+        self.created = created
+
+    def __repr__(self):
+        return '<Comment {} {}>'.format(self.user, self.text)
+
+    def get_data(self):
+        return {
+            'user': self.user.username,
+            'post': self.post.id,
+            'text': self.text,
+            'created': self.created
+        }
+
+    @classmethod
+    def send_comment(cls, post_id, text):
+        post = Post.query.get(post_id)
+
+        comment = cls(current_user, post, text)
+
+        db.session.add(comment)
+        db.session.commit()
+
+        return comment

@@ -26,6 +26,13 @@
                 display: inline-block;
                 margin-top: .5rem;
              }
+            .comment-btn {
+                outline: none; 
+                transition: .2s all ease;
+                border: none;
+                padding: .5rem 1rem;
+                &:hover { opacity: .8; }
+            }
             .like-btn {
                 outline: none; 
                 transition: .2s all ease;
