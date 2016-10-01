@@ -128,6 +128,7 @@ class Post(db.Model):
             'likes': self.likes.count(),
             'liked': self.is_liked(),
             'tags': [tag.name for tag in self.tags],
+            'comments': [cmt.get_data() for cmt in self.comments],
             'created': self.created,
             'owned': self.is_owned()
         }
@@ -384,7 +385,7 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship('User', backref=db.backref('comments', lazy='dynamic'), uselist=False)
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
-    post = db.relationship('Post', backref=db.backref('comments', lazy='joined'), uselist=False)
+    post = db.relationship('Post', backref=db.backref('comments', lazy='joined'), uselist=False, order_by='Comment.created')
     text = db.Column(db.String, nullable=False)
     created = db.Column(db.DateTime, default=datetime.utcnow)
 

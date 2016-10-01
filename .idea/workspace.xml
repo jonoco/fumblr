@@ -4,13 +4,9 @@
     <list default="true" id="234be504-e095-4eb5-b4fe-2550ec24da46" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/models.py" afterPath="$PROJECT_DIR$/fumblr/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/src/js/main.js" afterPath="$PROJECT_DIR$/fumblr/src/js/main.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/src/stylesheets/components/_all.scss" afterPath="$PROJECT_DIR$/fumblr/src/stylesheets/components/_all.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/src/stylesheets/components/_post.scss" afterPath="$PROJECT_DIR$/fumblr/src/stylesheets/components/_post.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/static/css/main.css" afterPath="$PROJECT_DIR$/fumblr/static/css/main.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/static/js/main.js" afterPath="$PROJECT_DIR$/fumblr/static/js/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/templates/component/post.html" afterPath="$PROJECT_DIR$/fumblr/templates/component/post.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/templates/layout/base.html" afterPath="$PROJECT_DIR$/fumblr/templates/layout/base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/templates/view_post.html" afterPath="$PROJECT_DIR$/fumblr/templates/view_post.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/views.py" afterPath="$PROJECT_DIR$/fumblr/views.py" />
     </list>
     <ignored path="fumblr.iws" />
@@ -31,37 +27,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fumblr/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="87" column="45" selection-start-line="87" selection-start-column="45" selection-end-line="87" selection-end-column="45" />
-              <folding>
-                <element signature="e#0#96#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-1417">
+              <caret line="0" column="103" selection-start-line="0" selection-start-column="103" selection-end-line="0" selection-end-column="103" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fumblr/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="443">
-              <caret line="402" column="33" selection-start-line="402" selection-start-column="33" selection-end-line="402" selection-end-column="33" />
+            <state relative-caret-position="338">
+              <caret line="390" column="0" selection-start-line="390" selection-start-column="0" selection-end-line="390" selection-end-column="0" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="imgur.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fumblr/services/imgur.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="12" column="36" selection-start-line="12" selection-start-column="36" selection-end-line="12" selection-end-column="36" />
-              <folding>
-                <element signature="e#0#46#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -98,8 +80,8 @@
         <option value="$PROJECT_DIR$/fumblr/__init__.py" />
         <option value="$PROJECT_DIR$/fumblr/filters.py" />
         <option value="$PROJECT_DIR$/fumblr/services/imgur.py" />
-        <option value="$PROJECT_DIR$/fumblr/models.py" />
         <option value="$PROJECT_DIR$/fumblr/views.py" />
+        <option value="$PROJECT_DIR$/fumblr/models.py" />
       </list>
     </option>
   </component>
@@ -429,9 +411,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="945">
           <caret line="67" column="69" selection-start-line="67" selection-start-column="69" selection-end-line="67" selection-end-column="69" />
-          <folding>
-            <element signature="e#0#96#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -459,9 +439,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
           <caret line="21" column="37" selection-start-line="21" selection-start-column="37" selection-end-line="21" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#96#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -608,22 +586,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fumblr/models.py">
+    <entry file="file://$PROJECT_DIR$/fumblr/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="443">
-          <caret line="402" column="33" selection-start-line="402" selection-start-column="33" selection-end-line="402" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-1417">
+          <caret line="0" column="103" selection-start-line="0" selection-start-column="103" selection-end-line="0" selection-end-column="103" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fumblr/views.py">
+    <entry file="file://$PROJECT_DIR$/fumblr/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="87" column="45" selection-start-line="87" selection-start-column="45" selection-end-line="87" selection-end-column="45" />
+        <state relative-caret-position="338">
+          <caret line="390" column="0" selection-start-line="390" selection-start-column="0" selection-end-line="390" selection-end-column="0" />
           <folding>
-            <element signature="e#0#96#0" expanded="true" />
+            <element signature="e#0#29#0" expanded="true" />
           </folding>
         </state>
       </provider>

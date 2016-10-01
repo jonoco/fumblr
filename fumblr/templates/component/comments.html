@@ -1,0 +1,10 @@
+<div id="comments">
+	<ul class="list-group">
+		{% for comment in comments %}
+		<li class="list-group-item">
+			<span class="comment-text">{{ comment.text }}</span>
+			<span class="comment-user pull-xs-right">{{ comment.user }}</span>
+		</li>	
+		{% endfor %}
+	</ul>
+</div><!-- comments -->

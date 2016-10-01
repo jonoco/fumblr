@@ -4928,3 +4928,9 @@ a {
   border: none;
   width: 100%;
   height: 2rem; }
+
+#comments {
+  width: 640px;
+  margin: 2rem auto; }
+  #comments .comment-user {
+    color: rgba(0, 0, 0, 0.6); }

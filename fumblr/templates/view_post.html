@@ -7,6 +7,9 @@
 
 		{% include "component/post.html" %}
 		
+		{% set comments = post.comments %}
+		{% include "component/comments.html" %}
+		
 	</div><!-- container -->
 </div><!-- home -->
 {% endblock %}
