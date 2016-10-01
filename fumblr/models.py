@@ -125,7 +125,7 @@ class Post(db.Model):
             'link': self.image.link,
             'text': self.text or '',
             'user': self.user.username,
-            'likes': self.likes.count(),
+            'likes': [l.get_data() for l in self.likes],
             'liked': self.is_liked(),
             'tags': [tag.name for tag in self.tags],
             'comments': [cmt.get_data() for cmt in self.comments],
@@ -203,7 +203,9 @@ class Like(db.Model):
 
     def get_data(self):
         return {
-            'post': self.post
+            'post': self.post,
+            'user': self.user.username,
+            'created': self.created
         }
 
 class User(db.Model, UserMixin):

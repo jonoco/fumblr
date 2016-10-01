@@ -4942,3 +4942,11 @@ a {
   margin: 2rem auto; }
   #comments .comment-user {
     color: rgba(0, 0, 0, 0.6); }
+
+#likes .likes-content {
+  width: 640px;
+  margin: 2rem auto;
+  background-color: #eee;
+  padding: 1rem; }
+  #likes .likes-content .like {
+    color: rgba(0, 0, 0, 0.8); }

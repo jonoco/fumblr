@@ -1,0 +1,12 @@
+<div id="likes">
+	{% if likes|length > 0 %}	
+	<div class="likes-content">
+		{% for like in likes %}
+		<a href="{{ url_for('user', username=like.user) }}" class="like">{{ like.user }}</a>{{ ',  ' if not loop.last }}
+		{% endfor %}
+
+		{% set message = 'like this' if likes|length > 1 else 'likes this' %}
+		<span> {{ message }}</span>
+	</div><!-- likes-content -->
+	{% endif %}
+</div><!-- likes -->

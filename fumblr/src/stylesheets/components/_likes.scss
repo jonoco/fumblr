@@ -1,0 +1,11 @@
+#likes {
+	.likes-content {
+		width: 640px;
+		margin: 2rem auto;
+		background-color: #eee;
+		padding: 1rem;
+		.like {
+			color: rgba(0,0,0, 0.8);	
+		}
+	}
+}

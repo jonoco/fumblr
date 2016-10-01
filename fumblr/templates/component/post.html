@@ -15,7 +15,7 @@
 			{% endfor %}
 		</div>
 		<div class="post-menu">
-			<span class="likes">likes - {{ post.likes }}</span> | <span>comments - {{ post.comments|count }}</span>
+			<span class="likes">likes - {{ post.likes|count }}</span> | <span>comments - {{ post.comments|count }}</span>
 			<div class="btn-group  pull-xs-right">
 				{% if post.owned %}			
 				<button class="btn btn-info dropdown-toggle" data-toggle="dropdown">edit</button>

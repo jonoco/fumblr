@@ -7,6 +7,9 @@
 
 		{% include "component/post.html" %}
 		
+		{% set likes = post.likes %}
+		{% include "component/likes.html" %}
+
 		{% set comments = post.comments %}
 		{% include "component/comments.html" %}
 		
