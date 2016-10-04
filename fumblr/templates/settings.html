@@ -6,7 +6,20 @@
 		<h1>Settings</h1>
 
 		<div class="menu">
-			<form action="" method="post">
+
+			<div class="avatar">
+				<img src="{{ user.avatar if user.avatar else 'http://i.imgur.com/Z9J5b6m.png' }}">
+			</div><!-- avatar -->
+			<form action="/settings/avatar" method="post" enctype="multipart/form-data">
+				<div class="form-group">
+					<label for="settings-avatar">Avatar</label>
+					<input type="file" id="settings-avatar" class="form-control" name="file" />
+				</div><!-- form-group -->
+
+				<button type="submit" class="btn">Change Avatar</button>
+			</form>
+
+			<form action="/settings/username" method="post">
 				<div class="form-group">
 					<label for="settings-username">Change username</label>
 					<input type="text" id="settings-username" class="form-control" name="username" value="{{ user.username }}">
@@ -15,7 +28,7 @@
 					{% endif %}
 				</div>
 
-				<button class="btn update-btn">Update</button>
+				<button type="submit" class="btn">Update</button>
 			</form>
 		</div>
 	</div><!-- container -->

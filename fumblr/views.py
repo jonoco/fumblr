@@ -30,15 +30,20 @@ def logout():
     flash('You have logged out')
     return redirect(url_for('index'))
 
-@app.route('/settings', methods=['get', 'post'])
+@app.route('/settings')
 @login_required
 def settings():
     """
         User's account settings
     """
-    if request.method == 'GET':
-        return render_template('settings.html', user=current_user.get_user_info(), error={})
+    return render_template('settings.html', user=current_user.get_user_info(), error={})
 
+@app.route('/settings/username', methods=['post'])
+@login_required
+def set_username():
+    """
+        Set a user's username
+    """
     new_username = request.form['username']
     if User.username_taken(new_username):
         error = {
@@ -54,6 +59,19 @@ def settings():
     user_needs_refresh.send(current_app._get_current_object())
 
     return render_template('settings.html', user=current_user.get_user_info(), error={})
+
+@app.route('/settings/avatar', methods=['post'])
+@login_required
+def set_avatar():
+    """
+        Set a user avatar
+    """
+    file = request.files['file']
+    if file and Image.allowed_file(file.filename):
+        current_user.set_avatar(file)
+        user_needs_refresh.send(current_app._get_current_object())
+
+        return render_template('settings.html', user=current_user.get_user_info(), error={})
 
 @app.route('/message', methods=['get', 'post'])
 @login_required

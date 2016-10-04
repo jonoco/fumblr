@@ -66,7 +66,7 @@ class Image(db.Model):
         'is_ad': False,
         'vote': None}
 
-        :param image_path:
+        :param file:
         :return Image:
         """
 
@@ -240,9 +240,13 @@ class User(db.Model, UserMixin):
         else:
             return loginname
 
+    def get_avatar(self):
+        return self.avatar.image.link if self.avatar else None
+
     def get_user_info(self):
         return {
-            'username': self.username
+            'username': self.username,
+            'avatar': self.get_avatar()
         }
 
     def following_user(self, username):
@@ -275,6 +279,15 @@ class User(db.Model, UserMixin):
 
     def get_messages(self):
         return Message.query.filter(or_(Message.target_id == self.id, Message.user_id == self.id)).all()
+
+    def set_avatar(self, file):
+        image = Image.submit_image(file)
+        avatar = Avatar(self, image)
+
+        db.session.add(avatar)
+        db.session.commit()
+
+        return image
 
 class Follow(db.Model):
     __tablename__ = 'followers'
@@ -418,3 +431,20 @@ class Comment(db.Model):
         db.session.commit()
 
         return comment
+
+class Avatar(db.Model):
+    __tablename__ = 'avatars'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', backref=db.backref('avatar', uselist=False), uselist=False)
+    image_id = db.Column(db.Integer, db.ForeignKey('images.id'))
+    image = db.relationship('Image', backref=db.backref('avatars'), uselist=False)
+    created = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, user, image):
+        self.user = user
+        self.image = image
+
+    def __repr__(self):
+        return '<Avatar {}>'.format(self.user)

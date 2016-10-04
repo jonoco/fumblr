@@ -4842,6 +4842,8 @@ a {
   background-color: #eeeeee;
   width: 640px;
   padding: 1rem; }
+  #settings .menu form {
+    margin-bottom: 1rem; }
 
 #settings .form-error {
   font-size: .8rem;
@@ -4949,4 +4951,4 @@ a {
   background-color: #eee;
   padding: 1rem; }
   #likes .likes-content .like {
-    color: rgba(0, 0, 0, 0.8); }
+    color: #999; }
