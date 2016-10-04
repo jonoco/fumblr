@@ -328,19 +328,20 @@ class Tag(db.Model):
         return '<Tag - {}>'.format(self.name)
 
     @staticmethod
-    def format_tags_string(tags_string):
+    def format_tags(tags_string):
         """ Converts string of tag names to list of tag names """
-        return set(t.strip() for t in tags_string.lower().split(','))
+        return set(t.replace(' ', '') for t in tags_string.lower().split(','))
 
     @classmethod
     def get_or_create_tag(cls, name):
         """ Create or find a Tag from the given tag name """
-        return cls.query.filter_by(name=name).first() or cls(name)
+        return cls.query.filter_by(name=name).one_or_none() or cls(name)
 
     @classmethod
     def get_tag_list(cls, tags):
         """ Generate a list of Tag models from a list of tag names, stripping out empty tag strings """
-        return [cls.get_or_create_tag(tag) for tag in tags if tag]
+        tag_set = cls.format_tags(tags)
+        return [cls.get_or_create_tag(tag) for tag in tag_set if tag]
 
 class OAuth(db.Model, OAuthConsumerMixin):
     __tablename__ = 'oauths'

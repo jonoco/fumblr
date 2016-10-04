@@ -114,11 +114,8 @@ def new_post():
     """
     file = request.files['file']
     if file and Image.allowed_file(file.filename):
-
-        tags_string = request.form['tags']
-        tags = Tag.format_tags_string(tags_string)
+        tags =request.form['tags']
         text = request.form['text']
-
         post = Post.submit_post(current_user, file, text, tags=tags)
 
         return jsonify(redirect=url_for('view_post', id=post.id))
@@ -170,7 +167,7 @@ def edit_post(id):
     if not post:
         return ('Cannot edit, post does not belong to user', 403)
 
-    tags = Tag.format_tags_string(request.form.get('tags'))
+    tags = request.form.get('tags')
     file = request.files.get('file')
     post.update(text=request.form.get('text'), tags=tags, image=file)
 
