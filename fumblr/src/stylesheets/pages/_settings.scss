@@ -1,15 +1,24 @@
 #settings {
-    .menu {
-        background-color: #eeeeee;
-        width: 640px;
-        padding: 1rem;
-        form {
-        	margin-bottom: 1rem;
-        }
-    }
+	.avatar {
+		height: 64px;
+		width: 64px;
+		overflow: hidden;
+		margin-bottom: 1rem;
+  	img {
+  		width: 64px;
+  	}      	
+  }
+  .menu {
+      background-color: #eeeeee;
+      width: 640px;
+      padding: 1rem;
+      form {
+      	margin-bottom: 1rem;
+      }
+  }
 
-    .form-error {
-        font-size: .8rem;
-        color: #FF2466;
-    }
+  .form-error {
+      font-size: .8rem;
+      color: #FF2466;
+  }
 }

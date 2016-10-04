@@ -4,10 +4,25 @@
     margin: 3rem auto;
     border-radius: .2rem;
     .top-bar {
-        padding: .5rem 1rem 2rem 1rem;
-        .user {
-            font-size: 18px;
-            font-weight: 700;
+        padding: .5rem 1rem;
+        .avatar {
+            display: inline-block;
+            margin-right: 1rem;
+            width: 64px;
+            height: 64px;
+            overflow: hidden;
+            border-radius: 32px;
+            img {
+                width: 64px;
+            }
+        }
+        .top-bar-content {
+            display: inline;
+            .user {
+                font-size: 18px;
+                font-weight: 700;
+                vertical-align: top;
+            }
         }
     }
     .img { width: 100%; }

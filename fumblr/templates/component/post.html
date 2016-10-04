@@ -1,8 +1,12 @@
-
 <div class="post">
 	<div class="top-bar">
-		<a class="user" href="{{ url_for('user', username=post.user) }}">{{ post.user }}</a>
-		<span class="created pull-xs-right">{{ post.created|timesince }}</span>
+		<div class="avatar">
+			<img src="{{ post.user.avatar if post.user.avatar else 'http://i.imgur.com/Z9J5b6m.png' }}">
+		</div><!-- avatar -->
+		<div class="top-bar-content">
+			<a class="user" href="{{ url_for('user', username=post.user.username) }}">{{ post.user.username }}</a>
+			<span class="created pull-xs-right">{{ post.created|timesince }}</span>
+		</div><!-- top-bar-content -->
 	</div>
 	<a href="{{ url_for('view_post', id=post.id) }}">
 		<img class="img" src="{{ post.link }}">

@@ -124,7 +124,7 @@ class Post(db.Model):
             'id': self.id,
             'link': self.image.link,
             'text': self.text or '',
-            'user': self.user.username,
+            'user': self.user.get_user_info(),
             'likes': [l.get_data() for l in self.likes],
             'liked': self.is_liked(),
             'tags': [tag.name for tag in self.tags],

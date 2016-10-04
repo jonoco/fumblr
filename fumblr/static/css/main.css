@@ -4838,6 +4838,14 @@ a {
 #search .no-result {
   color: #eee; }
 
+#settings .avatar {
+  height: 64px;
+  width: 64px;
+  overflow: hidden;
+  margin-bottom: 1rem; }
+  #settings .avatar img {
+    width: 64px; }
+
 #settings .menu {
   background-color: #eeeeee;
   width: 640px;
@@ -4855,10 +4863,22 @@ a {
   margin: 3rem auto;
   border-radius: .2rem; }
   .post .top-bar {
-    padding: .5rem 1rem 2rem 1rem; }
-    .post .top-bar .user {
-      font-size: 18px;
-      font-weight: 700; }
+    padding: .5rem 1rem; }
+    .post .top-bar .avatar {
+      display: inline-block;
+      margin-right: 1rem;
+      width: 64px;
+      height: 64px;
+      overflow: hidden;
+      border-radius: 32px; }
+      .post .top-bar .avatar img {
+        width: 64px; }
+    .post .top-bar .top-bar-content {
+      display: inline; }
+      .post .top-bar .top-bar-content .user {
+        font-size: 18px;
+        font-weight: 700;
+        vertical-align: top; }
   .post .img {
     width: 100%; }
   .post .bottom-bar {
