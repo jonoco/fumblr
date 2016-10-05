@@ -56,7 +56,8 @@
     function sendMessage(e) {
         e.preventDefault();
 
-        var $form = $('#message-modal').find('.message-form');
+        var $msgModal = $('#message-modal');
+        var $form = $msgModal.find('.message-form');
         var user = $form.data('user');
         var text = $form.find('.message-text').val();
 
@@ -65,6 +66,7 @@
             text: text
         }).then(function (res) {
             console.log(res);
+            $msgModal.modal('hide');
         }).catch(function (err) {
             console.log(err);
         });
@@ -178,7 +180,7 @@
             var url = $postModal.find('.post-form').attr('action');
 
             axios.post(url, formData).then(function (res) {
-                form.removeClass('is-uploading');
+                $form.removeClass('is-uploading');
                 if (res.data.reload) {
                     document.location.reload(true);
                 } else if (res.data.redirect) {

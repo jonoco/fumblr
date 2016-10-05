@@ -375,6 +375,7 @@ class Message(db.Model):
             'from': self.user.username,
             'to': self.target.username,
             'text': self.text,
+            'read': self.read,
             'created': self.created
         }
 

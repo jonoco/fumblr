@@ -5,13 +5,27 @@
 	<div class="container">
 		<h1>Messages</h1>
 
-		<ul class="list-group">
-			{% for message in messages %}
-				<li class="list-group-item">
-				{{ message|tojson }}
-				</li>
+		<div id="messages-from">
+			{% for user in users %}
+			<div class="panel panel-default">
+				<div class="panel-heading" id="heading-one">
+					<h4 class="panel-title">
+						<a class="collapsed" data-toggle="collapse" data-parent="#messages-from" href="#collapse-{{loop.index}}">{{ user }}</a>
+					</h4><!-- panel-title -->
+				</div><!-- #heading-onepanel-heading -->
+				<div id="collapse-{{loop.index}}" class="panel-collapse collapse">
+					<ul class="list-group">
+						{% for message in users[user] %}
+							<li class="message list-group-item">
+								<span>{{ message['text'] }}</span>
+								<span class="pull-xs-right">{{ message['created']|timesince }}</span>
+							</li>
+						{% endfor %}
+					</ul>
+				</div><!-- #collapse-onepanel-collapse collapse in -->
+			</div><!-- panel panel-default -->
 			{% endfor %}
-		</ul>
+		</div><!-- #messages-from -->
 		
 	</div><!-- container -->
 </div><!-- messages -->

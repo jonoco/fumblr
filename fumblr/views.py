@@ -83,7 +83,14 @@ def message():
         messages = current_user.get_messages()
         message_data = Message.get_message_data(messages)
 
-        return render_template('messages.html', messages=message_data)
+        from_users = set(u['from'] for u in message_data)
+        user_messages = {u: [m for m in message_data if m['from'] == u] for u in from_users}
+
+        # grouped_messages = [[m for m in message_data if m['from'] == u] for u in from_users]
+
+        # print(json.dumps(user_messages, indent=4, sort_keys=True))
+
+        return render_template('messages.html', users=user_messages)
 
     req = request.get_json()
     username = req['user']
@@ -114,7 +121,7 @@ def new_post():
     """
     file = request.files['file']
     if file and Image.allowed_file(file.filename):
-        tags =request.form['tags']
+        tags = request.form['tags']
         text = request.form['text']
         post = Post.submit_post(current_user, file, text, tags=tags)
 

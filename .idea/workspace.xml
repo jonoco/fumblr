@@ -2,7 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="234be504-e095-4eb5-b4fe-2550ec24da46" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/fumblr/src/stylesheets/components/_message.scss" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/fumblr/templates/component/message.html" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/models.py" afterPath="$PROJECT_DIR$/fumblr/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/src/js/main.js" afterPath="$PROJECT_DIR$/fumblr/src/js/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/src/stylesheets/components/_all.scss" afterPath="$PROJECT_DIR$/fumblr/src/stylesheets/components/_all.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/src/stylesheets/pages/_all.scss" afterPath="$PROJECT_DIR$/fumblr/src/stylesheets/pages/_all.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/static/js/main.js" afterPath="$PROJECT_DIR$/fumblr/static/js/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/templates/layout/base.html" afterPath="$PROJECT_DIR$/fumblr/templates/layout/base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/templates/messages.html" afterPath="$PROJECT_DIR$/fumblr/templates/messages.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/fumblr/views.py" afterPath="$PROJECT_DIR$/fumblr/views.py" />
     </list>
     <ignored path="fumblr.iws" />
@@ -26,8 +35,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fumblr/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
-              <caret line="117" column="35" selection-start-line="117" selection-start-column="35" selection-end-line="117" selection-end-column="35" />
+            <state relative-caret-position="533">
+              <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
               <folding>
                 <element signature="e#0#103#0" expanded="true" />
               </folding>
@@ -38,8 +47,8 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fumblr/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="337" column="57" selection-start-line="337" selection-start-column="57" selection-end-line="337" selection-end-column="57" />
+            <state relative-caret-position="593">
+              <caret line="377" column="30" selection-start-line="377" selection-start-column="30" selection-end-line="377" selection-end-column="30" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -376,7 +385,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913843" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2536302" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2536302" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -602,8 +611,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fumblr/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="117" column="35" selection-start-line="117" selection-start-column="35" selection-end-line="117" selection-end-column="35" />
+        <state relative-caret-position="533">
+          <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
           <folding>
             <element signature="e#0#103#0" expanded="true" />
           </folding>
@@ -612,8 +621,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/fumblr/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="337" column="57" selection-start-line="337" selection-start-column="57" selection-end-line="337" selection-end-column="57" />
+        <state relative-caret-position="593">
+          <caret line="377" column="30" selection-start-line="377" selection-start-column="30" selection-end-line="377" selection-end-column="30" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
           </folding>
