@@ -33,6 +33,11 @@ class Image(db.Model):
 
     @staticmethod
     def allowed_file(filename):
+        """
+        Returns True if filename uses one of the permitted file extensions, otherwise False
+
+        """
+
         ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
         return '.' in filename and \
@@ -41,33 +46,14 @@ class Image(db.Model):
     @classmethod
     def submit_image(cls, file):
         """
-        Example:
+        Upload image to Imgur and save it to the database
 
-        {'size': 3527,
-        'title': None,
-        'animated': False,
-        'deletehash': 'YkK79ucEtDDn1b9',
-        'views': 0,
-        'width': 187,
-        'account_url': None,
-        'in_gallery': False,
-        'name': '',
-        'section': None,
-        'account_id': 0,
-        'type': 'image/png',
-        'datetime': 1473926225,
-        'description': None,
-        'height': 242,
-        'bandwidth': 0,
-        'id': 'AEvnA7h',
-        'favorite': False,
-        'nsfw': None,
-        'link': 'http://i.imgur.com/AEvnA7h.png',
-        'is_ad': False,
-        'vote': None}
+        Args:
+            file: File object containing image
 
-        :param file:
-        :return Image:
+        Returns:
+            New Image object
+
         """
 
         image_path = cls.save_image(file)
@@ -84,6 +70,16 @@ class Image(db.Model):
 
     @classmethod
     def save_image(cls, file):
+        """
+        Save image to file system
+
+        Args:
+            file: File object containing image
+
+        Returns:
+            System path to saved image file
+
+        """
         filename = secure_filename(file.filename)
         image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
         file.save(image_path)
@@ -92,6 +88,14 @@ class Image(db.Model):
 
     @classmethod
     def delete_image(cls, file):
+        """
+        Delete image from file system
+
+        Args:
+            file: File object containing image
+
+        """
+
         image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], file.filename)
         os.remove(image_path)
 
@@ -134,6 +138,13 @@ class Post(db.Model):
         }
 
     def like(self):
+        """
+        Create a new Like object for post
+
+        Returns:
+            New Like object
+
+        """
         post_like = Like(user=current_user, post=self)
 
         db.session.add(post_like)
@@ -142,21 +153,45 @@ class Post(db.Model):
         return post_like
 
     def unlike(self):
-        return Like.query.filter_by(user_id=current_user.id, post_id=self.id).one()
+        """
+        Delete user's Like object from post
+
+        """
+        like = Like.query.filter_by(user_id=current_user.id, post_id=self.id).one()
+
+        db.session.delete(like)
+        db.session.commit()
 
     def is_liked(self):
+        """
+        Returns True if current user liked post, otherwise False
+
+        """
         if not current_user.is_authenticated:
             return False
 
         return db.session.query(exists().where(and_(Like.user_id == current_user.id, Like.post_id == self.id))).scalar()
 
     def is_owned(self):
+        """
+        Returns True if post belongs to current user, otherwise False
+
+        """
         if not current_user.is_authenticated:
             return False
 
         return current_user.id == self.user_id
 
     def update(self, image=None, text=None, tags=None):
+        """
+        Update a post's image, text, or tags
+
+        Args:
+            image: File object containing image
+            text: Description of post
+            tags: String of tags, separated by comma
+
+        """
         if image:
             new_image = Image.submit_image(image)
             self.image = new_image
@@ -169,11 +204,29 @@ class Post(db.Model):
 
     @classmethod
     def get_posts_data(cls, posts):
+        """
+        Returns list of post data
+
+        """
         return [post.get_data() for post in posts]
 
     @classmethod
-    def submit_post(cls, user, file, text=None, created=None, tags=[]):
-        image = Image.submit_image(file)
+    def submit_post(cls, user, image, text=None, created=None, tags=''):
+        """
+        Create a new post and save it to the database
+
+        Args:
+            user: User object of user posting post
+            image: File object containing image
+            text: Description of post
+            created: Datetime when post created
+            tags: String of tags, separated by comma
+
+        Returns:
+            New Post object
+
+        """
+        image = Image.submit_image(image)
         tag_list = Tag.get_tag_list(tags)
         post = Post(image=image, user=user, text=text, tags=tag_list, created=created)
 
@@ -225,15 +278,24 @@ class User(db.Model, UserMixin):
 
     @classmethod
     def username_taken(cls, username):
+        """
+        Check if given username already exists in the database
+
+        """
         return db.session.query(exists().where(User.username == username)).scalar()
 
     @classmethod
     def generate_username(cls, loginname, id):
         """
         Generates a username for a user
-        :param loginname:
-        :param id:
-        :return String:
+
+        Args:
+            loginname: Name provided by oauth provider
+            id: Table id number
+
+        Returns:
+            A unique username
+
         """
         if cls.username_taken(loginname):
             return '{name}{id}'.format(id=id,name=loginname)
@@ -241,6 +303,13 @@ class User(db.Model, UserMixin):
             return loginname
 
     def get_avatar(self):
+        """
+        Retrieves user's avatar image if it exists
+
+        Returns:
+            Avatar's image link if it exists, otherwise None
+
+        """
         return self.avatar.image.link if self.avatar else None
 
     def get_user_info(self):
@@ -250,11 +319,17 @@ class User(db.Model, UserMixin):
         }
 
     def following_user(self, username):
-        """ Check if current user is following given user """
+        """
+        Check if current user is following given user
+
+        """
         return any(username == f.target.username for f in self.following)
 
     def follow_user(self, username):
-        """ Follow user by given username and returns new Follow """
+        """
+        Follow user of given username and returns new Follow object
+
+        """
 
         user = User.query.filter_by(username=username).first()
         follow = Follow(target_user=user, follower_user=self)
@@ -266,8 +341,11 @@ class User(db.Model, UserMixin):
 
     def stop_following_user(self, username):
         """
-            Deleted Follow for user provided
-            Returns False if user wasn't found
+        Stop following given user by deleting relevant Follow object
+
+        Returns:
+            True if the current user was following the user, otherwise False
+
         """
         follow = next(f for f in self.following if f.target.username == username)
         if follow:
@@ -278,9 +356,26 @@ class User(db.Model, UserMixin):
             return False
 
     def get_messages(self):
+        """
+        Retrieves all message sent to or from user
+
+        Returns:
+            List of Message objects
+
+        """
         return Message.query.filter(or_(Message.target_id == self.id, Message.user_id == self.id)).all()
 
     def set_avatar(self, file):
+        """
+        Set a new user avatar, saving the new avatar image
+
+        Args:
+            file: object containing image
+
+        Returns:
+            Image object of the avatar
+
+        """
         image = Image.submit_image(file)
         avatar = Avatar(self, image)
 
@@ -328,18 +423,39 @@ class Tag(db.Model):
         return '<Tag - {}>'.format(self.name)
 
     @staticmethod
-    def format_tags(tags_string):
-        """ Converts string of tag names to list of tag names """
-        return set(t.replace(' ', '') for t in tags_string.lower().split(','))
+    def format_tags(tags):
+        """
+        Convert and format a string of tag names to a set.
+
+        Args:
+            tags: A string of tag names, separated by commas.
+
+        Returns:
+            A set of tag name strings.
+
+        """
+        return set(t.replace(' ', '') for t in tags.lower().split(','))
 
     @classmethod
     def get_or_create_tag(cls, name):
-        """ Create or find a Tag from the given tag name """
+        """
+        Create or find a Tag from the given tag name and return the Tag.
+
+        """
         return cls.query.filter_by(name=name).one_or_none() or cls(name)
 
     @classmethod
     def get_tag_list(cls, tags):
-        """ Generate a list of Tag models from a list of tag names, stripping out empty tag strings """
+        """
+        Return a list of Tags from a tag string.
+
+        Args:
+            tags: A string of tan names, separated by commas.
+
+        Returns:
+            A list of Tag objects.
+
+        """
         tag_set = cls.format_tags(tags)
         return [cls.get_or_create_tag(tag) for tag in tag_set if tag]
 
@@ -385,6 +501,17 @@ class Message(db.Model):
 
     @classmethod
     def send_message(cls, username, text):
+        """
+        Create new Message
+
+        Args:
+            username: Recipient of new message
+            text: Message body
+
+        Returns:
+            New Message object
+
+        """
         target = User.query.filter_by(username=username).one_or_none()
         if not target:
             return False
@@ -425,6 +552,17 @@ class Comment(db.Model):
 
     @classmethod
     def send_comment(cls, post_id, text):
+        """
+        Create new Comment object
+
+        Args:
+            post_id: ID of post to comment upon
+            text: Body of comment
+
+        Returns:
+            New Comment object
+
+        """
         post = Post.query.get(post_id)
 
         comment = cls(current_user, post, text)
