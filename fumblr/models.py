@@ -95,8 +95,8 @@ class Image(db.Model):
             file: File object containing image
 
         """
-
-        image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], file.filename)
+        filename = secure_filename(file.filename)
+        image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
         os.remove(image_path)
 
 class Post(db.Model):
