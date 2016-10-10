@@ -87,7 +87,8 @@ class Image(db.Model):
 
         """
         filename = secure_filename(file.filename)
-        image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+        MYDIR = os.path.dirname(__file__)
+        image_path = os.path.join(MYDIR, 'uploads', filename)
 
         print('saving image to {}'.format(image_path))
 
@@ -108,7 +109,8 @@ class Image(db.Model):
         """
         filename = secure_filename(file.filename)
         print('deleting image with name {}'.format(filename))
-        image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+        MYDIR = os.path.dirname(__file__)
+        image_path = os.path.join(MYDIR, 'uploads', filename)
 
         print('deleting image at {}'.format(image_path))
 
