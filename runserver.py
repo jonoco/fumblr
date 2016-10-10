@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+import os
 from fumblr import app
 from fumblr.database import db
 
@@ -11,4 +12,5 @@ if __name__ == '__main__':
             db.session.commit()
             print('Database tables created')
     else:
-        app.run(host='0.0.0.0')
+        HOST = os.environ.get('HOST', 'localhost')
+        app.run(host=HOST)
