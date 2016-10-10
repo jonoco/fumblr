@@ -1,10 +1,12 @@
-APP_SECRET_KEY = '7e0G9qaJA^FXWfq*@d65'
+import os
 
-IMGUR_ID = 'aa9b69406ece6a3'
-IMGUR_SECRET = '057ea896523ff9d4da94e3999003ec6cd95065d1'
+APP_SECRET_KEY = os.environ.get('APP_SECRET_KEY', '')
 
-TWITTER_KEY = 'kkUaoneWq5iH8nFXzpFWht6xP'
-TWITTER_SECRET = 'gmi8WlmgxeVtBX11b1WAS7zRELyvoyacBXeqGQjplpWTODJFa7'
+IMGUR_ID = os.environ.get('IMGUR_ID', '')
+IMGUR_SECRET = os.environ.get('IMGUR_SECRET', '')
 
-GOOGLE_ID = '880686149050-lc0bbu77sqecgf6tpds8ohc99kchvben.apps.googleusercontent.com'
-GOOGLE_SECRET = 'A6h_8R0P2OO7EA9rkGu3LPlB'
+TWITTER_KEY = os.environ.get('TWITTER_KEY', '')
+TWITTER_SECRET = os.environ.get('TWITTER_SECRET', '')
+
+GOOGLE_ID = os.environ.get('GOOGLE_ID', '')
+GOOGLE_SECRET = os.environ.get('GOOGLE_SECRET', '')

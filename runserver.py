@@ -12,5 +12,4 @@ if __name__ == '__main__':
             db.session.commit()
             print('Database tables created')
     else:
-        os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
         app.run()
