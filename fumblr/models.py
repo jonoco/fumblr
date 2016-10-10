@@ -56,6 +56,8 @@ class Image(db.Model):
 
         """
 
+        print(file)
+
         image_path = cls.save_image(file)
 
         image_data = upload_image(image_path)
@@ -82,6 +84,9 @@ class Image(db.Model):
         """
         filename = secure_filename(file.filename)
         image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+
+        print('saving image to {}'.format(image_path))
+
         file.save(image_path)
 
         return image_path
@@ -97,6 +102,9 @@ class Image(db.Model):
         """
         filename = secure_filename(file.filename)
         image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+
+        print('deleting image at {}'.format(image_path))
+
         os.remove(image_path)
 
 class Post(db.Model):

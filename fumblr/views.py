@@ -238,6 +238,9 @@ def get_image(id):
         Check image properties
     """
     image = Image.query.get(id)
+    if not image:
+        return abort(404)
+
     image_data = {
         'link': image.link,
         'created': image.created
