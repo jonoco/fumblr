@@ -28,6 +28,7 @@ def load_user(user_id):
 def google_logged_in(blueprint, token):
     if not token:
         flash('Failed to log in with {}'.format(blueprint.name))
+        print('Error: Google oauth: No token received')
         return
 
     resp = blueprint.session.get('/plus/v1/people/me')
