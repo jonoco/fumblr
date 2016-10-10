@@ -116,7 +116,7 @@
 
         var $img = $('<img class="image" />');
         $img.attr('src', post.link);
-        $img.appendTo(preview);
+        $img.appendTo($preview);
 
         openPostModal();
     }
