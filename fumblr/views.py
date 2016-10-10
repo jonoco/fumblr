@@ -119,6 +119,7 @@ def new_post():
     """
         Create a new post
     """
+
     file = request.files['file']
     if file and Image.allowed_file(file.filename):
         tags = request.form['tags']

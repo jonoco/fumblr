@@ -4,14 +4,11 @@ import os
 
 API_URL = 'https://api.imgur.com/3/'
 
-__client_id = IMGUR_ID
-__client_secret = IMGUR_SECRET
-
-try:
-    __client = ImgurClient(__client_id, __client_secret)
-except helpers.error.ImgurClientError:
-    print('Error: imgur client error')
-    __client = None
+def get_client():
+    try:
+        return ImgurClient(IMGUR_ID, IMGUR_SECRET)
+    except helpers.error.ImgurClientError:
+        print('Error: imgur client error')
 
 def delete_image(deletehash):
     """
@@ -23,10 +20,13 @@ def delete_image(deletehash):
     Returns:
         Response from Imgur of image deletion if successful, otherwise False
     """
-    try:
-        return __client.delete_image(deletehash)
-    except:
-        return False
+
+    client = get_client()
+    if client:
+        try:
+            return client.delete_image(deletehash)
+        except:
+            return False
 
 def upload_image(path):
     """
@@ -64,10 +64,13 @@ def upload_image(path):
         Response from Imgur
 
     """
-    image_path = os.path.abspath(path)
-    upload = __client.upload_from_path(image_path)
 
-    return upload
+    client = get_client()
+    if client:
+        image_path = os.path.abspath(path)
+        upload = client.upload_from_path(image_path)
+
+        return upload
 
 def get_image(id):
     """
@@ -78,8 +81,12 @@ def get_image(id):
 
     Returns:
         Response from Imgur
-    """
-    image_data = __client.get_image(id)
 
-    return image_data
+    """
+
+    client = get_client()
+    if client:
+        image_data = client.get_image(id)
+
+        return image_data
 
