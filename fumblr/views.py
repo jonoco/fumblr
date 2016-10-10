@@ -126,6 +126,8 @@ def new_post():
         post = Post.submit_post(current_user, file, text, tags=tags)
 
         return jsonify(redirect=url_for('view_post', id=post.id))
+    else:
+        return abort(403)
 
 @app.route('/post/<id>')
 def view_post(id):
@@ -216,7 +218,9 @@ def user(username):
     """
         User's public facing page; posts and reblogs
     """
-    user = User.query.filter_by(username=username).first()
+    user = User.query.filter_by(username=username).one_or_none()
+    if not user:
+        return abort(404)
     posts = user.posts.order_by(Post.created.desc())
     posts_data = Post.get_posts_data(posts)
 
