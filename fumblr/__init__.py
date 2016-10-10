@@ -2,10 +2,12 @@ from flask import Flask
 from fumblr.database import db
 from .keys import *
 from werkzeug.contrib.fixers import ProxyFix
+from raven.contrib.flask import Sentry
 
 ## initialize app
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app)
+Sentry(app)
 app.secret_key = keys.APP_SECRET_KEY
 app.config.from_pyfile('default_settings.py')
 
