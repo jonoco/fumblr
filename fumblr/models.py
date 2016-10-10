@@ -1,6 +1,6 @@
 from flask import current_app
 from .database import db
-from .services.imgur import upload_image
+from .services.imgur import upload
 from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
 from flask_login import UserMixin, current_user
 from datetime import datetime
@@ -46,7 +46,7 @@ class Image(db.Model):
     @classmethod
     def submit_image(cls, file):
         """
-        Upload image to Imgur and save it to the database
+        Upload image to Imgur
 
         Args:
             file: File object containing image
@@ -56,21 +56,11 @@ class Image(db.Model):
 
         """
 
-        print(file)
-
-        image_path = cls.save_image(file)
-        print('uploading image')
-        image_data = upload_image(image_path)
-        print('uploaded image')
-        print('creating Image object')
+        image_data = upload(file)
         image = Image(image_data['id'], image_data['deletehash'], image_data['link'])
-        print('commiting image')
 
         db.session.add(image)
         db.session.commit()
-
-        cls.delete_image(file)
-        print('deleted image {}'.format(file.filename))
 
         return image
 
@@ -87,14 +77,9 @@ class Image(db.Model):
 
         """
         filename = secure_filename(file.filename)
-        MYDIR = os.path.dirname(__file__)
-        image_path = os.path.join(MYDIR, 'uploads', filename)
-
-        print('saving image to {}'.format(image_path))
+        image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
 
         file.save(image_path)
-
-        print('image saved to {}'.format(image_path))
 
         return image_path
 
@@ -108,11 +93,7 @@ class Image(db.Model):
 
         """
         filename = secure_filename(file.filename)
-        print('deleting image with name {}'.format(filename))
-        MYDIR = os.path.dirname(__file__)
-        image_path = os.path.join(MYDIR, 'uploads', filename)
-
-        print('deleting image at {}'.format(image_path))
+        image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
 
         os.remove(image_path)
 

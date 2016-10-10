@@ -1,6 +1,7 @@
 from fumblr.keys import IMGUR_SECRET, IMGUR_ID
 from imgurpython import ImgurClient, helpers
 import os
+import base64
 
 API_URL = 'https://api.imgur.com/3/'
 
@@ -71,6 +72,29 @@ def upload_image(path):
         upload = client.upload_from_path(image_path)
 
         return upload
+
+def upload(image):
+    """
+    Upload image to Imgur from file
+
+    Args:
+        image: File object
+
+    Returns:
+        Imgur response object
+
+    """
+
+    client = get_client()
+    if client:
+        contents = image.read()
+        b64 = base64.b64encode(contents)
+        data = {
+            'image': b64,
+            'type': 'base64'
+        }
+        return client.make_request('POST', 'upload', data, True)
+
 
 def get_image(id):
     """

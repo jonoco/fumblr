@@ -122,7 +122,6 @@ def new_post():
 
     file = request.files['file']
     if file and Image.allowed_file(file.filename):
-        print(file.stream)
         tags = request.form['tags']
         text = request.form['text']
         post = Post.submit_post(current_user, file, text, tags=tags)
