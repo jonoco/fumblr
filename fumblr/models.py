@@ -59,14 +59,18 @@ class Image(db.Model):
         print(file)
 
         image_path = cls.save_image(file)
-
+        print('uploading image')
         image_data = upload_image(image_path)
+        print('uploaded image')
+        print('creating Image object')
         image = Image(image_data['id'], image_data['deletehash'], image_data['link'])
+        print('commiting image')
 
         db.session.add(image)
         db.session.commit()
 
         cls.delete_image(file)
+        print('deleted image {}'.format(file.filename))
 
         return image
 
@@ -89,6 +93,8 @@ class Image(db.Model):
 
         file.save(image_path)
 
+        print('image saved to {}'.format(image_path))
+
         return image_path
 
     @classmethod
@@ -101,6 +107,7 @@ class Image(db.Model):
 
         """
         filename = secure_filename(file.filename)
+        print('deleting image with name {}'.format(filename))
         image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
 
         print('deleting image at {}'.format(image_path))
