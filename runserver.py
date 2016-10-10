@@ -12,5 +12,6 @@ if __name__ == '__main__':
             db.session.commit()
             print('Database tables created')
     else:
-        HOST = os.environ.get('HOST', 'localhost')
-        app.run(host=HOST)
+        host = os.environ.get('HOST', 'localhost')
+        port = int(os.environ.get('PORT', 5000))
+        app.run(host=host, port=port)
