@@ -1,4 +1,4 @@
 __pycache__
 node_modules
-DS_store
+.DS_Store
 .idea/*
