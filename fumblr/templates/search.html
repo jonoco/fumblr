@@ -10,7 +10,7 @@
 		{% endif %}
 
 		{% if tag %}
-		<h3>{{ tag }}</h3>
+		<h3>{{ tag|replace('_', ' ') }}</h3>
 		{% elif search %}
 		<h3>{{ search }}</h3>
 		{% endif %}

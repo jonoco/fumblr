@@ -425,6 +425,9 @@ class Tag(db.Model):
         """
         Convert and format a string of tag names to a set.
 
+        Example:
+            'comedy, tragedy, romantic tragedy' -> set(comedy, tragedy, romantic_tragedy)
+
         Args:
             tags: A string of tag names, separated by commas.
 

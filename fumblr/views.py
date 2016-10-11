@@ -316,7 +316,8 @@ def tag(tag_name):
     """
         All posts with given tag
     """
-    tag = Tag.query.filter_by(name=tag_name).first()
+    formatted_tag = tag_name.replace('_', ' ')
+    tag = Tag.query.filter_by(name=formatted_tag).first()
     if not tag:
         return render_template('search.html', no_results=True)
 
