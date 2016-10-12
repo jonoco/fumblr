@@ -83,10 +83,15 @@ def message():
         messages = current_user.get_messages()
         message_data = Message.get_message_data(messages)
 
-        from_users = set(u['from'] for u in message_data)
-        user_messages = {u: [m for m in message_data if m['from'] == u] for u in from_users}
+        users = set()
+        for u in message_data:
+            users.add(u['from'])
+            users.add(u['to'])
 
-        # grouped_messages = [[m for m in message_data if m['from'] == u] for u in from_users]
+        user_messages = {u: [m for m in message_data
+                             if m['from'] == u and m['to'] == current_user.username
+                             or m['to'] == u and m['from'] == current_user.username]
+                         for u in users if u != current_user.username}
 
         # print(json.dumps(user_messages, indent=4, sort_keys=True))
 
