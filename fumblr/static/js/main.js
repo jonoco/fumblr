@@ -5,7 +5,8 @@
     // View messages
     $('.message-user').on('click', openUserMessages);
     function openUserMessages(e) {
-        var user = $(this).data('user');
+        var user = $(this).addClass('selected').data('user');
+        $('.message-user[data-user!=\'' + user + '\']').removeClass('selected');
         $('.user-messages[data-user!=\'' + user + '\']').addClass('hide');
         var msgList = $('.user-messages[data-user=\'' + user + '\']').removeClass('hide');
     }
