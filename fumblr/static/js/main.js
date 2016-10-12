@@ -2,6 +2,15 @@
 
 (function () {
 
+    // View messages
+    $('.message-user').on('click', openUserMessages);
+    function openUserMessages(e) {
+        var user = $(this).data('user');
+        $('.user-messages[data-user!=\'' + user + '\']').addClass('hide');
+        var msgList = $('.user-messages[data-user=\'' + user + '\']').removeClass('hide');
+    }
+
+    // Check browser compatibility for form support
     var isAdvancedUpload = function () {
         var div = document.createElement('div');
         return ('draggable' in div || 'ondragstart' in div && 'ondrop' in div) && 'FormData' in window && 'FileReader' in window;

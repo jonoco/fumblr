@@ -1,5 +1,14 @@
 (function(){
+    
+    // View messages
+    $('.message-user').on('click', openUserMessages);
+    function openUserMessages(e) {
+        const user = $(this).data('user');
+        $(`.user-messages[data-user!='${user}']`).addClass('hide');
+        const msgList = $(`.user-messages[data-user='${user}']`).removeClass('hide');
+    }
 
+    // Check browser compatibility for form support
     const isAdvancedUpload = function() {
       const div = document.createElement('div');
       return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) 

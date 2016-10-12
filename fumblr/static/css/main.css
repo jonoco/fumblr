@@ -4857,6 +4857,48 @@ a {
   font-size: .8rem;
   color: #FF2466; }
 
+#messages .message-view {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch; }
+
+#messages .message-display {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  -webkit-box-flex: 2;
+      -ms-flex: 2 1 400px;
+          flex: 2 1 400px;
+  margin: 1% 1% 1% 0;
+  padding: 2em 1em; }
+
+#messages .user-messages.hide {
+  display: none; }
+
+#messages .message-list {
+  border-radius: 5px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 2 200px;
+          flex: 1 2 200px;
+  margin: 1% 0; }
+
+#messages .message-user {
+  color: #eee;
+  padding: 1em 0.5em; }
+  #messages .message-user:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer; }
+
+#messages .message .message-from, #messages .message .message-time {
+  font-size: 12px;
+  font-weight: 700;
+  color: gray; }
+
 .post {
   background-color: #eeeeee;
   width: 640px;

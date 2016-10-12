@@ -1,5 +1,45 @@
 #messages {
+	.message-view {
+		display: flex;
+		justify-content: center;
+		align-items: stretch;
+	}
+
+	.message-display {
+		background-color: rgba(0,0,0, 0.2);
+		border-radius: 5px;
+		flex: 2 1 400px;
+		margin: 1% 1% 1% 0; 
+		padding: 2em 1em;
+	}
+
+	.user-messages {
+		&.hide {
+			display: none;
+		}
+	}
+
+	.message-list {
+		border-radius: 5px;
+		flex: 1 2 200px;
+		margin: 1% 0;
+	}
+
+	.message-user {
+		color: #eee;
+		padding: 1em 0.5em;
+
+		&:hover {
+			background-color: rgba(0,0,0, 0.2);
+			cursor: pointer;
+		}
+	}
+
 	.message {
-		
+		.message-from, .message-time {
+			font-size: 12px;
+			font-weight: 700;
+			color: hsl(0,0, 50);
+		}
 	}
 }

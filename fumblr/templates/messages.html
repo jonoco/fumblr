@@ -5,27 +5,31 @@
 	<div class="container">
 		<h1>Messages</h1>
 
-		<div id="messages-from">
-			{% for user in users %}
-			<div class="panel panel-default">
-				<div class="panel-heading" id="heading-one">
-					<h4 class="panel-title">
-						<a class="collapsed" data-toggle="collapse" data-parent="#messages-from" href="#collapse-{{loop.index}}">{{ user }}</a>
-					</h4><!-- panel-title -->
-				</div><!-- #heading-onepanel-heading -->
-				<div id="collapse-{{loop.index}}" class="panel-collapse collapse">
-					<ul class="list-group">
-						{% for message in users[user] %}
-							<li class="message list-group-item">
-								<span>{{ message['text'] }}</span>
-								<span class="pull-xs-right">{{ message['created']|timesince }}</span>
-							</li>
-						{% endfor %}
-					</ul>
-				</div><!-- #collapse-onepanel-collapse collapse in -->
-			</div><!-- panel panel-default -->
-			{% endfor %}
-		</div><!-- #messages-from -->
+		<div class="message-view">
+			<section class="message-display">
+				{% for user in users %}
+				<div class="user-messages hide" data-user="{{ user }}">
+					{% for message in users[user] %}
+					<li class="message list-group-item">
+						<span class="message-from">{{ message['from'] }}</span>
+						<span class="message-time pull-xs-right">{{ message['created']|timesince }}</span>
+						<p class="message-text">{{ message['text'] }}</p>
+					</li>
+					{% endfor %}
+				</div><!-- user-messages -->
+				{% else %}
+				<div class="no-content"><em>There are no messages.</em></div>
+				{% endfor %}
+			</section><!-- message-display -->
+
+			<aside class="message-list">
+				{% for user in users %}
+				<div class="message-user" data-user="{{ user }}">
+					{{ user }}
+				</div><!-- list-group-item -->
+				{% endfor %}
+			</aside><!-- message-list -->
+		</div><!-- message-view -->
 		
 	</div><!-- container -->
 </div><!-- messages -->
