@@ -17,9 +17,9 @@ class Image(db.Model):
     __tablename__ = 'images'
 
     id = db.Column(db.Integer, primary_key=True)
-    image = db.Column(db.String(80))
-    link = db.Column(db.String(80))
-    deletehash = db.Column(db.String(80))
+    image = db.Column(db.String(80), nullable=False)
+    link = db.Column(db.String(80), nullable=False)
+    deletehash = db.Column(db.String(80), nullable=False)
     created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self, image, deletehash, link, created=None):
@@ -102,7 +102,7 @@ class Post(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String())
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', foreign_keys='Post.user_id', backref=db.backref('posts', lazy='dynamic'), uselist=False)
 
     image_id = db.Column(db.Integer, db.ForeignKey('images.id'))
@@ -243,10 +243,10 @@ class Like(db.Model):
     __tablename__ = 'likes'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('likes', lazy='dynamic'), uselist=False)
 
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
     post = db.relationship('Post', backref=db.backref('likes', lazy='dynamic'), uselist=False)
     created = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -270,7 +270,7 @@ class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
-    loginname = db.Column(db.String)
+    loginname = db.Column(db.String, nullable=False)
     provider = db.Column(db.String)
     created = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -392,9 +392,9 @@ class Follow(db.Model):
     __tablename__ = 'followers'
 
     id = db.Column(db.Integer, primary_key=True)
-    target_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    target_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     target = db.relationship('User', foreign_keys='Follow.target_id', backref=db.backref('followers', lazy='dynamic'), uselist=False)
-    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     follower = db.relationship('User', foreign_keys='Follow.follower_id', backref=db.backref('following', lazy='dynamic'), uselist=False)
     created = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -416,7 +416,7 @@ class Tag(db.Model):
     __tablename__ = 'tags'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, unique=True)
+    name = db.Column(db.String, unique=True, nullable=False)
     created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self, name, created=None):
@@ -477,10 +477,10 @@ class Message(db.Model):
     __tablename__ = 'messages'
 
     id = db.Column(db.Integer, primary_key=True)
-    target_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    target_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     target = db.relationship('User', foreign_keys='Message.target_id', backref=db.backref('messages_to', lazy='dynamic'),
                              uselist=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', foreign_keys='Message.user_id',
                                backref=db.backref('messages_from', lazy='dynamic'), uselist=False)
     text = db.Column(db.String, nullable=False)
@@ -533,9 +533,9 @@ class Comment(db.Model):
     __tablename__ = 'comments'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('comments', lazy='dynamic'), uselist=False)
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
     post = db.relationship('Post', backref=db.backref('comments', lazy='joined'), uselist=False, order_by='Comment.created')
     text = db.Column(db.String, nullable=False)
     created = db.Column(db.DateTime, default=datetime.utcnow)
@@ -583,9 +583,9 @@ class Avatar(db.Model):
     __tablename__ = 'avatars'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('avatar', uselist=False), uselist=False)
-    image_id = db.Column(db.Integer, db.ForeignKey('images.id'))
+    image_id = db.Column(db.Integer, db.ForeignKey('images.id'), nullable=False)
     image = db.relationship('Image', backref=db.backref('avatars'), uselist=False)
     created = db.Column(db.DateTime, default=datetime.utcnow)
 
