@@ -318,4 +318,33 @@
             console.log(err);
         });
     }
+
+    // Reblog button
+    $('.reblog-btn').on('click', reblogPost);
+    function reblogPost(e) {
+        var postID = $(this).data('post');
+
+        axios.get('/reblog/' + postID).then(function (res) {
+            var post = JSON.parse(res.data.post);
+            openReblogModal(post);
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }
+
+    function openReblogModal(post) {
+        var $reblogModal = $('#reblog-modal');
+        $reblogModal.find('.reblog-form').attr('action', '/reblog/' + post.id);
+        $reblogModal.find('.text').val('');
+        $reblogModal.find('.tags').val('');
+
+        var $preview = $reblogModal.find('.preview');
+        $preview.empty();
+
+        var $img = $('<img class="image" />');
+        $img.attr('src', post.link);
+        $img.appendTo($preview);
+
+        $reblogModal.modal('show');
+    }
 })(axios);

@@ -118,24 +118,32 @@ def comment():
 
     return jsonify(comment=cmt.get_data())
 
-@app.route('/reblog/<post_id>', methods=['post'])
+@app.route('/reblog/<int:post_id>', methods=['get', 'post'])
 @login_required
 def reblog_post(post_id):
     """
     Reblog a post
 
     """
+    if request.method == 'GET':
+        post = Post.query.get(post_id)
+        if not post:
+            return abort(404)
+        post_json = json.dumps(post.get_data())
+
+        return jsonify(post=post_json)
+
     text = request.form['text']
     tags = request.form['tags']
 
-    post = Post.query.get(post_id).one_or_none()
+    post = Post.query.get(post_id)
     if not post:
         return abort(404)
     if post.user_id == current_user.id:
         return abort(403)
 
     reblog = post.reblog_post(tags, text)
-    return jsonify(redirect=url_for('view_post', id=reblog.id))
+    return redirect(url_for('view_post', id=reblog.id))
 
 @app.route('/post', methods=['post'])
 @login_required
@@ -154,7 +162,7 @@ def new_post():
     else:
         return abort(403)
 
-@app.route('/post/<id>')
+@app.route('/post/<int:id>')
 def view_post(id):
     """
         View a single post
@@ -167,7 +175,7 @@ def view_post(id):
 
     return render_template('view_post.html', post=post_data)
 
-@app.route('/post/delete/<id>')
+@app.route('/post/delete/<int:id>')
 @login_required
 def delete_post(id):
     """
@@ -182,7 +190,7 @@ def delete_post(id):
 
     return ('Post deleted', 204)
 
-@app.route('/post/edit/<id>', methods=['get', 'post'])
+@app.route('/post/edit/<int:id>', methods=['get', 'post'])
 @login_required
 def edit_post(id):
     """
@@ -256,7 +264,7 @@ def user(username):
 
     return render_template('blog.html', posts=posts_data, user=username, is_following=is_following)
 
-@app.route('/image/<id>')
+@app.route('/image/<int:id>')
 def get_image(id):
     """
         Check image properties

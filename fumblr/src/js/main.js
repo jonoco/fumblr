@@ -315,6 +315,37 @@
         }).catch(err => {
             console.log(err);
         });
-    }    
+    }
+
+    // Reblog button
+    $('.reblog-btn').on('click', reblogPost);
+    function reblogPost(e) {
+        const postID = $(this).data('post');
+
+        axios.get(`/reblog/${postID}`)
+        .then(res => {
+            const post = JSON.parse(res.data.post);
+            openReblogModal(post);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    function openReblogModal(post) {
+        const $reblogModal = $('#reblog-modal');
+              $reblogModal.find('.reblog-form').attr('action', `/reblog/${post.id}`);
+              $reblogModal.find('.text').val('');
+              $reblogModal.find('.tags').val('');
+        
+        const $preview = $reblogModal.find('.preview');
+              $preview.empty();
+
+        const $img = $('<img class="image" />');
+              $img.attr('src', post.link);
+              $img.appendTo($preview);
+        
+        $reblogModal.modal('show');
+    }
 
 }(axios))

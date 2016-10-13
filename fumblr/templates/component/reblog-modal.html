@@ -1,0 +1,28 @@
+<div class="modal fade" id="reblog-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+	            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+	            <h4 class="modal-title">Reblog</h4>
+            </div>
+            <div class="modal-body clearfix">
+              <div class="preview"></div><!-- preview -->
+              <form action="/reblog" method="post" class="reblog-form" enctype="multipart/form-data">
+				        <div class="form-group">
+					        <label for="text">Description</label>
+					        <input class="form-control text" type="text" name="text" placeholder="Description">
+				        </div><!-- form-group -->
+
+				        <div class="form-group">
+					        <label for="text">Tags</label>
+					        <input class="form-control tags" type="text" name="tags" placeholder="comedy, tragedy, romance, ...">
+				        </div><!-- form-group -->
+								
+								<hr />
+								<button type="button" class="btn btn-secondary pull-xs-left" data-dismiss="modal">Close</button>
+				        <button type="submit" class="btn btn-primary pull-xs-right">Reblog</button>
+			        </form>
+	          </div>
+        </div>
+    </div>
+</div>

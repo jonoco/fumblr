@@ -29,6 +29,7 @@
 				</div>
 			
 				{% else %}
+				<button class="reblog-btn" data-post="{{ post.id }}">Reblog</button>
 				<button class="comment-btn" data-post="{{ post.id }}" >Comment</button>
 				{% set class = 'liked' if post.liked else '' %}
 				<button class="like-btn {{ class }}" data-post="{{ post.id }}">Like</button>

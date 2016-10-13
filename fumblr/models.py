@@ -106,7 +106,7 @@ class Post(db.Model):
     user = db.relationship('User', foreign_keys='Post.user_id', backref=db.backref('posts', lazy='dynamic'), uselist=False)
 
     image_id = db.Column(db.Integer, db.ForeignKey('images.id'))
-    image = db.relationship('Image', backref=db.backref('post', uselist=False), uselist=False)
+    image = db.relationship('Image', backref=db.backref('posts'), uselist=False)
 
     tags = db.relationship('Tag', secondary=tags, backref=db.backref('posts', lazy='dynamic'))
     created = db.Column(db.DateTime, default=datetime.utcnow)
@@ -115,9 +115,9 @@ class Post(db.Model):
     reblog_user = db.relationship('User', foreign_keys='Post.reblog_user_id', uselist=False)
 
     reblog_post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
-    reblogs = db.relationship('Post', backref=db.backref('reblog_parent', uselist=False), remote_side=[id], uselist=True)
+    reblogs = db.relationship('Post', backref=db.backref('reblog_parent', uselist=False, remote_side=[id]), uselist=True)
 
-    def __init__(self, image, user, tags, text=None, created=None):
+    def __init__(self, image, user, tags=None, text=None, created=None):
         self.image = image
         self.user = user
         self.text = text
@@ -141,7 +141,7 @@ class Post(db.Model):
             'owned': self.is_owned()
         }
 
-    def reblog_post(self, tags=None, text=None):
+    def reblog_post(self, tags=[], text=None):
         """
         Create and return a reblog post
 
@@ -154,7 +154,8 @@ class Post(db.Model):
 
         """
         reblog = Post(self.image, current_user, Tag.get_tag_list(tags), text)
-        reblog.reblog_parent = self
+        # reblog.reblog_parent = self
+        self.reblogs.append(reblog)
         reblog.reblog_user = self.user
 
         db.session.add(reblog)
@@ -485,7 +486,7 @@ class Tag(db.Model):
 
         """
         if not tags:
-            return None
+            return []
         tag_set = cls.format_tags(tags)
         return [cls.get_or_create_tag(tag) for tag in tag_set if tag]
 
