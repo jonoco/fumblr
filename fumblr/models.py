@@ -103,13 +103,19 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String())
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user = db.relationship('User', backref=db.backref('posts', lazy='dynamic'), uselist=False)
+    user = db.relationship('User', foreign_keys='Post.user_id', backref=db.backref('posts', lazy='dynamic'), uselist=False)
 
     image_id = db.Column(db.Integer, db.ForeignKey('images.id'))
     image = db.relationship('Image', backref=db.backref('post', uselist=False), uselist=False)
 
     tags = db.relationship('Tag', secondary=tags, backref=db.backref('posts', lazy='dynamic'))
     created = db.Column(db.DateTime, default=datetime.utcnow)
+
+    reblog_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    reblog_user = db.relationship('User', foreign_keys='Post.reblog_user_id', uselist=False)
+
+    reblog_post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    reblogs = db.relationship('Post', backref=db.backref('reblog_parent'), remote_side=[id])
 
     def __init__(self, image, user, tags, text=None, created=None):
         self.image = image
