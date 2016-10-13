@@ -115,7 +115,7 @@ class Post(db.Model):
     reblog_user = db.relationship('User', foreign_keys='Post.reblog_user_id', uselist=False)
 
     reblog_post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
-    reblogs = db.relationship('Post', backref=db.backref('reblog_parent'), remote_side=[id])
+    reblogs = db.relationship('Post', backref=db.backref('reblog_parent', uselist=False), remote_side=[id], uselist=True)
 
     def __init__(self, image, user, tags, text=None, created=None):
         self.image = image
@@ -140,6 +140,27 @@ class Post(db.Model):
             'created': self.created,
             'owned': self.is_owned()
         }
+
+    def reblog_post(self, tags=None, text=None):
+        """
+        Create and return a reblog post
+
+        Args:
+            tags: String of tags, separated by commas
+            text: String description of post
+
+        Returns:
+            New Post object with reblog properties
+
+        """
+        reblog = Post(self.image, current_user, Tag.get_tag_list(tags), text)
+        reblog.reblog_parent = self
+        reblog.reblog_user = self.user
+
+        db.session.add(reblog)
+        db.session.commit()
+
+        return reblog
 
     def like(self):
         """
@@ -441,7 +462,7 @@ class Tag(db.Model):
             A set of tag name strings.
 
         """
-        return set(t.replace(' ', '') for t in tags.lower().split(','))
+        return set(' '.join(t.split()) for t in tags.lower().split(','))
 
     @classmethod
     def get_or_create_tag(cls, name):
@@ -463,6 +484,8 @@ class Tag(db.Model):
             A list of Tag objects.
 
         """
+        if not tags:
+            return None
         tag_set = cls.format_tags(tags)
         return [cls.get_or_create_tag(tag) for tag in tag_set if tag]
 

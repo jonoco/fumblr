@@ -118,6 +118,25 @@ def comment():
 
     return jsonify(comment=cmt.get_data())
 
+@app.route('/reblog/<post_id>', methods=['post'])
+@login_required
+def reblog_post(post_id):
+    """
+    Reblog a post
+
+    """
+    text = request.form['text']
+    tags = request.form['tags']
+
+    post = Post.query.get(post_id).one_or_none()
+    if not post:
+        return abort(404)
+    if post.user_id == current_user.id:
+        return abort(403)
+
+    reblog = post.reblog_post(tags, text)
+    return jsonify(redirect=url_for('view_post', id=reblog.id))
+
 @app.route('/post', methods=['post'])
 @login_required
 def new_post():
