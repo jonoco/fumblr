@@ -44,12 +44,15 @@
 			cursor: pointer;
 		}
 	}
-
 	.message {
 		.message-from, .message-time {
 			font-size: 12px;
 			font-weight: 700;
 			color: hsl(0,0, 50);
 		}
+	}
+	.no-content {
+		color: #eee;
+		text-align: center;
 	}
 }

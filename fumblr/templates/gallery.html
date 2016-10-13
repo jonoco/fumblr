@@ -7,6 +7,8 @@
 
 		{% for post in posts %}
 			{% include "component/post.html" %}
+		{% else %}
+			<div class="no-content"><em>No posts to display.</em></div><!-- no-content -->
 		{% endfor %}
 
 		{% if more_posts %}

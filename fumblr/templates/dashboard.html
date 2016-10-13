@@ -8,7 +8,7 @@
 		{% for post in posts %}
 			{% include "component/post.html" %}
 		{% else %}
-			<div class="no-posts">
+			<div class="no-content">
 				<p>You don't have any posts, why not <a href="#" class="post-btn">make a post?</a> Or <a href="{{ url_for('gallery') }}">find someone to follow?</a></p>
 			</div><!-- no-posts -->
 		{% endfor %}

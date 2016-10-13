@@ -4818,11 +4818,17 @@ a {
 #blog .follow-btn.following {
   background-color: #76ba30; }
 
-#dashboard .no-posts a {
-  color: #999; }
+#dashboard .no-content {
+  color: #eee;
+  text-align: center; }
+  #dashboard .no-content a {
+    color: #bbb; }
 
 #gallery {
   margin-bottom: 3rem; }
+  #gallery .no-content {
+    color: #eee;
+    text-align: center; }
 
 #login .login-menu {
   padding: 3rem; }
@@ -4906,6 +4912,10 @@ a {
   font-size: 12px;
   font-weight: 700;
   color: gray; }
+
+#messages .no-content {
+  color: #eee;
+  text-align: center; }
 
 .post {
   background-color: #eeeeee;
