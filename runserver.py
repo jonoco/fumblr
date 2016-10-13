@@ -6,11 +6,25 @@ from fumblr import app
 from fumblr.database import db
 
 if __name__ == '__main__':
+    if '--drop' in sys.argv:
+        with app.app_context():
+            db.drop_all()
+            db.session.commit()
+            print('Database tables dropped')
+
+    if '--clear' in sys.argv:
+        with app.app_context():
+            db.drop_all()
+            db.create_all()
+            db.session.commit()
+            print('Database tables dropped and recreated')
+
     if '--setup' in sys.argv:
         with app.app_context():
             db.create_all()
             db.session.commit()
             print('Database tables created')
+
     else:
         host = os.environ.get('HOST', 'localhost')
         port = int(os.environ.get('PORT', 5000))
