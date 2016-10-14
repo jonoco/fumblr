@@ -1,64 +1,66 @@
 .post {
-    background-color: #eeeeee;
-    width: 640px;
-    margin: 3rem auto;
-    border-radius: .2rem;
-    .top-bar {
-        padding: .5rem 1rem;
-        .avatar {
-            display: inline-block;
-            margin-right: 1rem;
-            width: 64px;
-            height: 64px;
-            overflow: hidden;
-            border-radius: 32px;
-            img {
-                width: 64px;
-            }
-        }
-        .top-bar-content {
-            display: inline;
-            .user {
-                font-size: 18px;
-                font-weight: 700;
-                vertical-align: top;
-            }
-        }
+  background-color: #eeeeee;
+  width: 640px;
+  margin: 3rem auto;
+  border-radius: .2rem;
+  .top-bar {
+    padding: .5rem 1rem;
+    display: flex;
+    .avatar {
+      margin-right: 1rem;
+      width: 64px;
+      height: 64px;
+      overflow: hidden;
+      border-radius: 32px;
+      img {
+          width: 64px;
+      }
     }
-    .img { width: 100%; }
-    .bottom-bar {
-        padding: 1rem;
-        min-height: 3.5rem;
-        @extend %clearfix;
-        .text { font-size: 20px; }
-        .tags {
-            .tag{
-                color: #555;
-            }
-        }
-        .post-menu {
-            .likes {
-                display: inline-block;
-                margin-top: .5rem;
-             }
-            .comment-btn {
-                outline: none; 
-                transition: .2s all ease;
-                border: none;
-                padding: .5rem 1rem;
-                &:hover { opacity: .8; }
-            }
-            .like-btn {
-                outline: none; 
-                transition: .2s all ease;
-                border: none;
-                padding: .5rem 1rem;
-                &:hover { opacity: .8; }
-                &.liked {
-                    color: #eee;
-                    background-color: $green;
-                }
-            }    
-        }
+    .user {  
+      flex-grow: 2; 
+      a {
+        font-size: 18px;
+        font-weight: 700;    
+      }
+      .reblog {
+        color: #555;
+      }
     }
+  }
+  .img { width: 100%; }
+  .bottom-bar {
+    padding: 1rem;
+    min-height: 3.5rem;
+    @extend %clearfix;
+    .text { 
+      margin-bottom: .5rem;
+      font-size: 20px; 
+    }
+    .tags {
+      .tag{
+          color: #555;
+      }
+    }
+    .post-menu {
+      .likes {
+          display: inline-block;
+          margin-top: .5rem;
+       }
+      .comment-btn,
+      .like-btn,
+      .reblog-btn {
+          outline: none; 
+          transition: .2s all ease;
+          border: none;
+          padding: .5rem 1rem;
+          &:hover { opacity: .8; }
+      }
+      .like-btn {
+          &.liked {
+              color: #eee;
+              background-color: $green;
+          }
+      }    
+    }
+  }
 }

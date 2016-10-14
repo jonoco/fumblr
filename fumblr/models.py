@@ -138,7 +138,9 @@ class Post(db.Model):
             'tags': [tag.name for tag in self.tags],
             'comments': [cmt.get_data() for cmt in self.comments],
             'created': self.created,
-            'owned': self.is_owned()
+            'owned': self.is_owned(),
+            'reblogs': [r.id for r in self.reblogs],
+            'reblog': self.reblog_user.get_user_info() if self.reblog_user else None
         }
 
     def reblog_post(self, tags=[], text=None):

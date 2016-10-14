@@ -2,12 +2,16 @@
 	<div class="top-bar">
 		<div class="avatar">
 			<img src="{{ post.user.avatar if post.user.avatar else 'http://i.imgur.com/Z9J5b6m.png' }}">
-		</div><!-- avatar -->
-		<div class="top-bar-content">
-			<a class="user" href="{{ url_for('user', username=post.user.username) }}">{{ post.user.username }}</a>
-			<span class="created pull-xs-right">{{ post.created|timesince }}</span>
-		</div><!-- top-bar-content -->
-	</div>
+		</div><!-- avatar -->	
+		<div class="user">
+			<a href="{{ url_for('user', username=post.user.username) }}">{{ post.user.username }}</a>
+			{% if post.reblog %}
+			<span class="reblog"> reblogged </span>
+			<a href="{{ url_for('user', username=post.reblog.username) }}">{{ post.reblog.username }}</a>
+			{% endif %}	
+		</div><!-- user -->
+		<span class="created">{{ post.created|timesince }}</span>
+	</div><!-- top-bar -->
 	<a href="{{ url_for('view_post', id=post.id) }}">
 		<img class="img" src="{{ post.link }}">
 	</a>
@@ -19,7 +23,11 @@
 			{% endfor %}
 		</div>
 		<div class="post-menu">
-			<span class="likes">likes - {{ post.likes|count }}</span> | <span>comments - {{ post.comments|count }}</span>
+			<span>
+				<span class="likes">likes - {{ post.likes|count }} | </span>
+				<span>comments - {{ post.comments|count }} | </span>
+				<span>reblogs - {{ post.reblogs|count }}</span>
+			</span>
 			<div class="btn-group  pull-xs-right">
 				{% if post.owned %}			
 				<button class="btn btn-info dropdown-toggle" data-toggle="dropdown">edit</button>
