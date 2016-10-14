@@ -107,6 +107,7 @@
         $postModal.find('.submit-btn').text('Submit');
         $postModal.find('.text').val('');
         $postModal.find('.tags').val('');
+        $postModal.find('.file').val('');
         $postModal.find('.preview').empty();
 
         openPostModal();
@@ -124,9 +125,9 @@
         var $preview = $postModal.find('.preview');
         $preview.empty();
 
-        var $img = $('<img class="image" />');
-        $img.attr('src', post.link);
-        $img.appendTo($preview);
+        post.links.forEach(function (link) {
+            $('<img class="image" />').attr('src', link).appendTo($preview);
+        });
 
         openPostModal();
     }
@@ -139,7 +140,7 @@
         var $text = $postModal.find('.text');
         var $tags = $postModal.find('.tags');
         var $preview = $postModal.find('.preview');
-        var $file = $postModal.find('.photo');
+        var $file = $postModal.find('.file');
         $file.change(function (e) {
             handleFiles(e.currentTarget.files);
         });
@@ -158,7 +159,6 @@
         $postModal.modal('show');
 
         function addPreviewImage(files) {
-            $preview.empty();
             var img = $('<img class="image" />');
 
             var reader = new FileReader();
@@ -169,15 +169,23 @@
             }(img);
             reader.readAsDataURL(files[0]);
 
+            img.data('id', hashCode(files[0].name));
             img.appendTo($preview);
+        }
+
+        function removeFile(file) {
+            formData.delete('' + hashCode(file.name));
+            $preview.find('.image[data-id=\'' + hashCode(file.name) + '\']').remove();
         }
 
         function handleFiles(files) {
             addPreviewImage(files);
 
             $.each(files, function (i, f) {
-                formData.set('file', f);
+                formData.set('' + hashCode(f.name), f);
             });
+
+            $file.val('');
         }
 
         function submit() {
@@ -341,10 +349,22 @@
         var $preview = $reblogModal.find('.preview');
         $preview.empty();
 
-        var $img = $('<img class="image" />');
-        $img.attr('src', post.link);
-        $img.appendTo($preview);
+        post.links.forEach(function (link) {
+            $('<img class="image" />').attr('src', link).appendTo($preview);
+        });
 
         $reblogModal.modal('show');
+    }
+
+    // Utils
+    function hashCode(str) {
+        var hash = 0;
+        if (str.length == 0) return hash;
+        for (var i = 0; i < str.length; i++) {
+            var char = str.charCodeAt(i);
+            hash = (hash << 5) - hash + char;
+            hash = hash & hash; // Convert to 32bit integer
+        }
+        return hash;
     }
 })(axios);

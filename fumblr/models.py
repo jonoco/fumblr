@@ -8,10 +8,13 @@ from sqlalchemy import exists, and_, or_
 from werkzeug.utils import secure_filename
 import os
 
-tags = db.Table('tag_post_association',
-                db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
-                db.Column('post_id', db.Integer, db.ForeignKey('posts.id'))
-                )
+tags_table = db.Table('tag_post_association',
+                      db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
+                      db.Column('post_id', db.Integer, db.ForeignKey('posts.id')))
+
+images_table = db.Table('image_post_association',
+                        db.Column('image_id', db.Integer, db.ForeignKey('images.id')),
+                        db.Column('post_id', db.Integer, db.ForeignKey('posts.id')))
 
 class Image(db.Model):
     __tablename__ = 'images'
@@ -42,6 +45,31 @@ class Image(db.Model):
 
         return '.' in filename and \
                filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+    @classmethod
+    def submit_images(cls, files):
+        """
+        Upload multiple images to Imgur
+
+        Args:
+            files: List of File objects containing single images
+
+        Returns:
+            List of new Image objects
+
+        """
+
+        images = []
+
+        for f in files:
+            image_data = upload(f)
+            image = cls(image_data['id'], image_data['deletehash'], image_data['link'])
+            images.append(image)
+            db.session.add(image)
+
+        db.session.commit()
+
+        return images
 
     @classmethod
     def submit_image(cls, file):
@@ -105,10 +133,9 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', foreign_keys='Post.user_id', backref=db.backref('posts', lazy='dynamic'), uselist=False)
 
-    image_id = db.Column(db.Integer, db.ForeignKey('images.id'))
-    image = db.relationship('Image', backref=db.backref('posts'), uselist=False)
+    images = db.relationship('Image', secondary=images_table, backref=db.backref('posts'))
+    tags = db.relationship('Tag', secondary=tags_table, backref=db.backref('posts', lazy='dynamic'))
 
-    tags = db.relationship('Tag', secondary=tags, backref=db.backref('posts', lazy='dynamic'))
     created = db.Column(db.DateTime, default=datetime.utcnow)
 
     reblog_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -117,20 +144,20 @@ class Post(db.Model):
     reblog_post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
     reblogs = db.relationship('Post', backref=db.backref('reblog_parent', uselist=False, remote_side=[id]), uselist=True)
 
-    def __init__(self, image, user, tags=None, text=None, created=None):
-        self.image = image
+    def __init__(self, images, user, tags=None, text=None, created=None):
+        self.images = images
         self.user = user
         self.text = text
         self.tags = tags
         self.created = created
 
     def __repr__(self):
-        return '<Post {} - {}>'.format(self.user, self.image)
+        return '<Post {}>'.format(self.user)
 
     def get_data(self):
         return {
             'id': self.id,
-            'link': self.image.link,
+            'links': [i.link for i in self.images],
             'text': self.text or '',
             'user': self.user.get_user_info(),
             'likes': [l.get_data() for l in self.likes],
@@ -155,8 +182,7 @@ class Post(db.Model):
             New Post object with reblog properties
 
         """
-        reblog = Post(self.image, current_user, Tag.get_tag_list(tags), text)
-        # reblog.reblog_parent = self
+        reblog = Post(self.images, current_user, Tag.get_tag_list(tags), text)
         self.reblogs.append(reblog)
         reblog.reblog_user = self.user
 
@@ -210,19 +236,18 @@ class Post(db.Model):
 
         return current_user.id == self.user_id
 
-    def update(self, image=None, text=None, tags=None):
+    def update(self, files=None, text=None, tags=None):
         """
         Update a post's image, text, or tags
 
         Args:
-            image: File object containing image
+            files: List of File objects containing image
             text: Description of post
             tags: String of tags, separated by comma
 
         """
-        if image:
-            new_image = Image.submit_image(image)
-            self.image = new_image
+        if files:
+            self.images = Image.submit_images(files)
         self.text = text or self.text
         if tags:
             tag_list = Tag.get_tag_list(tags)
@@ -239,13 +264,13 @@ class Post(db.Model):
         return [post.get_data() for post in posts]
 
     @classmethod
-    def submit_post(cls, user, image, text=None, created=None, tags=''):
+    def submit_post(cls, user, files, text=None, created=None, tags=''):
         """
         Create a new post and save it to the database
 
         Args:
             user: User object of user posting post
-            image: File object containing image
+            files: List of File objects containing image
             text: Description of post
             created: Datetime when post created
             tags: String of tags, separated by comma
@@ -254,9 +279,9 @@ class Post(db.Model):
             New Post object
 
         """
-        image = Image.submit_image(image)
+        images = Image.submit_images(files)
         tag_list = Tag.get_tag_list(tags)
-        post = Post(image=image, user=user, text=text, tags=tag_list, created=created)
+        post = Post(images=images, user=user, text=text, tags=tag_list, created=created)
 
         db.session.add(post)
         db.session.commit()

@@ -149,18 +149,16 @@ def reblog_post(post_id):
 @login_required
 def new_post():
     """
-        Create a new post
+    Create a new post
+
     """
 
-    file = request.files['file']
-    if file and Image.allowed_file(file.filename):
-        tags = request.form['tags']
-        text = request.form['text']
-        post = Post.submit_post(current_user, file, text, tags=tags)
+    tags = request.form['tags']
+    text = request.form['text']
+    files = [request.files.get(f) for f in request.files]
+    post = Post.submit_post(current_user, files, text, tags=tags)
 
-        return jsonify(redirect=url_for('view_post', id=post.id))
-    else:
-        return abort(403)
+    return jsonify(redirect=url_for('view_post', id=post.id))
 
 @app.route('/post/<int:id>')
 def view_post(id):
@@ -210,8 +208,8 @@ def edit_post(id):
         return ('Cannot edit, post does not belong to user', 403)
 
     tags = request.form.get('tags')
-    file = request.files.get('file')
-    post.update(text=request.form.get('text'), tags=tags, image=file)
+    files = [request.files.get(f) for f in request.files]
+    post.update(text=request.form.get('text'), tags=tags, files=files)
 
     return jsonify(reload=True)
 

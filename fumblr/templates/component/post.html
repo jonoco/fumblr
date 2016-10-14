@@ -12,9 +12,15 @@
 		</div><!-- user -->
 		<span class="created">{{ post.created|timesince }}</span>
 	</div><!-- top-bar -->
-	<a href="{{ url_for('view_post', id=post.id) }}">
-		<img class="img" src="{{ post.link }}">
-	</a>
+	
+	<div class="images">
+		{% for link in post.links %}	
+		<a href="{{ url_for('view_post', id=post.id) }}">
+			<img class="img" src="{{ link }}">
+		</a>
+		{% endfor %}
+	</div><!-- images -->
+	
 	<div class="bottom-bar">
 		<p class="text">{{ post.text }}</p>
 		<div class="tags">
