@@ -154,6 +154,8 @@
         $dropbox.on('dragleave', dragleave);
         $dropbox.on('drop', drop);
 
+        var $loading = $postModal.find('.loading');
+
         var formData = new FormData();
 
         $postModal.modal('show');
@@ -192,6 +194,8 @@
             if ($form.hasClass('is-uploading')) return false;
 
             $form.addClass('is-uploading');
+            showLoading();
+
             formData.set('text', $text.val());
             formData.set('tags', $tags.val());
 
@@ -207,6 +211,14 @@
             }).catch(function (err) {
                 console.log(err);
             });
+        }
+
+        function showLoading() {
+            $postModal.find('.loading').removeClass('hide');
+        }
+
+        function hideLoading() {
+            $postModal.find('.loading').addClass('hide');
         }
 
         function drop(e) {

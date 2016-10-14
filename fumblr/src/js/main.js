@@ -157,7 +157,8 @@
               $dropbox.on('drop', drop);
 
         const formData = new FormData();
-
+        
+        hideLoading();
         $postModal.modal('show');
 
         function addPreviewImage(files) {
@@ -192,6 +193,8 @@
             if ($form.hasClass('is-uploading')) return false;
 
             $form.addClass('is-uploading');
+            showLoading();
+
             formData.set('text', $text.val());
             formData.set('tags', $tags.val());
 
@@ -200,6 +203,7 @@
             axios.post(url, formData)
             .then( res => {
                 $form.removeClass('is-uploading');
+                hideLoading();
                 if (res.data.reload) {
                     document.location.reload(true);
                 } else if (res.data.redirect) {
@@ -209,6 +213,14 @@
             .catch( err => {
                 console.log(err);
             });
+        }
+
+        function showLoading() {
+            $postModal.find('.loading').removeClass('hide');
+        }
+
+        function hideLoading() {
+            $postModal.find('.loading').addClass('hide');
         }
 
         function drop(e) {
