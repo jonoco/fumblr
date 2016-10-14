@@ -154,25 +154,26 @@
         $dropbox.on('dragleave', dragleave);
         $dropbox.on('drop', drop);
 
-        var $loading = $postModal.find('.loading');
-
         var formData = new FormData();
 
+        hideLoading();
         $postModal.modal('show');
 
         function addPreviewImage(files) {
-            var img = $('<img class="image" />');
+            $.each(files, function (i, file) {
+                var img = $('<img class="image" />');
 
-            var reader = new FileReader();
-            reader.onload = function (aImg) {
-                return function (e) {
-                    aImg.attr('src', e.target.result);
-                };
-            }(img);
-            reader.readAsDataURL(files[0]);
+                var reader = new FileReader();
+                reader.onload = function (aImg) {
+                    return function (e) {
+                        aImg.attr('src', e.target.result);
+                    };
+                }(img);
+                reader.readAsDataURL(file);
 
-            img.data('id', hashCode(files[0].name));
-            img.appendTo($preview);
+                img.data('id', hashCode(file.name));
+                img.appendTo($preview);
+            });
         }
 
         function removeFile(file) {
@@ -203,6 +204,7 @@
 
             axios.post(url, formData).then(function (res) {
                 $form.removeClass('is-uploading');
+                hideLoading();
                 if (res.data.reload) {
                     document.location.reload(true);
                 } else if (res.data.redirect) {

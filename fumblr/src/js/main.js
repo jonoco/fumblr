@@ -157,21 +157,23 @@
               $dropbox.on('drop', drop);
 
         const formData = new FormData();
-        
+
         hideLoading();
         $postModal.modal('show');
 
         function addPreviewImage(files) {
-            const img = $('<img class="image" />');
+            $.each(files, (i, file) => {
+                const img = $('<img class="image" />');
 
-            const reader = new FileReader();
-            reader.onload = (function (aImg) { 
-                return function (e) { aImg.attr('src', e.target.result); }; 
-            })(img);
-            reader.readAsDataURL(files[0]);
-            
-            img.data('id', hashCode(files[0].name));
-            img.appendTo($preview);
+                const reader = new FileReader();
+                reader.onload = (function (aImg) { 
+                    return function (e) { aImg.attr('src', e.target.result); }; 
+                })(img);
+                reader.readAsDataURL(file);
+                
+                img.data('id', hashCode(file.name));
+                img.appendTo($preview);
+            })
         }
 
         function removeFile(file) {
