@@ -159,6 +159,9 @@
               $dropbox.on('dragleave', dragleave);
               $dropbox.on('drop', drop);
 
+        const $switchBtn = $postModal.find('.switch-input');
+              $switchBtn.on('click', switchInputs);
+
         const formData = new FormData();
 
         // If editing, add post's images and add them to formData
@@ -246,6 +249,16 @@
             .catch( err => {
                 console.log(err);
             });
+        }
+
+        function switchInputs() {
+            $postModal.find('.url-upload').toggleClass('hide');
+            $postModal.find('.file-upload').toggleClass('hide');
+            if ($postModal.find('.url-upload').hasClass('hide')) {
+                $switchBtn.text('Upload photo by URL');
+            } else {
+                $switchBtn.text('Upload photo from file');
+            }
         }
 
         function showLoading() {

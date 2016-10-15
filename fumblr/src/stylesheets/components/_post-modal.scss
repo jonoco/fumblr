@@ -68,6 +68,26 @@
 		}
 	}
 
+	.switch-input {
+		color: #aaa;
+		font-weight: 700;
+		display: block;
+		border: none;
+		background: none;
+		outline: none;
+		margin: 1rem auto;
+		&:hover {
+			color: #91E5FF;
+		}
+	}
+
+	.url-upload,
+	.file-upload {
+		&.hide {
+			display: none;
+		}
+	}
+
 	@keyframes flash {
 		0%,
 		50%,

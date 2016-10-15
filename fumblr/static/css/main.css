@@ -5051,6 +5051,21 @@ a {
     position: absolute;
     top: 0; }
 
+#post-modal .switch-input {
+  color: #aaa;
+  font-weight: 700;
+  display: block;
+  border: none;
+  background: none;
+  outline: none;
+  margin: 1rem auto; }
+  #post-modal .switch-input:hover {
+    color: #91E5FF; }
+
+#post-modal .url-upload.hide,
+#post-modal .file-upload.hide {
+  display: none; }
+
 @-webkit-keyframes flash {
   0%,
   50%,
