@@ -125,16 +125,6 @@
         var $preview = $postModal.find('.preview');
         $preview.empty();
 
-        // post.links.forEach(link => {
-        //     const img = $(`
-        //         <div class="image" data-id="${hashCode(link)}">
-        //             <button type="button" class="remove" data-id="${hashCode(link)}">
-        //             <img src="${link}" />
-        //         </div>
-        //         `);
-        //     img.appendTo($preview);
-        // });
-
         openPostModal(post.images);
     }
 
@@ -177,21 +167,6 @@
             $('\n                <div class="image" data-id="' + id + '">\n                    <button type="button" class="remove" data-id="' + id + '">&times;</button>\n                    <img src="' + image + '" />\n                </div>\n            ').appendTo($preview);
             $postModal.find('.remove').on('click', removeImage);
         }
-
-        // function addPreviewImage(files) {
-        //     $.each(files, (i, file) => {
-        //         const img = $('<img class="image" />');
-
-        //         const reader = new FileReader();
-        //         reader.onload = (function (aImg) { 
-        //             return function (e) { aImg.attr('src', e.target.result); }; 
-        //         })(img);
-        //         reader.readAsDataURL(file);
-
-        //         img.data('id', hashCode(file.name));
-        //         img.appendTo($preview);
-        //     });
-        // }
 
         function removeImage() {
             var imageID = $(this).data('id');

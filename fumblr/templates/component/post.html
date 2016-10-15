@@ -1,7 +1,9 @@
 <div class="post">
 	<div class="top-bar">
 		<div class="avatar">
-			<img src="{{ post.user.avatar if post.user.avatar else 'http://i.imgur.com/Z9J5b6m.png' }}">
+			<a href="{{ url_for('user', username=post.user.username) }}">
+				<img src="{{ post.user.avatar if post.user.avatar else 'http://i.imgur.com/Z9J5b6m.png' }}">
+			</a>
 		</div><!-- avatar -->	
 		<div class="user">
 			<a href="{{ url_for('user', username=post.user.username) }}">{{ post.user.username }}</a>
