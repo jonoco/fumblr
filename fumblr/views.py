@@ -274,6 +274,19 @@ def get_image(id):
 
     return render_template('image.html', image=image.get_data())
 
+@app.route('/image/url', methods=['post'])
+@login_required
+def upload_image_url():
+    """
+    Upload image from a url
+
+    """
+    url = request.get_json()['url']
+    image = Image.submit_image_url(url)
+    image_data = image.get_data()
+
+    return jsonify(image=image_data)
+
 @app.route('/follow', methods=['post'])
 @login_required
 def follow():

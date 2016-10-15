@@ -1,6 +1,6 @@
 from flask import current_app
 from .database import db
-from .services.imgur import upload
+from .services.imgur import upload, upload_from_url
 from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
 from flask_login import UserMixin, current_user
 from datetime import datetime
@@ -92,6 +92,27 @@ class Image(db.Model):
         """
 
         image_data = upload(file)
+        image = Image(image_data['id'], image_data['deletehash'], image_data['link'])
+
+        db.session.add(image)
+        db.session.commit()
+
+        return image
+
+    @classmethod
+    def submit_image_url(cls, url):
+        """
+        Upload image to Imgur from url
+
+        Args:
+            url: URL to image
+
+        Returns:
+            New Image object
+
+        """
+
+        image_data = upload_from_url(url)
         image = Image(image_data['id'], image_data['deletehash'], image_data['link'])
 
         db.session.add(image)

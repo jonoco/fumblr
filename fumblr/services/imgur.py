@@ -6,6 +6,13 @@ import base64
 API_URL = 'https://api.imgur.com/3/'
 
 def get_client():
+    """
+    Get an API client for Imgur
+
+    Returns:
+        Imgur client if it is available
+
+    """
     try:
         return ImgurClient(IMGUR_ID, IMGUR_SECRET)
     except helpers.error.ImgurClientError:
@@ -95,6 +102,21 @@ def upload(image):
         }
         return client.make_request('POST', 'upload', data, True)
 
+
+def upload_from_url(url):
+    """
+    Upload image to Imgur from url
+
+    Args:
+        url: URL of image
+
+    Returns:
+        Imgur Response object
+
+    """
+    client = get_client()
+    if client:
+        return client.upload_from_url(url)
 
 def get_image(id):
     """
