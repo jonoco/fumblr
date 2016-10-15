@@ -6,16 +6,28 @@
                 <h4 class="modal-title">New Post</h4>
             </div>
             <div class="modal-body">
-                <div class="preview"></div><!-- images -->
-                <div class="droparea">
-                    <p>Drop photos here</p>
-                    <div class="dropbox"></div><!-- dropbox -->    
-                </div><!-- dropbox-area -->
-                <form action="/post" method="post" class="post-form" enctype="multipart/form-data">
-			        <div class="form-group">
-				        <label for="file">Photo</label>
-				        <input class="form-control file" type="file" name="file">
-			        </div><!-- form-group -->
+                <div class="preview"></div><!-- preview -->
+                <div method="post" class="post-form">
+                    <div class="url-upload">
+                        <div class="form-group">
+                            <label for="url">Image URL</label>
+                            <input class="form-control url" type="url" name="url" pattern="https?://.+" placeholder="Paste image URL here">
+                        </div><!-- form-group -->
+                    </div><!-- url-upload -->
+
+                    <div class="file-upload">
+                        <div class="droparea">
+                            <p>Drop photos here</p>
+                            <div class="dropbox"></div><!-- dropbox -->    
+                        </div><!-- dropbox-area -->
+
+                        <div class="form-group">
+                            <label for="file">Photo</label>
+                            <input class="form-control file" type="file" name="file">
+                        </div><!-- form-group -->
+                    </div><!-- file-upload -->
+
+                    <button class="btn switch-input">Upload photo by URL</button>
 
 			        <div class="form-group">
 				        <label for="text">Description</label>
@@ -26,7 +38,7 @@
 				        <label for="text">Tags</label>
 				        <input class="form-control tags" type="text" name="tags" placeholder="comedy, tragedy, romance, ...">
 			        </div><!-- form-group -->
-		        </form>
+		        </div>
                 <div class="loading hide"></div><!-- loading -->
             </div>
             <div class="modal-footer">

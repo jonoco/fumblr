@@ -104,12 +104,13 @@
     // Open post modal for uploading
     function openUploadModal() {
         const $postModal = $('#post-modal');
-              $postModal.find('.post-form').attr('action', `/post`);
+              $postModal.find('.post-form').data('action', `/post`);
               $postModal.find('.modal-title').text('New Post');
               $postModal.find('.submit-btn').text('Submit');
               $postModal.find('.text').val('');
               $postModal.find('.tags').val('');
               $postModal.find('.file').val('');
+              $postModal.find('.url').val('');
               $postModal.find('.preview').empty();
 
         openPostModal();
@@ -118,11 +119,13 @@
     // Open post modal for editing
     function openEditModal(post) {
         const $postModal = $('#post-modal');
-              $postModal.find('.post-form').attr('action', `/post/edit/${post.id}`);
+              $postModal.find('.post-form').data('action', `/post/edit/${post.id}`);
               $postModal.find('.modal-title').text('Edit Post');
               $postModal.find('.submit-btn').text('Save Changes');
               $postModal.find('.text').val(post.text);
               $postModal.find('.tags').val(post.tags.join(', '));
+              $postModal.find('.file').val('');
+              $postModal.find('.url').val('');
         
         const $preview = $postModal.find('.preview');
               $preview.empty();
@@ -138,6 +141,10 @@
         const $text = $postModal.find('.text');
         const $tags = $postModal.find('.tags');
         const $preview = $postModal.find('.preview');
+        const $url = $postModal.find('.url');
+              $url.on('input', e => {
+                uploadImageURL($url.val());
+              });
         const $file = $postModal.find('.file');
               $file.change(e => {
                     handleFiles(e.currentTarget.files);
@@ -157,8 +164,8 @@
         // If editing, add post's images and add them to formData
         if (images) {
             images.forEach(image => {
-                addImage(image.link, image.id);
-                formData.set(`${image.id}`, `${image.link}`);
+                addImage(image.link, `image-${image.id}`);
+                formData.set(`image-${image.id}`, `${image.id}`);
             });
         }
 
@@ -179,6 +186,24 @@
             const imageID = $(this).data('id');
             formData.delete(`${imageID}`);
             $preview.find(`.image[data-id='${imageID}']`).remove();
+        }
+
+        function uploadImageURL(url) {
+            if (!$url.val()) return;
+            
+            $url.val('');
+            showLoading();
+            axios.post('/image/url', {
+                url
+            }).then(res => {
+                const image = res.data.image;
+                addImage(image.link, `image-${image.id}`);
+                formData.set(`image-${image.id}`, `${image.id}`);
+                hideLoading();
+            }).catch(err => {
+                hideLoading();
+                console.log(err.response.data);
+            });
         }
 
         function handleFiles(files) {
@@ -206,7 +231,7 @@
             formData.set('text', $text.val());
             formData.set('tags', $tags.val());
 
-            const url = $postModal.find('.post-form').attr('action'); 
+            const url = $postModal.find('.post-form').data('action'); 
 
             axios.post(url, formData)
             .then( res => {

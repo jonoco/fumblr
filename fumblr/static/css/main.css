@@ -5008,7 +5008,8 @@ a {
               animation: flash 2s infinite; }
 
 #post-modal .preview {
-  width: 100%; }
+  width: 100%;
+  margin-bottom: 1rem; }
   #post-modal .preview .image {
     position: relative; }
     #post-modal .preview .image img {

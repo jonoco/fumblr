@@ -111,12 +111,16 @@ def upload_from_url(url):
         url: URL of image
 
     Returns:
-        Imgur Response object
+        Imgur Response object if successful, otherwise False
 
     """
     client = get_client()
     if client:
-        return client.upload_from_url(url)
+        try:
+            return client.upload_from_url(url)
+        except helpers.error.ImgurClientError:
+            print('Error: imgur client error')
+            return False
 
 def get_image(id):
     """

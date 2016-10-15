@@ -113,6 +113,9 @@ class Image(db.Model):
         """
 
         image_data = upload_from_url(url)
+        if not image_data:
+            return False
+
         image = Image(image_data['id'], image_data['deletehash'], image_data['link'])
 
         db.session.add(image)
@@ -264,26 +267,19 @@ class Post(db.Model):
 
         return current_user.id == self.user_id
 
-    def update(self, keep=None, files=None, text=None, tags=None):
+    def update(self, images=None, text=None, tags=None):
         """
         Update a post's image, text, or tags
 
         Args:
-            keep: List of Images objects containing images to keep from original post
-            files: List of File objects containing new images to append
+            images: List of Images objects
             text: Description of post
             tags: String of tags, separated by comma
 
         """
 
-        if keep:
-            for image in self.images:
-                if image not in keep:
-                    self.images.remove(image)
-
-        if files:
-            images = Image.submit_images(files)
-            self.images.extend(images)
+        if images:
+            self.images = images
 
         if text:
             self.text = text
@@ -302,13 +298,13 @@ class Post(db.Model):
         return [post.get_data() for post in posts]
 
     @classmethod
-    def submit_post(cls, user, files, text=None, created=None, tags=''):
+    def submit_post(cls, user, images, text=None, tags='', created=None):
         """
         Create a new post and save it to the database
 
         Args:
             user: User object of user posting post
-            files: List of File objects containing image
+            images: List of Image objects
             text: Description of post
             created: Datetime when post created
             tags: String of tags, separated by comma
@@ -317,7 +313,7 @@ class Post(db.Model):
             New Post object
 
         """
-        images = Image.submit_images(files)
+
         tag_list = Tag.get_tag_list(tags)
         post = Post(images=images, user=user, text=text, tags=tag_list, created=created)
 

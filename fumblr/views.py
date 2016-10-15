@@ -156,7 +156,13 @@ def new_post():
     tags = request.form['tags']
     text = request.form['text']
     files = [request.files.get(f) for f in request.files]
-    post = Post.submit_post(current_user, files, text, tags=tags)
+    new_images = Image.submit_images(files)
+
+    image_ids = [int(request.form.get(item)) for item in request.form if 'image' in item]
+    images = Image.query.filter(Image.id.in_(image_ids)).all()
+    images.extend(new_images)
+
+    post = Post.submit_post(current_user, images, text, tags)
 
     return jsonify(redirect=url_for('view_post', id=post.id))
 
@@ -207,10 +213,14 @@ def edit_post(id):
     if not post:
         return ('Cannot edit, post does not belong to user', 403)
 
-    keep = [img for img in post.images if request.form.get(str(img.id))]     # if form contains an original img, keep it
-    tags = request.form.get('tags')
     files = [request.files.get(f) for f in request.files]
-    post.update(keep=keep, text=request.form.get('text'), tags=tags, files=files)
+    new_images = Image.submit_images(files)
+
+    image_ids = [int(request.form.get(item)) for item in request.form if 'image' in item]
+    images = Image.query.filter(Image.id.in_(image_ids)).all()
+    images.extend(new_images)
+
+    post.update(images=images, text=request.form.get('text'), tags=request.form.get('tags'))
 
     return jsonify(reload=True)
 
@@ -283,6 +293,9 @@ def upload_image_url():
     """
     url = request.get_json()['url']
     image = Image.submit_image_url(url)
+    if not image:
+        return ('Could not upload file', 403)
+
     image_data = image.get_data()
 
     return jsonify(image=image_data)

@@ -102,12 +102,13 @@
     // Open post modal for uploading
     function openUploadModal() {
         var $postModal = $('#post-modal');
-        $postModal.find('.post-form').attr('action', '/post');
+        $postModal.find('.post-form').data('action', '/post');
         $postModal.find('.modal-title').text('New Post');
         $postModal.find('.submit-btn').text('Submit');
         $postModal.find('.text').val('');
         $postModal.find('.tags').val('');
         $postModal.find('.file').val('');
+        $postModal.find('.url').val('');
         $postModal.find('.preview').empty();
 
         openPostModal();
@@ -116,11 +117,13 @@
     // Open post modal for editing
     function openEditModal(post) {
         var $postModal = $('#post-modal');
-        $postModal.find('.post-form').attr('action', '/post/edit/' + post.id);
+        $postModal.find('.post-form').data('action', '/post/edit/' + post.id);
         $postModal.find('.modal-title').text('Edit Post');
         $postModal.find('.submit-btn').text('Save Changes');
         $postModal.find('.text').val(post.text);
         $postModal.find('.tags').val(post.tags.join(', '));
+        $postModal.find('.file').val('');
+        $postModal.find('.url').val('');
 
         var $preview = $postModal.find('.preview');
         $preview.empty();
@@ -136,6 +139,10 @@
         var $text = $postModal.find('.text');
         var $tags = $postModal.find('.tags');
         var $preview = $postModal.find('.preview');
+        var $url = $postModal.find('.url');
+        $url.on('input', function (e) {
+            uploadImageURL($url.val());
+        });
         var $file = $postModal.find('.file');
         $file.change(function (e) {
             handleFiles(e.currentTarget.files);
@@ -155,8 +162,8 @@
         // If editing, add post's images and add them to formData
         if (images) {
             images.forEach(function (image) {
-                addImage(image.link, image.id);
-                formData.set('' + image.id, '' + image.link);
+                addImage(image.link, 'image-' + image.id);
+                formData.set('image-' + image.id, '' + image.id);
             });
         }
 
@@ -172,6 +179,24 @@
             var imageID = $(this).data('id');
             formData.delete('' + imageID);
             $preview.find('.image[data-id=\'' + imageID + '\']').remove();
+        }
+
+        function uploadImageURL(url) {
+            if (!$url.val()) return;
+
+            $url.val('');
+            showLoading();
+            axios.post('/image/url', {
+                url: url
+            }).then(function (res) {
+                var image = res.data.image;
+                addImage(image.link, 'image-' + image.id);
+                formData.set('image-' + image.id, '' + image.id);
+                hideLoading();
+            }).catch(function (err) {
+                hideLoading();
+                console.log(err.response.data);
+            });
         }
 
         function handleFiles(files) {
@@ -199,7 +224,7 @@
             formData.set('text', $text.val());
             formData.set('tags', $tags.val());
 
-            var url = $postModal.find('.post-form').attr('action');
+            var url = $postModal.find('.post-form').data('action');
 
             axios.post(url, formData).then(function (res) {
                 $form.removeClass('is-uploading');
