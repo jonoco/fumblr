@@ -5010,7 +5010,27 @@ a {
 #post-modal .preview {
   width: 100%; }
   #post-modal .preview .image {
-    width: 100%; }
+    position: relative; }
+    #post-modal .preview .image img {
+      width: 100%; }
+    #post-modal .preview .image .remove {
+      display: none;
+      -webkit-transition: .3s all ease;
+      transition: .3s all ease;
+      position: absolute;
+      top: 1%;
+      right: 1%;
+      border: none;
+      background: none;
+      font-size: 4rem;
+      color: rgba(255, 255, 255, 0.6);
+      -webkit-animation: flicker 3s ease-in-out infinite;
+              animation: flicker 3s ease-in-out infinite; }
+      #post-modal .preview .image .remove:hover {
+        -webkit-transform: scale(1.2);
+                transform: scale(1.2); }
+    #post-modal .preview .image:hover .remove {
+      display: block; }
 
 #post-modal .droparea {
   background-color: rgba(0, 0, 0, 0.1);
@@ -5047,6 +5067,24 @@ a {
   25%,
   75% {
     opacity: 0; } }
+
+@-webkit-keyframes flicker {
+  0%,
+  50%,
+  100% {
+    color: rgba(255, 255, 255, 0.6); }
+  25%,
+  75% {
+    color: rgba(0, 0, 0, 0.6); } }
+
+@keyframes flicker {
+  0%,
+  50%,
+  100% {
+    color: rgba(255, 255, 255, 0.6); }
+  25%,
+  75% {
+    color: rgba(0, 0, 0, 0.6); } }
 
 #message-modal .message-text {
   border: none;

@@ -207,9 +207,10 @@ def edit_post(id):
     if not post:
         return ('Cannot edit, post does not belong to user', 403)
 
+    keep = [img for img in post.images if request.form.get(str(img.id))]     # if form contains an original img, keep it
     tags = request.form.get('tags')
     files = [request.files.get(f) for f in request.files]
-    post.update(text=request.form.get('text'), tags=tags, files=files)
+    post.update(keep=keep, text=request.form.get('text'), tags=tags, files=files)
 
     return jsonify(reload=True)
 
@@ -271,12 +272,7 @@ def get_image(id):
     if not image:
         return abort(404)
 
-    image_data = {
-        'link': image.link,
-        'created': image.created
-    }
-
-    return render_template('image.html', image=image_data)
+    return render_template('image.html', image=image.get_data())
 
 @app.route('/follow', methods=['post'])
 @login_required

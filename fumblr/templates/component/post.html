@@ -14,9 +14,9 @@
 	</div><!-- top-bar -->
 	
 	<div class="images">
-		{% for link in post.links %}	
+		{% for image in post.images %}	
 		<a href="{{ url_for('view_post', id=post.id) }}">
-			<img class="img" src="{{ link }}">
+			<img class="img" src="{{ image.link }}">
 		</a>
 		{% endfor %}
 	</div><!-- images -->

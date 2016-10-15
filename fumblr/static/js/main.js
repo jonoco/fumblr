@@ -125,15 +125,21 @@
         var $preview = $postModal.find('.preview');
         $preview.empty();
 
-        post.links.forEach(function (link) {
-            $('<img class="image" />').attr('src', link).appendTo($preview);
-        });
+        // post.links.forEach(link => {
+        //     const img = $(`
+        //         <div class="image" data-id="${hashCode(link)}">
+        //             <button type="button" class="remove" data-id="${hashCode(link)}">
+        //             <img src="${link}" />
+        //         </div>
+        //         `);
+        //     img.appendTo($preview);
+        // });
 
-        openPostModal();
+        openPostModal(post.images);
     }
 
     // Post modal
-    function openPostModal() {
+    function openPostModal(images) {
         var $postModal = $('#post-modal');
 
         var $form = $postModal.find('.post-form');
@@ -156,36 +162,54 @@
 
         var formData = new FormData();
 
-        hideLoading();
-        $postModal.modal('show');
-
-        function addPreviewImage(files) {
-            $.each(files, function (i, file) {
-                var img = $('<img class="image" />');
-
-                var reader = new FileReader();
-                reader.onload = function (aImg) {
-                    return function (e) {
-                        aImg.attr('src', e.target.result);
-                    };
-                }(img);
-                reader.readAsDataURL(file);
-
-                img.data('id', hashCode(file.name));
-                img.appendTo($preview);
+        // If editing, add post's images and add them to formData
+        if (images) {
+            images.forEach(function (image) {
+                addImage(image.link, image.id);
+                formData.set('' + image.id, '' + image.link);
             });
         }
 
-        function removeFile(file) {
-            formData.delete('' + hashCode(file.name));
-            $preview.find('.image[data-id=\'' + hashCode(file.name) + '\']').remove();
+        hideLoading();
+        $postModal.modal('show');
+
+        function addImage(image, id) {
+            $('\n                <div class="image" data-id="' + id + '">\n                    <button type="button" class="remove" data-id="' + id + '">&times;</button>\n                    <img src="' + image + '" />\n                </div>\n            ').appendTo($preview);
+            $postModal.find('.remove').on('click', removeImage);
+        }
+
+        // function addPreviewImage(files) {
+        //     $.each(files, (i, file) => {
+        //         const img = $('<img class="image" />');
+
+        //         const reader = new FileReader();
+        //         reader.onload = (function (aImg) { 
+        //             return function (e) { aImg.attr('src', e.target.result); }; 
+        //         })(img);
+        //         reader.readAsDataURL(file);
+
+        //         img.data('id', hashCode(file.name));
+        //         img.appendTo($preview);
+        //     });
+        // }
+
+        function removeImage() {
+            var imageID = $(this).data('id');
+            formData.delete('' + imageID);
+            $preview.find('.image[data-id=\'' + imageID + '\']').remove();
         }
 
         function handleFiles(files) {
-            addPreviewImage(files);
-
             $.each(files, function (i, f) {
-                formData.set('' + hashCode(f.name), f);
+                var imageID = hashCode(f.name);
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    addImage(e.target.result, imageID);
+                };
+
+                reader.readAsDataURL(f);
+
+                formData.set('' + imageID, f);
             });
 
             $file.val('');

@@ -127,15 +127,21 @@
         const $preview = $postModal.find('.preview');
               $preview.empty();
         
-        post.links.forEach(link => {
-            $('<img class="image" />').attr('src', link).appendTo($preview);
-        });
+        // post.links.forEach(link => {
+        //     const img = $(`
+        //         <div class="image" data-id="${hashCode(link)}">
+        //             <button type="button" class="remove" data-id="${hashCode(link)}">
+        //             <img src="${link}" />
+        //         </div>
+        //         `);
+        //     img.appendTo($preview);
+        // });
      
-        openPostModal();
+        openPostModal(post.images);
     }
     
     // Post modal
-    function openPostModal() {
+    function openPostModal(images) {
         const $postModal = $('#post-modal');
 
         const $form = $postModal.find('.post-form');
@@ -143,9 +149,9 @@
         const $tags = $postModal.find('.tags');
         const $preview = $postModal.find('.preview');
         const $file = $postModal.find('.file');
-            $file.change(e => {
-                handleFiles(e.currentTarget.files);
-            });
+              $file.change(e => {
+                    handleFiles(e.currentTarget.files);
+                });
         const $submitBtn = $postModal.find('.submit-btn');
               $submitBtn.on('click', submit);
         
@@ -158,34 +164,59 @@
 
         const formData = new FormData();
 
-        hideLoading();
-        $postModal.modal('show');
-
-        function addPreviewImage(files) {
-            $.each(files, (i, file) => {
-                const img = $('<img class="image" />');
-
-                const reader = new FileReader();
-                reader.onload = (function (aImg) { 
-                    return function (e) { aImg.attr('src', e.target.result); }; 
-                })(img);
-                reader.readAsDataURL(file);
-                
-                img.data('id', hashCode(file.name));
-                img.appendTo($preview);
-            })
+        // If editing, add post's images and add them to formData
+        if (images) {
+            images.forEach(image => {
+                addImage(image.link, image.id);
+                formData.set(`${image.id}`, `${image.link}`);
+            });
         }
 
-        function removeFile(file) {
-            formData.delete(`${hashCode(file.name)}`);
-            $preview.find(`.image[data-id='${hashCode(file.name)}']`).remove();
+        hideLoading();
+        $postModal.modal('show');
+        
+        function addImage(image, id) {
+            $(`
+                <div class="image" data-id="${id}">
+                    <button type="button" class="remove" data-id="${id}">&times;</button>
+                    <img src="${image}" />
+                </div>
+            `).appendTo($preview);
+            $postModal.find('.remove').on('click', removeImage);
+        }
+
+        // function addPreviewImage(files) {
+        //     $.each(files, (i, file) => {
+        //         const img = $('<img class="image" />');
+
+        //         const reader = new FileReader();
+        //         reader.onload = (function (aImg) { 
+        //             return function (e) { aImg.attr('src', e.target.result); }; 
+        //         })(img);
+        //         reader.readAsDataURL(file);
+                
+        //         img.data('id', hashCode(file.name));
+        //         img.appendTo($preview);
+        //     });
+        // }
+
+        function removeImage() {
+            const imageID = $(this).data('id');
+            formData.delete(`${imageID}`);
+            $preview.find(`.image[data-id='${imageID}']`).remove();
         }
 
         function handleFiles(files) {
-            addPreviewImage(files);
-
             $.each( files, (i, f) => {
-                formData.set(`${hashCode(f.name)}`, f );
+                const imageID = hashCode(f.name);
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    addImage(e.target.result, imageID);
+                };
+
+                reader.readAsDataURL(f);
+             
+                formData.set(`${imageID}`, f);
             });
 
             $file.val('');

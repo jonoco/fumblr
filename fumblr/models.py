@@ -34,6 +34,13 @@ class Image(db.Model):
     def __repr__(self):
         return '<Image {}>'.format(self.image)
 
+    def get_data(self):
+        return {
+            'id': self.id,
+            'link': self.link,
+            'created': self.created
+        }
+
     @staticmethod
     def allowed_file(filename):
         """
@@ -157,7 +164,7 @@ class Post(db.Model):
     def get_data(self):
         return {
             'id': self.id,
-            'links': [i.link for i in self.images],
+            'images': [i.get_data() for i in self.images],
             'text': self.text or '',
             'user': self.user.get_user_info(),
             'likes': [l.get_data() for l in self.likes],
@@ -236,22 +243,32 @@ class Post(db.Model):
 
         return current_user.id == self.user_id
 
-    def update(self, files=None, text=None, tags=None):
+    def update(self, keep=None, files=None, text=None, tags=None):
         """
         Update a post's image, text, or tags
 
         Args:
-            files: List of File objects containing image
+            keep: List of Images objects containing images to keep from original post
+            files: List of File objects containing new images to append
             text: Description of post
             tags: String of tags, separated by comma
 
         """
+
+        if keep:
+            for image in self.images:
+                if image not in keep:
+                    self.images.remove(image)
+
         if files:
-            self.images = Image.submit_images(files)
-        self.text = text or self.text
+            images = Image.submit_images(files)
+            self.images.extend(images)
+
+        if text:
+            self.text = text
+
         if tags:
-            tag_list = Tag.get_tag_list(tags)
-            self.tags = tag_list
+            self.tags = Tag.get_tag_list(tags)
 
         db.session.commit()
 
