@@ -5128,3 +5128,7 @@ a {
   padding: 1rem; }
   #likes .likes-content .like {
     color: #999; }
+
+#reblog-modal .image {
+  width: 100%;
+  margin-bottom: 1rem; }

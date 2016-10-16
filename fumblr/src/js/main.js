@@ -407,8 +407,8 @@
         const $preview = $reblogModal.find('.preview');
               $preview.empty();
 
-        post.links.forEach(link => {
-            $('<img class="image" />').attr('src', link).appendTo($preview);
+        post.images.forEach(image => {
+            $('<img class="image" />').attr('src', image.link).appendTo($preview);
         });
         
         $reblogModal.modal('show');
