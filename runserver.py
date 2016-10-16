@@ -14,6 +14,7 @@ if __name__ == '__main__':
 
     if '--clear' in sys.argv:
         with app.app_context():
+            db.reflect()
             db.drop_all()
             db.create_all()
             db.session.commit()

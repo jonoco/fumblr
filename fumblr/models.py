@@ -355,6 +355,9 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(80), unique=True)
     loginname = db.Column(db.String, nullable=False)
     provider = db.Column(db.String)
+    avatar_id = db.Column(db.Integer, db.ForeignKey('images.id'))
+    avatar = db.relationship('Image', backref=db.backref('avatars', lazy='dynamic'), uselist=False)
+
     created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self, loginname, provider, created=None):
@@ -388,16 +391,6 @@ class User(db.Model, UserMixin):
             return '{name}{id}'.format(id=id,name=loginname)
         else:
             return loginname
-
-    def get_avatar(self):
-        """
-        Retrieves user's avatar image if it exists
-
-        Returns:
-            Avatar's image link if it exists, otherwise None
-
-        """
-        return self.avatar.image.link if self.avatar else None
 
     def get_user_info(self):
         return {
@@ -452,6 +445,16 @@ class User(db.Model, UserMixin):
         """
         return Message.query.filter(or_(Message.target_id == self.id, Message.user_id == self.id)).all()
 
+    def get_avatar(self):
+        """
+        Retrieves user's avatar image if it exists
+
+        Returns:
+            Avatar's image link if it exists, otherwise None
+
+        """
+        return self.avatar.link if self.avatar else None
+
     def set_avatar(self, file):
         """
         Set a new user avatar, saving the new avatar image
@@ -464,9 +467,8 @@ class User(db.Model, UserMixin):
 
         """
         image = Image.submit_image(file)
-        avatar = Avatar(self, image)
+        self.avatar = image
 
-        db.session.add(avatar)
         db.session.commit()
 
         return image
@@ -663,20 +665,3 @@ class Comment(db.Model):
         db.session.commit()
 
         return comment
-
-class Avatar(db.Model):
-    __tablename__ = 'avatars'
-
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    user = db.relationship('User', backref=db.backref('avatar', uselist=False), uselist=False)
-    image_id = db.Column(db.Integer, db.ForeignKey('images.id'), nullable=False)
-    image = db.relationship('Image', backref=db.backref('avatars'), uselist=False)
-    created = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def __init__(self, user, image):
-        self.user = user
-        self.image = image
-
-    def __repr__(self):
-        return '<Avatar {}>'.format(self.user)
