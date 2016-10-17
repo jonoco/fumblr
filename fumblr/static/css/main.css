@@ -7149,19 +7149,16 @@ a {
       margin-bottom: 1rem; }
       .post .bottom-bar .tags .tag {
         color: #555; }
-    .post .bottom-bar .post-menu .notes {
-      display: inline-block; }
-    .post .bottom-bar .post-menu .comment-btn,
-    .post .bottom-bar .post-menu .like-btn,
-    .post .bottom-bar .post-menu .reblog-btn {
+    .post .bottom-bar .post-menu i {
       -webkit-transition: .2s all ease;
       transition: .2s all ease;
       color: #4d4d4d;
       margin-left: 1rem; }
-      .post .bottom-bar .post-menu .comment-btn:hover,
-      .post .bottom-bar .post-menu .like-btn:hover,
-      .post .bottom-bar .post-menu .reblog-btn:hover {
-        color: black; }
+      .post .bottom-bar .post-menu i:hover {
+        color: black;
+        cursor: pointer; }
+    .post .bottom-bar .post-menu .notes {
+      display: inline-block; }
     .post .bottom-bar .post-menu .like-btn.liked {
       color: #cc3750; }
   @media (min-width: 768px) {

@@ -46,16 +46,17 @@
       .tag{ color: #555; }
     }
     .post-menu {
-      .notes {
-        display: inline-block;
-      }
-      .comment-btn,
-      .like-btn,
-      .reblog-btn {
+      i {
         transition: .2s all ease;
         color: hsl(0,0,30);
         margin-left: 1rem;
-        &:hover { color: hsl(0,0,0); }
+        &:hover { 
+          color: hsl(0,0,0); 
+          cursor: pointer;
+        }
+      }
+      .notes {
+        display: inline-block;
       }
       .like-btn {
         &.liked { color: $red; }

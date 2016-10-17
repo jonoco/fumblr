@@ -37,19 +37,21 @@
 		<div class="post-menu">
 			<a href="{{ url_for('view_post', id=post.id) }}" class="notes">{{ post.likes|count + post.comments|count + post.reblogs|count}} notes</a>
 			
-			<div class="btn-group  pull-xs-right">
+			<div class="pull-xs-right">
 				{% if post.owned %}			
-				<i class="fa fa-cog dropdown-toggle" data-toggle="dropdown" aria-hidden="true"></i>
-				<div class="dropdown-menu">
-					<button type="button" class="edit-btn dropdown-item" data-post="{{ post.id }}">edit</button>
-					<button type="button" class="delete-btn dropdown-item" data-post="{{ post.id }}">delete</button>
-				</div>
+				<div class="dropdown">
+					<i class="fa fa-cog dropdown-toggle" data-toggle="dropdown" aria-hidden="true" title="edit"></i>
+					<div class="dropdown-menu">
+						<button type="button" class="edit-btn dropdown-item" data-post="{{ post.id }}">edit</button>
+						<button type="button" class="delete-btn dropdown-item" data-post="{{ post.id }}">delete</button>
+					</div>
+				</div><!-- dropdown -->
 			
 				{% else %}
-				<i class="fa fa-retweet reblog-btn" data-post="{{ post.id }}" aria-hiddne="true"></i>
-				<i class="fa fa-comment-o comment-btn" data-post="{{ post.id }}" aria-hidden="true"></i>
+				<i class="fa fa-retweet reblog-btn" data-post="{{ post.id }}" aria-hiddne="true" title="reblog"></i>
+				<i class="fa fa-comment-o comment-btn" data-post="{{ post.id }}" aria-hidden="true" title="comment"></i>
 				{% set class = 'liked' if post.liked else '' %}
-				<i class="fa fa-heart-o like-btn {{ class }}" data-post="{{ post.id }}" aria-hidden="true"></i>
+				<i class="fa fa-heart-o like-btn {{ class }}" data-post="{{ post.id }}" aria-hidden="true" title="like"></i>
 			{% endif %}
 			</div>
 		</div><!-- post-menu -->
