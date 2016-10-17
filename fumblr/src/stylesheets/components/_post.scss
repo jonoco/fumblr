@@ -1,66 +1,119 @@
 .post {
+  width: 100%;
   background-color: #eeeeee;
-  width: 640px;
-  margin: 3rem auto;
+  margin: 1rem auto;
   border-radius: .2rem;
+
   .top-bar {
     padding: .5rem 1rem;
     display: flex;
+    font-size: .8rem;
     .avatar {
-      margin-right: 1rem;
       width: 64px;
       height: 64px;
+      margin-right: 1rem;
       overflow: hidden;
       border-radius: 32px;
-      img {
-          width: 64px;
-      }
+      img { width: 100%; }
     }
     .user {  
       flex-grow: 2; 
-      a {
-        font-size: 18px;
-        font-weight: 700;    
+      a { 
+        font-weight: 700; 
+        text-overflow: ellipsis;
       }
-      .reblog {
-        color: #555;
+      .reblog { 
+        display: block;
+        color: #999; 
       }
     }
+    .created {
+      font-size: .7rem;
+    }
   }
-  .img { width: 100%; }
+  .images {
+    img { width: 100%; }
+  }
   .bottom-bar {
     padding: 1rem;
     min-height: 3.5rem;
-    @extend %clearfix;
     .text { 
       margin-bottom: .5rem;
       font-size: 20px; 
     }
     .tags {
-      .tag{
-          color: #555;
-      }
+      margin-bottom: 1rem;
+      .tag{ color: #555; }
     }
     .post-menu {
-      .likes {
-          display: inline-block;
-          margin-top: .5rem;
-       }
+      .notes {
+        display: inline-block;
+      }
       .comment-btn,
       .like-btn,
       .reblog-btn {
-          outline: none; 
-          transition: .2s all ease;
-          border: none;
-          padding: .5rem 1rem;
-          &:hover { opacity: .8; }
+        transition: .2s all ease;
+        color: hsl(0,0,30);
+        margin-left: 1rem;
+        &:hover { color: hsl(0,0,0); }
       }
       .like-btn {
-          &.liked {
-              color: #eee;
-              background-color: $green;
-          }
+        &.liked { color: $red; }
       }    
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    max-width: 600px;
+    margin: 3rem auto;
+    .top-bar {
+      .avatar {
+        width: 64px;
+        height: 64px;
+      }
+      .user {  
+        flex-grow: 2; 
+        font-size: 1rem;
+        a { font-weight: 700; }
+        .reblog {
+          display: inline;
+          color: #555;
+        }
+      }
+      .created {
+        font-size: 1rem;
+      }
+    }
+    .images {}
+    .bottom-bar {
+      padding: 1rem;
+      min-height: 3.5rem;
+      
+      .text { 
+        margin-bottom: .5rem;
+        font-size: 20px; 
+      }
+      .tags {
+        .tag{
+            color: #555;
+        }
+      }
+      .post-menu {
+        .notes {
+          display: inline-block;
+        }
+        .comment-btn,
+        .like-btn,
+        .reblog-btn {
+          transition: .2s all ease;
+          color: hsl(0,0,30);
+          margin-left: 1rem;
+          &:hover { color: hsl(0,0,0); }
+        }
+        .like-btn {
+          &.liked { color: $red; }
+        }     
+      }
     }
   }
 }

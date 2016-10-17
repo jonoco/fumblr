@@ -18,37 +18,38 @@
 	<div class="images">
 		{% for image in post.images %}	
 		<a href="{{ url_for('view_post', id=post.id) }}">
-			<img class="img" src="{{ image.link }}">
+			<img src="{{ image.link }}">
 		</a>
 		{% endfor %}
 	</div><!-- images -->
 	
 	<div class="bottom-bar">
 		<p class="text">{{ post.text }}</p>
+
+		{% if post.tags %}
 		<div class="tags">
 			{% for tag in post.tags %}
 				<a href="{{ url_for('tag', tag_name=tag|replace(' ', '_')) }}" class="tag">#{{ tag }}</a>
 			{% endfor %}
 		</div>
+		{% endif %}
+
 		<div class="post-menu">
-			<span>
-				<span class="likes">likes - {{ post.likes|count }} | </span>
-				<span>comments - {{ post.comments|count }} | </span>
-				<span>reblogs - {{ post.reblogs|count }}</span>
-			</span>
+			<a href="{{ url_for('view_post', id=post.id) }}" class="notes">{{ post.likes|count + post.comments|count + post.reblogs|count}} notes</a>
+			
 			<div class="btn-group  pull-xs-right">
 				{% if post.owned %}			
-				<button class="btn btn-info dropdown-toggle" data-toggle="dropdown">edit</button>
+				<i class="fa fa-cog dropdown-toggle" data-toggle="dropdown" aria-hidden="true"></i>
 				<div class="dropdown-menu">
 					<button type="button" class="edit-btn dropdown-item" data-post="{{ post.id }}">edit</button>
 					<button type="button" class="delete-btn dropdown-item" data-post="{{ post.id }}">delete</button>
 				</div>
 			
 				{% else %}
-				<button class="reblog-btn" data-post="{{ post.id }}">Reblog</button>
-				<button class="comment-btn" data-post="{{ post.id }}" >Comment</button>
+				<i class="fa fa-retweet reblog-btn" data-post="{{ post.id }}" aria-hiddne="true"></i>
+				<i class="fa fa-comment-o comment-btn" data-post="{{ post.id }}" aria-hidden="true"></i>
 				{% set class = 'liked' if post.liked else '' %}
-				<button class="like-btn {{ class }}" data-post="{{ post.id }}">Like</button>
+				<i class="fa fa-heart-o like-btn {{ class }}" data-post="{{ post.id }}" aria-hidden="true"></i>
 			{% endif %}
 			</div>
 		</div><!-- post-menu -->
