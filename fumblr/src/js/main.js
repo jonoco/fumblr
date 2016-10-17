@@ -4,7 +4,7 @@
     $('.message-user').on('click', openUserMessages);
     function openUserMessages(e) {
         const user = $(this).addClass('selected').data('user');
-        $(`.message-user[data-user!='${user}']`).removeClass('selected')
+        $(`.message-user[data-user!='${user}']`).removeClass('selected');
         $(`.user-messages[data-user!='${user}']`).addClass('hide');
         const msgList = $(`.user-messages[data-user='${user}']`).removeClass('hide');
     }
@@ -412,10 +412,10 @@
     }
 
     // Mobile header-sidebar
-    $('.menu-btn').on('click', openSidemenu);
+    $('.menu-btn, .mask').on('click', openSidemenu);
     function openSidemenu(e) {
         $('#header-sidebar').toggleClass('open');
-        $(this).toggleClass('fa-bars').toggleClass('fa-close');
+        $('.menu-btn').toggleClass('fa-bars').toggleClass('fa-close');
     }
 
     // Utils

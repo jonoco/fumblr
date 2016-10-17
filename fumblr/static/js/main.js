@@ -405,10 +405,10 @@
     }
 
     // Mobile header-sidebar
-    $('.menu-btn').on('click', openSidemenu);
+    $('.menu-btn, .mask').on('click', openSidemenu);
     function openSidemenu(e) {
         $('#header-sidebar').toggleClass('open');
-        $(this).toggleClass('fa-bars').toggleClass('fa-close');
+        $('.menu-btn').toggleClass('fa-bars').toggleClass('fa-close');
     }
 
     // Utils
