@@ -234,8 +234,7 @@
             formData.set('text', $text.val());
             formData.set('tags', $tags.val());
 
-            const url = $postModal.find('.post-form').data('action'); 
-
+            const url = $postModal.find('.post-form').data('action');
             axios.post(url, formData)
             .then( res => {
                 $form.removeClass('is-uploading');
@@ -403,15 +402,20 @@
               $reblogModal.find('.reblog-form').attr('action', `/reblog/${post.id}`);
               $reblogModal.find('.text').val('');
               $reblogModal.find('.tags').val('');
-        
         const $preview = $reblogModal.find('.preview');
               $preview.empty();
 
         post.images.forEach(image => {
             $('<img class="image" />').attr('src', image.link).appendTo($preview);
         });
-        
         $reblogModal.modal('show');
+    }
+
+    // Mobile header-sidebar
+    $('.menu-btn').on('click', openSidemenu);
+    function openSidemenu(e) {
+        $('#header-sidebar').toggleClass('open');
+        $(this).toggleClass('fa-bars').toggleClass('fa-close');
     }
 
     // Utils

@@ -1,20 +1,92 @@
 .header {
-    color: #ddd;
+	.screen-header { display: none; }
 
-    nav {
+	color: #ddd;
+	nav {
+		@extend %clearfix;
 		background-color: $primary-color;
 		border-bottom: 1px solid rgba(0, 0, 0, .2);
+		height: 3rem;
+		padding: 0;
 	}
-
-    input {
-        background-color: rgba(0,0,0,0.2);
-    }
-
-	.navbar-brand {
+	.logo {
+		display: block;
 		color: #eee;
+		height: 3rem;
+		font-size: 2rem;
+		margin-top: .5rem;
+		a {  }
 	}
-	
-	#search-bar {
-		display: inline;
+	.search-bar { 
+		input { 
+			background-color: rgba(0,0,0,0.2);
+			height: 3rem;	
+			width: 100%;
+			text-align: center;
+		}
+	}
+	.menu-burger {
+		height: 100%;
+		padding: 1rem .5rem .5rem 0;
+		i {
+			// display: inline-block;
+			font-size: 1.5rem;
+			// padding: 1rem;
+		}
+	}
+	#header-sidebar {
+		transition: .2s all ease;
+		position: absolute;
+		right: -100%;
+		width: 100%;
+		height: 100%;
+		
+		.side-menu {
+			z-index: 10;
+			position: relative;
+			background-color: $primary-color;	
+			width: 300px;
+			height: 100%;
+			max-width: 90%;
+		}
+		.menu-item {
+			display: block;
+			padding: 1rem .5rem;
+			font-size: 2rem;
+			border-bottom: 1px solid hsla(0,0,100, 0.1);
+			&:last-child {
+				border: none;
+			}
+		}
+		.mask {
+			z-index: 1;
+			transition: .2s all ease-in;
+			height: 100%;
+			width: 100%;
+			background-color: #000;
+			opacity: 0;
+		}
+		&.open {
+			right: 0;
+			.mask { opacity: .8; }
+		}
 	}	
+
+	@include media-breakpoint-up(md) {
+		.mobile-header { display: none; }
+		.screen-header { display: block; }
+		.logo { font-size: 1rem; }
+		.nav-link {
+			margin-top: .5rem;
+		}
+
+		.search-bar {
+			display: inline;
+			input {
+				display: inline;
+				max-width: 12rem;
+				text-align: left;
+			}
+		}
+	}
 }
