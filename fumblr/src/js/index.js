@@ -1,5 +1,6 @@
-(function(){
-    
+import axios from 'axios';
+
+(function() {
     // View messages
     $('.message-user').on('click', openUserMessages);
     function openUserMessages(e) {
@@ -429,5 +430,4 @@
         }
         return hash;
     }
-
-}(axios))
+}());

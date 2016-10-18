@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <div class="preview"></div><!-- preview -->
-                <div method="post" class="post-form">
+                <form class="post-form">
                     <div class="url-upload hide">
                         <div class="form-group">
                             <label for="url">Image URL</label>
@@ -38,12 +38,11 @@
 				        <label for="text">Tags</label>
 				        <input class="form-control tags" type="text" name="tags" placeholder="comedy, tragedy, romance, ...">
 			        </div><!-- form-group -->
-		        </div>
+                    <hr />
+                    <button type="button" class="btn btn-secondary pull-xs-left" data-dismiss="modal">Close</button>
+                    <button type="submit" class="submit-btn">Submit</button>
+		        </form>
                 <div class="loading hide"></div><!-- loading -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary pull-xs-left" data-dismiss="modal">Close</button>
-                <button type="button" class="submit-btn">Submit</button>
             </div>
         </div>
     </div>

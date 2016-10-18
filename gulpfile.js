@@ -4,23 +4,7 @@ var
   cleanCSS  = require('gulp-clean-css'),
   rename    = require('gulp-rename'),
   sass      = require('gulp-sass'),
-  babel     = require('gulp-babel'),
-  prefix    = require('gulp-autoprefixer'),
-  uglify    = require('gulp-uglify'),
-  livereload = require('gulp-livereload');
-
-gulp.task('js', function() {
-  gulp.src('fumblr/src/js/main.js')
-    .pipe(babel().on('error', function(e) { console.log(e.message) }))
-    .pipe(gulp.dest('fumblr/static/js'));
-});
-
-gulp.task('js-min', function() {
-  gulp.src('fumblr/src/js/main.js')
-    .pipe(babel())
-    .pipe(uglify())
-    .pipe(gulp.dest('fumblr/static/js'));
-});
+  prefix    = require('gulp-autoprefixer');
 
 gulp.task('sass', function() {
   gulp.src('fumblr/src/stylesheets/main.scss')
@@ -41,8 +25,9 @@ gulp.task('sass-min', function() {
 
 gulp.task('watch', function() {
   gulp.watch('fumblr/src/stylesheets/*/*.scss', ['sass']);
-  gulp.watch('fumblr/src/js/*.js', ['js']);
+  
 });
 
-gulp.task('default', ['watch', 'js', 'sass']);
-gulp.task('build', ['js-min', 'sass-min']);
+gulp.task('default', ['bundle', 'sass', 'watch']);
+
+gulp.task('build', ['sass-min']);

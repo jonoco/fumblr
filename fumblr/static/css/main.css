@@ -6,7 +6,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v4.0.0 | MIT License | github.com/necolas/normalize.css */
-@import 'https://fonts.googleapis.com/css?family=Raleway:200,400,700';
+@import url(https://fonts.googleapis.com/css?family=Raleway:200,400,700);
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -7226,6 +7226,7 @@ a {
     margin-top: .5rem; }
   #header .search-bar input {
     background-color: rgba(0, 0, 0, 0.2);
+    color: #eee;
     height: 3rem;
     width: 100%;
     text-align: center; }
