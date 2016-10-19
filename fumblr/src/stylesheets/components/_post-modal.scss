@@ -47,6 +47,7 @@
 		}
 	}
 	.droparea {
+		display: none;
 		background-color: rgba(0,0,0,0.1);
 		text-align: center;	
 		width: 100%;
@@ -77,6 +78,40 @@
 		&:hover {
 			color: #91E5FF;
 		}
+	}
+	
+	.file-upload {
+		.file {
+			input {
+				width: 0.1px;
+				height: 0.1px;
+				opacity: 0;
+				overflow: hidden;
+				position: absolute;
+				z-index: -1;
+			}
+			label {
+				transition: .2s all ease;
+				font-size: 1rem;
+				font-weight: 700;
+				text-align: center;
+				color: #eee;
+				background-color: rgba(0,0,0, 0.4);
+				width: 100%;
+				padding-top: 1rem;
+				height: 3rem;
+				display: inline-block;
+				cursor: pointer;
+				&:hover {
+					color: #111;
+					background-color: rgba(0,0,0, 0.2);
+				}
+			}
+		}
+	}
+
+	@include media-breakpoint-up(md) {
+		.droparea { display: block; }	
 	}
 
 	@keyframes flash {

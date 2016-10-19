@@ -13,13 +13,13 @@ export default class PostModal {
         this.$submitBtn = this.$postModal.find('.submit-btn');
         this.$text = this.$postModal.find('.text');
         this.$tags = this.$postModal.find('.tags');
-        this.$file = this.$postModal.find('.file');
+        this.$file = this.$postModal.find('#file');
         this.$url = this.$postModal.find('.url');
         this.$preview = this.$postModal.find('.preview');
 
         this.$url.on('input', this.uploadImageURL.bind(this));
         this.$file.change(e => {
-            this.handleFiles(e.currentTarget.files);
+            this.handleFiles(this.$file[0].files);
         });
         this.$submitBtn.on('click', this.submit.bind(this));
     
