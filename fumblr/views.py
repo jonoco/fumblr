@@ -329,7 +329,7 @@ def follow():
     else:
         current_user.follow_user(username)
 
-    return jsonify(following=is_following)
+    return jsonify(follow=True)
 
 @app.route('/like', methods=['post'])
 @login_required
@@ -349,7 +349,7 @@ def like():
     else:
         post.like()
 
-    return jsonify(like=liked)
+    return jsonify(like=True)
 
 @app.route('/search')
 def search():

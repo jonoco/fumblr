@@ -102,8 +102,11 @@
 	            post: post,
 	            text: text
 	        }).then(function (res) {
-	            console.log(res);
-	            $cmtModal.modal('hide');
+	            if (res.data.comment) {
+	                $cmtModal.modal('hide');
+	            } else {
+	                document.location.assign(res.request.responseURL);
+	            }
 	        }).catch(function (err) {
 	            console.log(err);
 	        });
@@ -162,20 +165,19 @@
 	    }
 
 	    // Follow button
-	    var followButtons = document.querySelectorAll('.follow-btn');
-	    if (!!followButtons) {
-	        followButtons.forEach(function (btn) {
-	            btn.addEventListener('click', followUser);
-	        });
-	    }
+	    $('.follow-btn').on('click', followUser);
 	    function followUser(e) {
-	        var btn = e.currentTarget;
-	        var user = btn.dataset.user;
+	        var $btn = $(this);
+	        var user = $btn.data('user');
 
 	        _axios2.default.post('/follow', {
 	            user: user
 	        }).then(function (res) {
-	            btn.classList.toggle('following');
+	            if (res.data.follow) {
+	                $btn.toggleClass('following');
+	            } else {
+	                document.location.assign(res.request.responseURL);
+	            }
 	        }).catch(function (err) {
 	            console.log(err);
 	        });
@@ -196,9 +198,13 @@
 	        _axios2.default.post('/like', {
 	            post: postID
 	        }).then(function (res) {
-	            btn.classList.toggle('liked');
+	            if (res.data.like) {
+	                btn.classList.toggle('liked');
+	            } else {
+	                document.location.assign(res.request.responseURL);
+	            }
 	        }).catch(function (err) {
-	            console.log(err);
+	            console.log(err.response);
 	        });
 	    }
 
@@ -208,8 +214,12 @@
 	        var postID = $(this).data('post');
 
 	        _axios2.default.get('/reblog/' + postID).then(function (res) {
-	            var post = JSON.parse(res.data.post);
-	            openReblogModal(post);
+	            if (res.data.post) {
+	                var post = JSON.parse(res.data.post);
+	                openReblogModal(post);
+	            } else {
+	                document.location.assign(res.request.responseURL);
+	            }
 	        }).catch(function (err) {
 	            console.log(err);
 	        });

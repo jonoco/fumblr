@@ -47,8 +47,11 @@ import { askConfirm } from './confirm-modal';
             post, 
             text
         }).then(res => {
-            console.log(res);
-            $cmtModal.modal('hide');
+            if (res.data.comment) {
+                $cmtModal.modal('hide');    
+            } else {
+                document.location.assign(res.request.responseURL);
+            }
         }).catch(err => {
             console.log(err);
         });
@@ -111,20 +114,20 @@ import { askConfirm } from './confirm-modal';
     }
 
     // Follow button
-    const followButtons = document.querySelectorAll('.follow-btn');
-    if (!!followButtons) {
-        followButtons.forEach(btn => {
-            btn.addEventListener('click', followUser);
-        });
-    }
+    $('.follow-btn').on('click', followUser);
     function followUser(e) {
-        const btn = e.currentTarget;
-        const user = btn.dataset.user;
+        const $btn = $(this);
+        const user = $btn.data('user');
 
         axios.post('/follow', {
             user
         }).then(res => {
-            btn.classList.toggle('following')
+            if (res.data.follow) {
+                $btn.toggleClass('following');    
+            } else {
+                document.location.assign(res.request.responseURL);
+            }
+            
         }).catch(err => {
             console.log(err);
         });
@@ -145,9 +148,13 @@ import { askConfirm } from './confirm-modal';
         axios.post('/like', {
             post: postID
         }).then(res => {
-            btn.classList.toggle('liked');
+            if (res.data.like) {
+                btn.classList.toggle('liked');    
+            } else {
+                document.location.assign(res.request.responseURL);
+            }
         }).catch(err => {
-            console.log(err);
+            console.log(err.response);
         });
     }
 
@@ -158,8 +165,12 @@ import { askConfirm } from './confirm-modal';
 
         axios.get(`/reblog/${postID}`)
         .then(res => {
-            const post = JSON.parse(res.data.post);
-            openReblogModal(post);
+            if (res.data.post) {
+                const post = JSON.parse(res.data.post);
+                openReblogModal(post);    
+            } else {
+                document.location.assign(res.request.responseURL);
+            }   
         })
         .catch(err => {
             console.log(err);
