@@ -31,8 +31,7 @@
 
 			        <div class="form-group">
 				        <label for="text">Description</label>
-				        <input class="form-control text" type="text" name="text" placeholder="Description" 
-                            max="300" data-parsley-maxlength-message="This message is too long! Keep it under 300 characters." data-parsley-trigger="change"> 
+				        <input class="form-control text" type="text" name="text" placeholder="Description"> 
 			        </div><!-- form-group -->
 
 			        <div class="form-group">
@@ -45,8 +44,11 @@
 			        </div><!-- form-group -->
 		        </form>
                 <div class="loading hide">
-                    <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-                    <span class="sr-only">Loading...</span>
+                    <div class="loading-message">
+                        <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                        <span class="progress">0%</span>
+                        <span class="sr-only">Loading...</span>
+                    </div><!-- loading-message -->
                 </div><!-- loading -->
             </div>
             <div class="modal-footer">

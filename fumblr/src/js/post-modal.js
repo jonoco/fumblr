@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { hashCode } from './utils';
+import _ from 'lodash';
 
 export default class PostModal {
     init() {
@@ -33,7 +34,7 @@ export default class PostModal {
         this.$switchBtn = this.$postModal.find('.switch-input');
         this.$switchBtn.on('click', this.switchInputs.bind(this));
 
-        this.formData = new FormData();
+        this.formData = {};
     }
 
     initUploadModal() {
@@ -57,7 +58,7 @@ export default class PostModal {
 
         post.images.forEach(image => {
             this.addImage(image.link, `image-${image.id}`);
-            this.formData.set(`image-${image.id}`, `${image.id}`);
+            this.formData[`image-${image.id}`] = `${image.id}`
         });
 
         this.openModal();
@@ -73,12 +74,23 @@ export default class PostModal {
 
         this.$postForm.addClass('is-uploading');
         this.showLoading();
+        const $progress = this.$postModal.find('.progress');
 
-        this.formData.set('text', this.$text.val());
-        this.formData.set('tags', this.$tags.val());
+        const formData = new FormData();
+        formData.append('text', this.$text.val());
+        formData.append('tags', this.$tags.val());
+
+        _.forIn(this.formData, (v, k) => {
+           formData.append(k, v); 
+        });
 
         const url = this.$postForm.data('action');
-        axios.post(url, this.formData)
+        axios.post(url, formData, {
+            onUploadProgress: pe => {
+                let progress = Math.floor((pe.loaded/pe.total)*100);
+                $progress.text(`${progress}%`);
+            }
+        })
         .then( res => {
             this.$postForm.removeClass('is-uploading');
             this.hideLoading();
@@ -106,8 +118,7 @@ export default class PostModal {
             };
 
             reader.readAsDataURL(f);
-         
-            this.formData.set(`${imageID}`, f);
+            this.formData[`${imageID}`] = f;
         });
 
         this.$file.val('');
@@ -124,7 +135,7 @@ export default class PostModal {
         }).then(res => {
             const image = res.data.image;
             this.addImage(image.link, `image-${image.id}`);
-            this.formData.set(`image-${image.id}`, `${image.id}`);
+            this.formData[`image-${image.id}`] = `${image.id}`;
             this.hideLoading();
         }).catch(err => {
             //TODO add error message
@@ -145,7 +156,7 @@ export default class PostModal {
 
     removeImage(e) {
         const imageID = $(e.currentTarget).data('id');
-        this.formData.delete(`${imageID}`);
+        _.unset(this.formData, `${imageID}`);
         this.$preview.find(`.image[data-id='${imageID}']`).remove();
     }
 
@@ -168,7 +179,8 @@ export default class PostModal {
         this.$tags.val('');
         this.$url.val('');
         this.$preview.empty();
-        this.formData = new FormData();
+        // this.formData = new FormData();
+        this.formData = {};
         this.hideLoading();
     }
 

@@ -7329,7 +7329,7 @@ a {
     background-color: rgba(0, 0, 0, 0.7); }
     #post-modal .modal-body .loading.hide {
       display: none; }
-    #post-modal .modal-body .loading i {
+    #post-modal .modal-body .loading .loading-message {
       color: #eee;
       display: block;
       position: absolute;

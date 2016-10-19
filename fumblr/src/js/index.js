@@ -3,6 +3,25 @@ import PostModal from './post-modal';
 import { askConfirm } from './confirm-modal';
 
 (function() {
+    // Check browser compatibility for form support
+    const isAdvancedUpload = function() {
+      const div = document.createElement('div');
+      return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) 
+        && 'FormData' in window && 'FileReader' in window;
+    }();
+
+    function checkAdvancedUpload() {
+        if (!isAdvancedUpload) {
+            alert(`advanced upload not supported: 
+                FormData| ${'FormData' in window}
+                FileReader| ${'FileReader' in window}`);
+        } else {
+            alert(`supporting advanced upload: 
+                FormData| ${'FormData' in window}
+                FileReader| ${'FileReader' in window}`);
+        }
+    }
+
     const postModal = new PostModal();
     postModal.init();
 
@@ -14,13 +33,6 @@ import { askConfirm } from './confirm-modal';
         $(`.user-messages[data-user!='${user}']`).addClass('hide');
         const msgList = $(`.user-messages[data-user='${user}']`).removeClass('hide');
     }
-
-    // Check browser compatibility for form support
-    const isAdvancedUpload = function() {
-      const div = document.createElement('div');
-      return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) 
-        && 'FormData' in window && 'FileReader' in window;
-    }();
     
     // Comment modal
     $('.comment-btn').on('click', openCommentModal);
