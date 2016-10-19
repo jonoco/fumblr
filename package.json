@@ -4,7 +4,7 @@
   "description": "A Tumblr clone made from Flask",
   "main": "",
   "scripts": {
-    "build": "webpack --progress --config webpack.config.js && gulp build",
+    "build": "webpack --progress --config webpack.config.prod.js && gulp build",
     "watch": "webpack --watch --colors --progress --config webpack.config.js",
     "sass": "gulp watch"
   },
@@ -26,8 +26,10 @@
     "gulp-sass": "2.3.2",
     "gulp-uglify": "1.5.4",
     "gulp-util": "3.0.7",
+    "jquery": "3.1.1",
     "lodash": "4.16.4",
     "node-sass": "3.8.0",
+    "parsleyjs": "2.5.1",
     "postcss-loader": "1.0.0",
     "sass-loader": "4.0.2",
     "style-loader": "0.13.1",

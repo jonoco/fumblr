@@ -10,13 +10,13 @@ var PATHS = {
 };
 
 module.exports = {
-	entry: PATHS.main,
-	output: {
-		path: PATHS.dist,
-		filename: 'bundle.js'
-	},
-	module: {
-		loaders: [
+  entry: PATHS.main,
+  output: {
+    path: PATHS.dist,
+    filename: 'bundle.js'
+  },
+  module: {
+    loaders: [
       { 
         exclude: [PATHS.nodeModules], 
         test: /\.js?$/, 
@@ -29,12 +29,21 @@ module.exports = {
     extensions: ['', '.js']
   },
   plugins: [
-  	new webpack.optimize.OccurenceOrderPlugin(),
-  	new webpack.optimize.DedupePlugin(),
-		new webpack.DefinePlugin({
-			'process.env': {
-				'NODE_ENV': JSON.stringify('development')
-			}
-		})
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: false,
+      compress: {
+        warnings: false
+      },
+      output: {
+        comments: false
+      }
+    })
   ]
 }

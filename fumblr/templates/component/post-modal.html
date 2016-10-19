@@ -31,19 +31,25 @@
 
 			        <div class="form-group">
 				        <label for="text">Description</label>
-				        <input class="form-control text" type="text" name="text" placeholder="Description">
+				        <input class="form-control text" type="text" name="text" placeholder="Description" 
+                            max="300" data-parsley-maxlength-message="This message is too long! Keep it under 300 characters." data-parsley-trigger="change"> 
 			        </div><!-- form-group -->
 
 			        <div class="form-group">
 				        <label for="text">Tags</label>
-				        <input class="form-control tags" type="text" name="tags" placeholder="comedy, tragedy, romance, ...">
+				        <input class="form-control tags" type="text" name="tags" placeholder="comedy, tragedy, romance, ..." 
+                            data-parsley-trigger="keyup" 
+                            data-parsley-validation-threshold="5" 
+                            pattern="[a-zA-Z0-9,!?+\- ]+"
+                            data-parsley-pattern-message="Only use letters, numbers, and characters [, ! ? + -]">
 			        </div><!-- form-group -->
-                    <hr />
-                    <button type="button" class="btn btn-secondary pull-xs-left" data-dismiss="modal">Close</button>
-                    <button type="submit" class="submit-btn">Submit</button>
 		        </form>
                 <div class="loading hide"></div><!-- loading -->
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary pull-xs-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary submit-btn">Submit</button>
+            </div><!-- modal-footer -->
         </div>
     </div>
 </div>
