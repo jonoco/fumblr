@@ -153,8 +153,12 @@ def new_post():
 
     """
 
-    tags = request.form['tags']
-    text = request.form['text']
+    tags = request.form.get('tags')
+    if not Tag.safe_tag(tags):
+        return ('Tag contains illegal characters', 403)
+    
+    text = request.form.get('text')
+
     files = [request.files.get(f) for f in request.files]
     new_images = Image.submit_images(files)
 
@@ -220,7 +224,11 @@ def edit_post(id):
     images = Image.query.filter(Image.id.in_(image_ids)).all()
     images.extend(new_images)
 
-    post.update(images=images, text=request.form.get('text'), tags=request.form.get('tags'))
+    tags = request.form.get('tags')
+    if not Tag.safe_tag(tags):
+        return ('Tag contains illegal characters', 403)
+
+    post.update(images=images, text=request.form.get('text'), tags=tags)
 
     return jsonify(reload=True)
 

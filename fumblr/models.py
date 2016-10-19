@@ -7,6 +7,7 @@ from datetime import datetime
 from sqlalchemy import exists, and_, or_
 from werkzeug.utils import secure_filename
 import os
+import re
 
 tags_table = db.Table('tag_post_association',
                       db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
@@ -510,6 +511,21 @@ class Tag(db.Model):
 
     def __repr__(self):
         return '<Tag - {}>'.format(self.name)
+
+    @staticmethod
+    def safe_tag(tag_string):
+        """
+        Check if tag contains only allowed characters
+
+        Args:
+            tag_string: String of tag
+
+        Returns:
+            Returns True if string contains only allowed characters, otherwise False
+
+        """
+        ALLOWED_CHARACTERS = re.compile('[a-zA-Z0-9,!?+\- ]+')
+        return ALLOWED_CHARACTERS.match(tag_string)
 
     @staticmethod
     def format_tags(tags):
