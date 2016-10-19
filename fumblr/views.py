@@ -154,9 +154,9 @@ def new_post():
     """
 
     tags = request.form.get('tags')
-    if not Tag.safe_tag(tags):
+    if tags and not Tag.safe_tag(tags):
         return ('Tag contains illegal characters', 403)
-    
+
     text = request.form.get('text')
 
     files = [request.files.get(f) for f in request.files]
@@ -225,7 +225,7 @@ def edit_post(id):
     images.extend(new_images)
 
     tags = request.form.get('tags')
-    if not Tag.safe_tag(tags):
+    if tags and not Tag.safe_tag(tags):
         return ('Tag contains illegal characters', 403)
 
     post.update(images=images, text=request.form.get('text'), tags=tags)

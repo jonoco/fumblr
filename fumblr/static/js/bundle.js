@@ -1779,7 +1779,7 @@
 	        value: function init() {
 	            var _this = this;
 
-	            $('.post-btn').on('click', this.initUploadModal);
+	            $('.post-btn').on('click', this.initUploadModal.bind(this));
 	            $('.edit-btn').on('click', this.getEditPost.bind(this));
 
 	            this.$postModal = $('#post-modal');
@@ -1792,9 +1792,7 @@
 	            this.$url = this.$postModal.find('.url');
 	            this.$preview = this.$postModal.find('.preview');
 
-	            this.$url.on('input', function (e) {
-	                _this.uploadImageURL(_this.$url.val()).bind(_this);
-	            });
+	            this.$url.on('input', this.uploadImageURL.bind(this));
 	            this.$file.change(function (e) {
 	                _this.handleFiles(e.currentTarget.files);
 	            });
@@ -1868,7 +1866,7 @@
 	                    document.location.assign(res.data.redirect);
 	                }
 	            }).catch(function (err) {
-	                console.log(err);
+	                console.log(err.response.data);
 	            });
 	        }
 	    }, {
@@ -1897,10 +1895,11 @@
 	        }
 	    }, {
 	        key: 'uploadImageURL',
-	        value: function uploadImageURL(url) {
+	        value: function uploadImageURL(e) {
 	            var _this5 = this;
 
-	            if (!this.$url.val()) return;
+	            var url = this.$url.val();
+	            if (!url) return;
 
 	            this.$url.val('');
 	            this.showLoading();
@@ -1912,6 +1911,7 @@
 	                _this5.formData.set('image-' + image.id, '' + image.id);
 	                _this5.hideLoading();
 	            }).catch(function (err) {
+	                //TODO add error message
 	                _this5.hideLoading();
 	                console.log(err.response.data);
 	            });
@@ -1972,7 +1972,9 @@
 	        }
 	    }, {
 	        key: 'switchInputs',
-	        value: function switchInputs() {
+	        value: function switchInputs(e) {
+	            e.stopPropagation();
+	            e.preventDefault();
 	            this.$postModal.find('.url-upload').toggleClass('hide');
 	            this.$postModal.find('.file-upload').toggleClass('hide');
 	            if (this.$postModal.find('.url-upload').hasClass('hide')) {

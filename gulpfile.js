@@ -28,6 +28,6 @@ gulp.task('watch', function() {
   
 });
 
-gulp.task('default', ['bundle', 'sass', 'watch']);
+gulp.task('default', ['sass', 'watch']);
 
 gulp.task('build', ['sass-min']);

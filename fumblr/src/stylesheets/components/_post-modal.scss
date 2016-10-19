@@ -11,15 +11,14 @@
 			&.hide {
 				display: none;
 			}
-			&::before {
-				content: 'submitting...';
+			i {
 				color: #eee;
 				display: block;
 				position: absolute;
 				text-align: center;
 				top: 50%;
 				width: 100%;
-				animation: flash 2s infinite;
+				// animation: flash 2s infinite;
 			}
 		}
 	}

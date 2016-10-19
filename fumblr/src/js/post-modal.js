@@ -3,7 +3,7 @@ import { hashCode } from './utils';
 
 export default class PostModal {
     init() {
-        $('.post-btn').on('click', this.initUploadModal);
+        $('.post-btn').on('click', this.initUploadModal.bind(this));
         $('.edit-btn').on('click', this.getEditPost.bind(this));
 
         this.$postModal = $('#post-modal');  
@@ -16,9 +16,7 @@ export default class PostModal {
         this.$url = this.$postModal.find('.url');
         this.$preview = this.$postModal.find('.preview');
 
-        this.$url.on('input', e => {
-            this.uploadImageURL(this.$url.val()).bind(this);
-        });
+        this.$url.on('input', this.uploadImageURL.bind(this));
         this.$file.change(e => {
             this.handleFiles(e.currentTarget.files);
         });
@@ -91,7 +89,7 @@ export default class PostModal {
             }
         })
         .catch( err => {
-            console.log(err);
+            console.log(err.response.data);
         });
     }
 
@@ -115,8 +113,9 @@ export default class PostModal {
         this.$file.val('');
     }
 
-    uploadImageURL(url) {
-        if (!this.$url.val()) return;
+    uploadImageURL(e) {
+        const url = this.$url.val() 
+        if (!url) return;
         
         this.$url.val('');
         this.showLoading();
@@ -128,6 +127,7 @@ export default class PostModal {
             this.formData.set(`image-${image.id}`, `${image.id}`);
             this.hideLoading();
         }).catch(err => {
+            //TODO add error message
             this.hideLoading();
             console.log(err.response.data);
         });
@@ -185,7 +185,9 @@ export default class PostModal {
         });
     }
 
-    switchInputs() {
+    switchInputs(e) {
+        e.stopPropagation();
+        e.preventDefault();
         this.$postModal.find('.url-upload').toggleClass('hide');
         this.$postModal.find('.file-upload').toggleClass('hide');
         if (this.$postModal.find('.url-upload').hasClass('hide')) {
