@@ -54,6 +54,8 @@
 
 	var _postModal2 = _interopRequireDefault(_postModal);
 
+	var _confirmModal = __webpack_require__(29);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	(function () {
@@ -140,38 +142,6 @@
 	        });
 	    }
 
-	    // Confirmation modal
-	    function askConfirm(_ref) {
-	        var _ref$text = _ref.text;
-	        var text = _ref$text === undefined ? 'Are you sure you want to do that?' : _ref$text;
-	        var _ref$title = _ref.title;
-	        var title = _ref$title === undefined ? 'Are you sure?' : _ref$title;
-	        var _ref$btn = _ref.btn;
-	        var btn = _ref$btn === undefined ? 'Confirm' : _ref$btn;
-
-	        return new Promise(function (resolve, reject) {
-	            var $confirmModal = $('#confirm-modal');
-	            if (!!$confirmModal) {
-	                $confirmModal.find('.modal-title').text(title);
-	                $confirmModal.find('#text').text(text);
-
-	                var $submitBtn = $confirmModal.find('#submit-btn');
-	                $submitBtn.text(btn);
-	                $submitBtn.on('click', resolve);
-
-	                var cancelBtn = $confirmModal.find('#cancel-btn');
-	                cancelBtn.on('click', reject);
-
-	                $confirmModal.modal({
-	                    backdrop: 'static',
-	                    keyboard: false
-	                });
-	            } else {
-	                reject('No confirm modal found');
-	            }
-	        });
-	    }
-
 	    // Delete button
 	    var $deleteBtn = $('.delete-btn');
 	    if (!!$deleteBtn) {
@@ -179,7 +149,7 @@
 	            var btn = e.currentTarget;
 	            var postID = btn.dataset.post;
 
-	            askConfirm({ title: 'Delete post?', btn: 'Delete' }).then(function () {
+	            (0, _confirmModal.askConfirm)({ title: 'Delete post?', btn: 'Delete' }).then(function () {
 	                _axios2.default.get('/post/delete/' + postID).then(function (res) {
 	                    document.location.reload(true);
 	                }).catch(function (err) {
@@ -2225,6 +2195,47 @@
 	};
 	process.umask = function() { return 0; };
 
+
+/***/ },
+/* 29 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.askConfirm = askConfirm;
+	function askConfirm(_ref) {
+	    var _ref$text = _ref.text;
+	    var text = _ref$text === undefined ? 'Are you sure you want to do that?' : _ref$text;
+	    var _ref$title = _ref.title;
+	    var title = _ref$title === undefined ? 'Are you sure?' : _ref$title;
+	    var _ref$btn = _ref.btn;
+	    var btn = _ref$btn === undefined ? 'Confirm' : _ref$btn;
+
+	    return new Promise(function (resolve, reject) {
+	        var $confirmModal = $('#confirm-modal');
+	        if (!!$confirmModal) {
+	            $confirmModal.find('.modal-title').text(title);
+	            $confirmModal.find('#text').text(text);
+
+	            var $submitBtn = $confirmModal.find('#submit-btn');
+	            $submitBtn.text(btn);
+	            $submitBtn.on('click', resolve);
+
+	            var cancelBtn = $confirmModal.find('#cancel-btn');
+	            cancelBtn.on('click', reject);
+
+	            $confirmModal.modal({
+	                backdrop: 'static',
+	                keyboard: false
+	            });
+	        } else {
+	            reject('No confirm modal found');
+	        }
+	    });
+	}
 
 /***/ }
 /******/ ]);
