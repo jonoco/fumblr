@@ -11,11 +11,11 @@ def setup_database():
     from fumblr.models import Role, User
 
     role_user = Role('user', 'basic user role')
-    role_superuser = Role('superuser', 'admin privileges user')
+    role_superuser = Role('superuser', 'admin privileges role')
 
     user_admin = User('admin@fum.blr', 'email')
     user_admin.email = 'admin@fum.blr'
-    user_admin.username = 'admin'
+    user_admin.username = 'fumblr'
     user_admin.password = User.hash_password('admin')
     user_admin.roles.extend([role_user, role_superuser])
 

@@ -222,12 +222,16 @@ def new_post():
 
     text = request.form.get('text')
 
+    images = []
+
     files = [request.files.get(f) for f in request.files]
-    new_images = Image.submit_images(files)
+    submitted_images = Image.submit_images(files)
+    images.extend(submitted_images)
 
     image_ids = [int(request.form.get(item)) for item in request.form if 'image' in item]
-    images = Image.query.filter(Image.id.in_(image_ids)).all()
-    images.extend(new_images)
+    if image_ids:
+        retrieved_images = Image.query.filter(Image.id.in_(image_ids)).all()
+        images.extend(retrieved_images)
 
     post = Post.submit_post(current_user, images, text, tags)
 
@@ -281,11 +285,14 @@ def edit_post(id):
         return ('Cannot edit, post does not belong to user', 403)
 
     files = [request.files.get(f) for f in request.files]
-    new_images = Image.submit_images(files)
+    images = []
+    submitted_images = Image.submit_images(files)
+    images.extend(submitted_images)
 
     image_ids = [int(request.form.get(item)) for item in request.form if 'image' in item]
-    images = Image.query.filter(Image.id.in_(image_ids)).all()
-    images.extend(new_images)
+    if image_ids:
+        retrieved_images = Image.query.filter(Image.id.in_(image_ids)).all()
+        images.extend(retrieved_images)
 
     tags = request.form.get('tags')
     if tags and not Tag.safe_tag(tags):
