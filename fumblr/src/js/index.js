@@ -1,6 +1,7 @@
 import axios from 'axios';
 import PostModal from './post-modal';
 import { askConfirm } from './confirm-modal';
+import LightBox from './lightbox';
 
 (function() {
     // Check browser compatibility for form support
@@ -24,6 +25,8 @@ import { askConfirm } from './confirm-modal';
 
     const postModal = new PostModal();
     postModal.init();
+
+    const lightbox = new LightBox();
 
     // View messages
     $('.message-user').on('click', openUserMessages);

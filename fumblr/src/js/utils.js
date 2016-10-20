@@ -8,3 +8,13 @@ export function hashCode(str) {
     }
     return hash;
 }
+
+export function stopScrolling(bool) {
+	if (bool) {
+		$('body').addClass('stop-scrolling');
+		$('body').bind('touchmove', e => { e.preventDefault(); });
+	} else {
+		$('body').removeClass('stop-scrolling');
+		$('body').unbind('touchmove');
+	}	
+} 
