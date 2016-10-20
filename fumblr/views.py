@@ -3,6 +3,7 @@ from fumblr import app
 from flask_login import login_required, logout_user, current_user, user_needs_refresh
 from .models import Post, User, Image, Tag, Follow, Like, Message, Comment
 from .database import db
+import os
 
 @app.route('/')
 def index():
@@ -427,4 +428,9 @@ def page_not_found(error):
     """
     return render_template('not_found.html')
 
-
+@app.before_request
+def before_request():
+    if not os.environ.get('DEBUG') and request.url.startswith('http://'):
+        url = request.url.replace('http://', 'https://', 1)
+        code = 301
+        return redirect(url, code=code)
