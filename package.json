@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --progress --config webpack.config.prod.js && gulp build",
     "watch": "webpack --watch --colors --progress --config webpack.config.js",
-    "sass": "gulp"
+    "sass": "gulp",
+    "deploy": "npm run build && git push heroku master"
   },
   "author": "Joshua N. Cox <joshua.n.cox@gmail.com> (http://jonoco.me/)",
   "license": "MIT",
