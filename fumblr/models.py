@@ -6,8 +6,10 @@ from flask_login import UserMixin, current_user
 from datetime import datetime
 from sqlalchemy import exists, and_, or_
 from werkzeug.utils import secure_filename
+from passlib.hash import sha256_crypt
 import os
 import re
+import random
 
 tags_posts = db.Table('tag_post_association',
                       db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
@@ -376,15 +378,24 @@ class User(db.Model, UserMixin):
 
     created = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def __init__(self, loginname, provider, created=None, roles=[]):
+    def __init__(self, loginname, provider, created=None):
+
         self.loginname = loginname
         self.provider = provider
-        self.username = User.generate_username(loginname, id)
+        self.username = User.generate_username(loginname)
         self.created = created
-        self.roles = roles.append(Role.get_role('user'))
 
     def __repr__(self):
         return '<User {} {}>'.format(self.id, self.username)
+
+    @classmethod
+    def valid_username(cls, username):
+        """
+        Check if username contains illegal characters
+
+        """
+        ALLOWED_CHARACTERS = re.compile('[a-zA-Z0-9]+')
+        return ALLOWED_CHARACTERS.match(username)
 
     @classmethod
     def username_taken(cls, username):
@@ -395,22 +406,52 @@ class User(db.Model, UserMixin):
         return db.session.query(exists().where(User.username == username)).scalar()
 
     @classmethod
-    def generate_username(cls, loginname, id):
+    def generate_username(cls, loginname):
         """
         Generates a username for a user
 
         Args:
             loginname: Name provided by oauth provider
-            id: Table id number
 
         Returns:
             A unique username
 
         """
         if cls.username_taken(loginname):
-            return '{name}{id}'.format(id=id,name=loginname)
+            rand_num = random.randrange(100, 999)
+            return '{}{}'.format(loginname, rand_num)
         else:
             return loginname
+
+    @classmethod
+    def valid_email(cls, email):
+        """
+        Check if email conforms to a valid email pattern
+
+        """
+        email_pattern = re.compile('^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$')
+        return email_pattern.match(email)
+
+    @classmethod
+    def email_taken(cls, email):
+        """
+        Check if given email already exists in database
+
+        """
+
+        return db.session.query(exists().where(User.email == email)).scalar()
+
+    @classmethod
+    def valid_password(cls, password):
+        """
+        Check if password conform to a valid password pattern
+
+        Example:
+            Any password between 4 and 20 characters
+
+        """
+        password_pattern = re.compile('^.{4,20}$')
+        return password_pattern.match(password)
 
     def get_user_info(self):
         return {
@@ -499,6 +540,36 @@ class User(db.Model, UserMixin):
                 return True
 
         return False
+
+    def hash_password(self, pw):
+        """
+        Hash and return a given password
+
+        Args:
+            pw: Password to hash
+
+        Returns:
+            Hash string
+
+        """
+
+        return sha256_crypt.encrypt(pw)
+
+    def verify_password(self, pw):
+        """
+        Verifies given password matches user's hashed password
+
+        Args:
+            pw: Password to compare against user's password
+
+        Returns:
+            Returns True if passwords match, otherwise False
+
+        """
+        if not self.password:
+            return False
+
+        return sha256_crypt.verify(pw, self.password)
 
 class Follow(db.Model):
     __tablename__ = 'followers'
@@ -725,7 +796,7 @@ class Role(db.Model):
     @classmethod
     def get_role(cls, name):
         """
-        Create or find a Tag from the given tag name and return the Tag.
+        Create or find a Role from the given role name and return the Role.
 
         """
         return cls.query.filter_by(name=name).one_or_none() or cls(name)

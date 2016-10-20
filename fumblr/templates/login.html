@@ -5,6 +5,19 @@
 	<div class="container">
 		<h1>Login</h1>
     <div class="login-menu">
+				<form action="/login" method="post" class="login-form" enctype="multipart/form-data">
+					<div class="form-group">
+						<label for="login-email">Email</label>
+						<input type="email" id="login-email" placeholder="email" name="email" class="form-control" />
+					</div><!-- form-group -->
+					<div class="form-group">
+						<label for="login-password">Password</label>
+						<input type="password" id="login-password" placeholder="password" name="password" class="form-control" />
+					</div><!-- form-group -->
+					
+					<button type="submit" class="btn btn-primary">Login</button>
+				</form>
+				<hr />
         <div class="login-buttons">
             <a href="{{ url_for('twitter.login') }}" class="btn btn-info">Login with Twitter</a>
             <a href="{{ url_for('google.login') }}" class="btn btn-info">Login with Google</a>

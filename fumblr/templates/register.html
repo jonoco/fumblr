@@ -1,0 +1,32 @@
+{% extends "layout/base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div id="register">
+	<div class="container">
+		<h1>Register</h1>
+    <div class="register-menu">
+				<form action="/register" method="post" class="register-form" enctype="multipart/form-data">
+					<div class="form-group">
+						<label for="register-email">Email</label>
+						<input type="email" id="register-email" placeholder="email" name="email" class="form-control" />
+					</div><!-- form-group -->
+					<div class="form-group">
+						<label for="register-password">Password</label>
+						<input type="password" id="register-password" placeholder="password" name="password" class="form-control" />
+					</div><!-- form-group -->
+					<div class="form-group">
+						<label for="register-password">Username</label>
+						<input type="text" id="register-password" placeholder="username" name="username" class="form-control" />
+					</div><!-- form-group -->
+					
+					<button type="submit" class="btn btn-primary">Sign up</button>
+				</form>
+				<hr>
+        <div class="login-buttons">
+            <a href="{{ url_for('twitter.login') }}" class="btn btn-info">Signup with Twitter</a>
+            <a href="{{ url_for('google.login') }}" class="btn btn-info">Signup with Google</a>
+        </div>
+    </div>
+	</div><!-- container -->
+</div><!-- home -->
+{% endblock %}

@@ -1,15 +1,20 @@
 #login {
     .login-menu {
-        padding: 3rem;
-        .login-buttons {
-            background-color: #eeeeee;
-            width: 16rem;
-            padding: 2rem;
-            margin: 0 auto;
-            text-align: center;
-            a {
-                margin: 1rem;
-            }
+        background-color: #eeeeee;
+        width: 100%;
+        padding: 2rem;
+        margin: 0 auto;
+    }
+    .login-form {
+        max-width: 600px;
+    }
+    .login-buttons {
+        text-align: center;
+        a { margin: 1rem; } 
+    }
+    @include media-breakpoint-up(md) {
+        .login-menu {
+            max-width: 600px;
         }
     }
 }

@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request, jsonify, current_app, json, abort
 from fumblr import app
-from flask_login import login_required, logout_user, current_user, user_needs_refresh
-from .models import Post, User, Image, Tag, Follow, Like, Message, Comment
+from flask_login import login_required, logout_user, current_user, user_needs_refresh, login_user
+from .models import Post, User, Image, Tag, Follow, Like, Message, Comment, Role
 from .database import db
 import os
 
@@ -14,12 +14,74 @@ def index():
         return redirect(url_for('dashboard'))
     return render_template('home.html')
 
-@app.route('/login')
+@app.route('/login', methods=['get', 'post'])
 def login():
     """
         Log in page
     """
-    return render_template('login.html')
+    if request.method == 'GET':
+        return render_template('login.html')
+
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    user = User.query.filter_by(email=email).one_or_none()
+    if not user:
+        return ('No user found with that email', 404)
+
+    if not user.verify_password(password):
+        return ('Password invalid', 403)
+
+    login_user(user)
+
+    flash('Logged in successfully')
+
+    return redirect(url_for('dashboard'))
+
+@app.route('/register', methods=['get', 'post'])
+def register():
+    """
+    Registration page
+
+    """
+    if request.method == 'GET':
+        return render_template('register.html')
+
+    email = request.form.get('email')
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    if User.username_taken(username):
+        return ('Username taken', 403)
+
+    if User.email_taken(email):
+        return ('Email taken', 403)
+
+    if not User.valid_username(username):
+        return ('Invalid username', 403)
+
+    if not User.valid_email(email):
+        return ('Invalid email', 403)
+
+    if not User.valid_password(password):
+        return ('Invalid password', 403)
+
+    user = User(email, 'email')
+    user.password = user.hash_password(password)
+    user.email = email
+    user.username = username
+
+    role = Role.get_role('user')
+    user.roles.append(role)
+
+    db.session.add(user)
+    db.session.commit()
+
+    login_user(user)
+
+    flash('Registered successfully')
+
+    return redirect(url_for('dashboard'))
 
 @app.route('/logout')
 @login_required
