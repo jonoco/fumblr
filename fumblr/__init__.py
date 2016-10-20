@@ -1,6 +1,6 @@
 from flask import Flask
 from fumblr.database import db
-from .keys import *
+from fumblr.keys import APP_SECRET_KEY
 from werkzeug.contrib.fixers import ProxyFix
 from raven.contrib.flask import Sentry
 
@@ -13,6 +13,7 @@ app.config.from_pyfile('default_settings.py')
 
 from fumblr import views
 from fumblr import filters
+from fumblr import admin
 from .manager import twitter_blueprint, google_blueprint, login_manager
 
 # hook up extensions

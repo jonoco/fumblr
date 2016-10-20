@@ -9,13 +9,17 @@ from werkzeug.utils import secure_filename
 import os
 import re
 
-tags_table = db.Table('tag_post_association',
+tags_posts = db.Table('tag_post_association',
                       db.Column('tag_id', db.Integer, db.ForeignKey('tags.id')),
                       db.Column('post_id', db.Integer, db.ForeignKey('posts.id')))
 
-images_table = db.Table('image_post_association',
+images_posts = db.Table('image_post_association',
                         db.Column('image_id', db.Integer, db.ForeignKey('images.id')),
                         db.Column('post_id', db.Integer, db.ForeignKey('posts.id')))
+
+roles_users = db.Table('role_user_association',
+                       db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+                       db.Column('role_id', db.Integer, db.ForeignKey('roles.id')))
 
 class Image(db.Model):
     __tablename__ = 'images'
@@ -33,7 +37,7 @@ class Image(db.Model):
         self.created = created
 
     def __repr__(self):
-        return '<Image {}>'.format(self.image)
+        return '<Image {} {}>'.format(self.id, self.image)
 
     def get_data(self):
         return {
@@ -165,16 +169,17 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', foreign_keys='Post.user_id', backref=db.backref('posts', lazy='dynamic'), uselist=False)
 
-    images = db.relationship('Image', secondary=images_table, backref=db.backref('posts'))
-    tags = db.relationship('Tag', secondary=tags_table, backref=db.backref('posts', lazy='dynamic'))
-
-    created = db.Column(db.DateTime, default=datetime.utcnow)
+    images = db.relationship('Image', secondary=images_posts, backref=db.backref('posts'))
+    tags = db.relationship('Tag', secondary=tags_posts, backref=db.backref('posts', lazy='dynamic'))
 
     reblog_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     reblog_user = db.relationship('User', foreign_keys='Post.reblog_user_id', uselist=False)
 
     reblog_post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
     reblogs = db.relationship('Post', backref=db.backref('reblog_parent', uselist=False, remote_side=[id]), uselist=True)
+
+    updated = db.Column(db.DateTime, default=datetime.utcnow)
+    created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __init__(self, images, user, tags=None, text=None, created=None):
         self.images = images
@@ -359,13 +364,27 @@ class User(db.Model, UserMixin):
     avatar_id = db.Column(db.Integer, db.ForeignKey('images.id'))
     avatar = db.relationship('Image', backref=db.backref('avatars', lazy='dynamic'), uselist=False)
 
+    email = db.Column(db.String(255))
+    password = db.Column(db.String(255))
+    active = db.Column(db.Boolean)
+    confirmed_at = db.Column(db.DateTime)
+    roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
+
+    last_login_at = db.Column(db.DateTime)
+    current_login_at = db.Column(db.DateTime)
+    login_count = db.Column(db.Integer, default=0)
+
     created = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def __init__(self, loginname, provider, created=None):
+    def __init__(self, loginname, provider, created=None, roles=[]):
         self.loginname = loginname
         self.provider = provider
         self.username = User.generate_username(loginname, id)
         self.created = created
+        self.roles = roles.append(Role.get_role('user'))
+
+    def __repr__(self):
+        return '<User {} {}>'.format(self.id, self.username)
 
     @classmethod
     def username_taken(cls, username):
@@ -473,6 +492,13 @@ class User(db.Model, UserMixin):
         db.session.commit()
 
         return image
+
+    def has_role(self, name):
+        for role in self.roles:
+            if role.name == name:
+                return True
+
+        return False
 
 class Follow(db.Model):
     __tablename__ = 'followers'
@@ -681,3 +707,25 @@ class Comment(db.Model):
         db.session.commit()
 
         return comment
+
+class Role(db.Model):
+    __tablename__ = 'roles'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name= db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(255))
+
+    def __init__(self, name, description=None):
+        self.name = name
+        self.description = description
+
+    def __repr__(self):
+        return '<Role {} {}>'.format(self.id, self.name)
+
+    @classmethod
+    def get_role(cls, name):
+        """
+        Create or find a Tag from the given tag name and return the Tag.
+
+        """
+        return cls.query.filter_by(name=name).one_or_none() or cls(name)

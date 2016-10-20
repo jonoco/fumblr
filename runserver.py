@@ -3,7 +3,7 @@
 import sys
 import os
 from fumblr import app
-from fumblr.database import db
+from fumblr.database import db, setup_database
 
 if __name__ == '__main__':
     if '--drop' in sys.argv:
@@ -17,6 +17,7 @@ if __name__ == '__main__':
             db.reflect()
             db.drop_all()
             db.create_all()
+            setup_database()
             db.session.commit()
             print('Database tables dropped and recreated')
 
