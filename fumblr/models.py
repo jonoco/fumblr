@@ -394,7 +394,7 @@ class User(db.Model, UserMixin):
         Check if username contains illegal characters
 
         """
-        ALLOWED_CHARACTERS = re.compile('[a-zA-Z0-9]+')
+        ALLOWED_CHARACTERS = re.compile('[a-zA-Z0-9-_]+')
         return ALLOWED_CHARACTERS.match(username)
 
     @classmethod

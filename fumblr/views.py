@@ -93,6 +93,23 @@ def logout():
     flash('You have logged out')
     return redirect(url_for('index'))
 
+@app.route('/valid/username/<username>')
+@app.route('/valid/email/<email>')
+def valid(username=None, email=None):
+    if username:
+        if User.username_taken(username):
+            return ('Username taken', 418)
+        else:
+            return ('Username available', 204)
+
+    if email:
+        if User.email_taken(email):
+            return ('Email taken', 418)
+        else:
+            return ('Email available', 204)
+
+    return abort(404)
+
 @app.route('/settings')
 @login_required
 def settings():

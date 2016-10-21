@@ -5,18 +5,27 @@
 	<div class="container">
 		<h1>Register</h1>
     <div class="register-menu">
-				<form action="/register" method="post" class="register-form" enctype="multipart/form-data">
+				<form action="/register" method="post" class="register-form" enctype="multipart/form-data" data-parsley-validate data-parsley-trigger="change">
 					<div class="form-group">
 						<label for="register-email">Email</label>
-						<input type="email" id="register-email" placeholder="email" name="email" class="form-control" />
+						<input type="email" id="register-email" placeholder="email" name="email" class="form-control" required autofocus 
+							data-parsley-remote="/valid/email/{value}" 
+							data-parsley-debounce="500"
+							data-parsley-remote-message="Email already exists." />
 					</div><!-- form-group -->
 					<div class="form-group">
 						<label for="register-password">Password</label>
-						<input type="password" id="register-password" placeholder="password" name="password" class="form-control" />
+						<input type="password" id="register-password" placeholder="password" name="password" class="form-control" 
+							required min="4" max="20" />
 					</div><!-- form-group -->
 					<div class="form-group">
 						<label for="register-password">Username</label>
-						<input type="text" id="register-password" placeholder="username" name="username" class="form-control" />
+						<input type="text" id="register-password" placeholder="username" name="username" class="form-control" required 
+							min="3" max="20" 
+							pattern="[a-zA-Z0-9-_]+" 
+							data-parsley-pattern-message="Only use letters, numbers, or [ - _ ] characters"
+							data-parsley-debounce="500"
+							data-parsley-remote-message="Username already taken." />
 					</div><!-- form-group -->
 					
 					<button type="submit" class="btn btn-primary">Sign up</button>
