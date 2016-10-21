@@ -50,17 +50,17 @@
 
 	var _axios2 = _interopRequireDefault(_axios);
 
-	var _postModal = __webpack_require__(30);
+	var _postModal = __webpack_require__(31);
 
 	var _postModal2 = _interopRequireDefault(_postModal);
 
 	var _confirmModal = __webpack_require__(28);
 
-	var _lightbox = __webpack_require__(29);
+	var _lightbox = __webpack_require__(30);
 
 	var _lightbox2 = _interopRequireDefault(_lightbox);
 
-	var _header = __webpack_require__(33);
+	var _header = __webpack_require__(29);
 
 	var _header2 = _interopRequireDefault(_header);
 
@@ -909,7 +909,7 @@
 	  }
 	};
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(31)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(32)))
 
 /***/ },
 /* 8 */
@@ -17949,7 +17949,7 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(32)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(33)(module)))
 
 /***/ },
 /* 11 */
@@ -18811,6 +18811,51 @@
 
 /***/ },
 /* 29 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Header = function () {
+		function Header() {
+			_classCallCheck(this, Header);
+
+			this.$mobileHeader = $('.mobile-header');
+
+			this.$mobileHeader.find('.search-btn').on('click', this.openMobileSearch.bind(this));
+			this.$mobileHeader.find('.close-btn').on('click', this.closeMobileSearch.bind(this));
+			this.$mobileHeader.find('form').on('submit', this.closeMobileSearch.bind(this));
+		}
+
+		_createClass(Header, [{
+			key: 'openMobileSearch',
+			value: function openMobileSearch() {
+				this.$mobileHeader.find('.nav-icons').addClass('hide-top');
+				this.$mobileHeader.find('.search-bar').removeClass('hide-top');
+				this.$mobileHeader.find('input').focus();
+			}
+		}, {
+			key: 'closeMobileSearch',
+			value: function closeMobileSearch() {
+				this.$mobileHeader.find('.nav-icons').removeClass('hide-top');
+				this.$mobileHeader.find('.search-bar').addClass('hide-top');
+			}
+		}]);
+
+		return Header;
+	}();
+
+	exports.default = Header;
+
+/***/ },
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -18871,7 +18916,7 @@
 	exports.default = LightBox;
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19158,7 +19203,7 @@
 	exports.default = PostModal;
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -19344,7 +19389,7 @@
 
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -19358,51 +19403,6 @@
 		return module;
 	}
 
-
-/***/ },
-/* 33 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Header = function () {
-		function Header() {
-			_classCallCheck(this, Header);
-
-			this.$mobileHeader = $('.mobile-header');
-
-			this.$mobileHeader.find('.search-btn').on('click', this.openMobileSearch.bind(this));
-			this.$mobileHeader.find('.close-btn').on('click', this.closeMobileSearch.bind(this));
-			this.$mobileHeader.find('form').on('submit', this.closeMobileSearch.bind(this));
-		}
-
-		_createClass(Header, [{
-			key: 'openMobileSearch',
-			value: function openMobileSearch() {
-				this.$mobileHeader.find('.nav-icons').addClass('hide-top');
-				this.$mobileHeader.find('.search-bar').removeClass('hide-top');
-				this.$mobileHeader.find('input').focus();
-			}
-		}, {
-			key: 'closeMobileSearch',
-			value: function closeMobileSearch() {
-				this.$mobileHeader.find('.nav-icons').removeClass('hide-top');
-				this.$mobileHeader.find('.search-bar').addClass('hide-top');
-			}
-		}]);
-
-		return Header;
-	}();
-
-	exports.default = Header;
 
 /***/ }
 /******/ ]);
