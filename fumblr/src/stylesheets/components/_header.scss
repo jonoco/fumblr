@@ -8,30 +8,41 @@
 		border-bottom: 1px solid rgba(0, 0, 0, .2);
 		height: 3rem;
 		padding: 0;
+		font-size: 1.5rem;
+		.hide-top {
+			top: -3rem;
+			position: fixed;
+		}
 	}
-	.logo {
-		display: block;
-		color: #eee;
-		height: 3rem;
-		font-size: 2rem;
-		margin-top: .5rem;
-		a {  }
+	.nav-icons {
+		transition: .1s all ease;
+		padding: .75rem;
+		display: flex;
+		justify-content: space-between;
+		.logo { font-size: 1.7rem; }
 	}
 	.search-bar { 
+		transition: .1s all ease;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
 		input { 
 			background-color: rgba(0,0,0,0.2);
 			color: #eee;
 			height: 3rem;	
 			width: 100%;
 			text-align: center;
+			border: none;
+		}
+		.close-btn {
+			color: #aaa;
+			position: absolute;
+			padding: .75rem 0 0 .75rem; 
+			left: 0;	
 		}
 	}
-	.menu-burger {
-		height: 100%;
-		padding: 1rem .5rem .5rem 0;
-		text-align: center;
-		i { font-size: 1.5rem; }
-	}
+
 	#header-sidebar {
 		display: block;
 		transition: all .2s ease;
@@ -77,17 +88,36 @@
 		.mobile-header { display: none; }
 		.screen-header { display: block; }
 
-		.logo { font-size: 1rem; }
+		nav {
+			font-size: 1rem;
+		}
+
+		.post-btn {
+			background-color: $primary-color-high;
+			padding: .5rem;
+			border-radius: 5px;
+			&:hover { color: #fff; }
+		}
+
+		.logo { 
+			font-size: 1.5rem; 
+			margin-right: 1rem;
+			display: inline;
+			color: #eee;
+		}
 		.nav-link {
 			margin-top: .5rem;
 		}
 
 		.search-bar {
 			display: inline;
+			position: relative;			
 			input {
+				margin-top: 8px;
 				display: inline;
 				max-width: 12rem;
 				text-align: left;
+				height: 35px;
 			}
 		}
 	}

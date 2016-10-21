@@ -1,21 +1,20 @@
 <header id="header">
 	<nav class="navbar mobile-header" role="navigation">
 		<div class="nav navbar-nav">
-			<div class="container-fluid">	
-				<div class="row">
-					<div class="logo col-xs-2">
-						<a href="{{ url_for('index') }}">F</a>	
-					</div><!-- logo -->
-					<div class="search-bar col-xs-8">
-						<form action="/search" class="form-inline">
-							<input class="form-control" type="text" name="q" placeholder="Search Fumblr" />
-						</form>					
-					</div><!-- search-bar -->
-					<div class="menu-burger col-xs-2">
-						<i class="fa fa-bars menu-btn"></i>
-					</div><!-- menu-burger -->
-				</div><!-- row -->
-			</div><!-- container-fluid -->
+			<div class="nav-icons">
+				<a href="{{ url_for('index') }}">
+					<i class="logo">F</i>
+				</a>	
+				<i class="fa fa-search search-btn"></i>
+				<i class="fa fa-bars menu-btn"></i>
+			</div><!-- nav-icons -->		
+			
+			<div class="search-bar hide-top">
+				<form action="/search" class="form-inline">
+					<i class="fa fa-close close-btn"></i>
+					<input class="form-control" type="text" name="q" placeholder="Search Fumblr" />
+				</form>					
+			</div><!-- search-bar -->
 		</div><!-- nav navbar-nav -->
 	</nav><!-- navbar -->
 
@@ -49,22 +48,26 @@
 	<nav class="navbar screen-header" role="navigation">
 		<div class="nav navbar-nav">
 			<div class="container">
-				<a href="{{ url_for('index') }}" class="navbar-brand">Fumblr</a>
+				<div class="logo">
+					<a href="{{ url_for('index') }}" class="nav-item nav-link">Fumblr</a>
+				</div><!-- logo -->
 				<form action="/search" class="search-bar" class="form-inline">
 					<input class="form-control" type="text" name="q" placeholder="Search Fumblr" />
 				</form>
 
 				<div class="pull-xs-right">
-					<a href="{{ url_for('gallery') }}" class="nav-item nav-link">Gallery</a>
+					<a href="{{ url_for('gallery') }}" class="nav-item nav-link" title="Explore gallery">
+						<i class="fa fa-globe"></i>
+					</a>
 
 					{% if current_user.is_authenticated %}
-					<a href="{{ url_for('message') }}" class="nav-item nav-link">Messages</a>
-					<a href="#" class="nav-item nav-link post-btn">New Post</a>
+					<a href="{{ url_for('message') }}" class="nav-item nav-link" title="Messages">
+						<i class="fa fa-envelope-o"></i>
+					</a>
 					<div class="nav-item dropdown">
-						<button type="button" data-toggle="dropdown" class="nav-item btn btn-outline-info dropdown-toggle">
-							{{ current_user.username }}</button>
+						<i data-toggle="dropdown" class="nav-item nav-link dropdown-toggle fa fa-user" title="Account menu"></i>
 						<div class="dropdown-menu">
-							<a href="{{ url_for('dashboard') }}" class="dropdown-item">Dashboard</a>
+							<a href="{{ url_for('dashboard') }}" class="dropdown-item">{{ current_user.username }}</a>
 							<a href="{{ url_for('settings') }}" class="dropdown-item">Settings</a>
 							<div class="dropdown-divider"></div><!-- dropdown-divider -->
 							<a href="{{ url_for('following') }}" class="dropdown-item">Following</a>
@@ -73,7 +76,11 @@
 							<div class="dropdown-divider"></div><!-- dropdown-divider -->
 							<a href="{{ url_for('logout') }}" class="dropdown-item">Log out</a>
 						</div><!-- dropdown-menu -->
-					</div><!-- btn-group -->
+					</div><!-- dropdown -->
+					<a href="#" class="nav-item nav-link post-btn">
+						<i class="fa fa-plus" title="New post"></i>
+						<span>New Post</span>
+					</a>
 					{% else %}
 					<a href="{{ url_for('login') }}" class="nav-item nav-link">Log in</a>
 					<a href="{{ url_for('register') }}" class="nav-item nav-link">Sign up</a>
