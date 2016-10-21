@@ -43,6 +43,13 @@
 		}
 	}
 
+	.user-name {
+		display: inline-block;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		max-width: 10rem;
+	}
+
 	#header-sidebar {
 		display: block;
 		transition: all .2s ease;
@@ -50,6 +57,11 @@
 		right: -300px;
 		width: 100%;
 		height: 100%;
+
+		i {
+			width: 2rem;
+			margin-right: .5rem;
+		}
 		
 		.side-menu {
 			z-index: 10;
@@ -88,21 +100,18 @@
 		.mobile-header { display: none; }
 		.screen-header { display: block; }
 
-		.post-btn {
-			color: $primary-color;
-			background-color: $primary-color-high;
-			padding: .3rem .5rem;
-			border-radius: 5px;
-			&:hover { color: $primary-color; }
+		nav {
+			font-size: 2rem;
 		}
 
 		.logo { 
 			margin-right: 1rem;
+			margin-top: .5rem;
 			display: inline;
 			color: #eee;
 		}
 		.nav-link {
-			margin-top: .5rem;
+			// margin-top: .5rem;
 			margin-right: 1rem;
 		}
 
