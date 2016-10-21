@@ -6,11 +6,11 @@
 		@extend %clearfix;
 		background-color: $primary-color;
 		border-bottom: 1px solid rgba(0, 0, 0, .2);
-		height: 3rem;
+		height: 50px;
 		padding: 0;
 		font-size: 1.5rem;
 		.hide-top {
-			top: -3rem;
+			top: -50px;
 			position: fixed;
 		}
 	}
@@ -88,25 +88,22 @@
 		.mobile-header { display: none; }
 		.screen-header { display: block; }
 
-		nav {
-			font-size: 1rem;
-		}
-
 		.post-btn {
+			color: $primary-color;
 			background-color: $primary-color-high;
-			padding: .5rem;
+			padding: .3rem .5rem;
 			border-radius: 5px;
-			&:hover { color: #fff; }
+			&:hover { color: $primary-color; }
 		}
 
 		.logo { 
-			font-size: 1.5rem; 
 			margin-right: 1rem;
 			display: inline;
 			color: #eee;
 		}
 		.nav-link {
 			margin-top: .5rem;
+			margin-right: 1rem;
 		}
 
 		.search-bar {
