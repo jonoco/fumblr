@@ -30,7 +30,8 @@
 
 				<button type="submit" class="btn">Change Username</button>
 			</form>
-
+			
+			{% if current_user.provider == 'email' %}
 			<form action="/settings/password" method="post">
 				<div class="form-group">
 					<label>Change password</label>
@@ -40,6 +41,7 @@
 
 				<button type="submit" class="btn">Change Password</button>
 			</form>
+			{% endif %}
 		</div>
 	</div><!-- container -->
 </div><!-- home -->
