@@ -295,6 +295,7 @@ class Post(db.Model):
         if tags:
             self.tags = Tag.get_tag_list(tags)
 
+        self.updated = datetime.utcnow()
         db.session.commit()
 
     @classmethod
