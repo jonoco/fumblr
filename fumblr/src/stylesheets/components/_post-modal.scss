@@ -48,16 +48,20 @@
 	}
 	.droparea {
 		display: none;
+		transition: .2s all ease;
 		background-color: rgba(0,0,0,0.1);
 		text-align: center;	
 		width: 100%;
 		height: 5rem;
 		margin-bottom: 2rem;
 		padding-top: 2rem;
-		transition: .2s all ease;
 		position: relative;
+		animation: none;
+		&::before { content: 'Drop photos here'; }
 		&.dragover {
 			background-color: rgba(0,0,0,0.2);
+			animation: flicker 2s ease-in-out infinite;
+			&::before { content: 'Let it drop'; }
 		}
 		.dropbox {
 			width: 100%;
@@ -78,6 +82,11 @@
 		&:hover {
 			color: #91E5FF;
 		}
+	}
+
+	.url-upload,
+	.file-upload {
+		animation: fadein .2s ease-in forwards;
 	}
 	
 	.file-upload {
@@ -114,6 +123,23 @@
 		.droparea { display: block; }	
 	}
 
+	@keyframes fadein {
+		0% { opacity: 0; }
+		100% { opacity: 1; }
+	}
+
+	@keyframes reverb {
+		0%,
+		50%,
+		100% {
+			transform: scale(1.2);
+		}
+		25%,
+		75% {
+			transform: scale(.9);
+		}
+	}
+
 	@keyframes flash {
 		0%,
 		50%,
@@ -138,3 +164,4 @@
 		}
 	}
 }
+

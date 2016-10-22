@@ -213,6 +213,8 @@ export default class PostModal {
         e.stopPropagation();
         e.preventDefault();
 
+        this.$droparea.removeClass('dragover');
+        
         const files = e.originalEvent.dataTransfer.files;
         this.handleFiles(files);
     }
