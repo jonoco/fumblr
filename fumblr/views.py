@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, flash, request, jsonify, current_app, json, abort
 from fumblr import app
-from flask_login import login_required, logout_user, current_user, user_needs_refresh, login_user
+from flask_login import login_required, logout_user, current_user, user_needs_refresh
 from .models import Post, User, Image, Tag, Follow, Like, Message, Comment, Role
 from .database import db
 import os
@@ -512,7 +512,7 @@ def page_not_found(error):
     """
         404 error page
     """
-    return render_template('not_found.html')
+    return render_template('error/404.html')
 
 @app.before_request
 def before_request():
