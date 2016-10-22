@@ -16,7 +16,7 @@ def setup_database():
     user_admin = User('admin@fum.blr', 'email')
     user_admin.email = 'admin@fum.blr'
     user_admin.username = 'fumblr'
-    user_admin.password = user_admin.hash_password('admin')
+    user_admin.password = User.hash_password('admin')
     user_admin.roles.extend([role_user, role_superuser])
 
     db.session.add(role_user)

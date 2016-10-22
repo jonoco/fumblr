@@ -179,7 +179,6 @@ export default class PostModal {
         this.$tags.val('');
         this.$url.val('');
         this.$preview.empty();
-        // this.formData = new FormData();
         this.formData = {};
         this.hideLoading();
     }
@@ -214,7 +213,7 @@ export default class PostModal {
         e.preventDefault();
 
         this.$droparea.removeClass('dragover');
-        
+
         const files = e.originalEvent.dataTransfer.files;
         this.handleFiles(files);
     }

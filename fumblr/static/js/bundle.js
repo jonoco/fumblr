@@ -19135,7 +19135,6 @@
 	            this.$tags.val('');
 	            this.$url.val('');
 	            this.$preview.empty();
-	            // this.formData = new FormData();
 	            this.formData = {};
 	            this.hideLoading();
 	        }

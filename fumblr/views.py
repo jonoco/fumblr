@@ -67,7 +67,7 @@ def register():
         return ('Invalid password', 403)
 
     user = User(email, 'email')
-    user.password = user.hash_password(password)
+    user.password = User.hash_password(password)
     user.email = email
     user.username = username
 
@@ -137,6 +137,32 @@ def set_username():
 
     ## refresh login manager
     user_needs_refresh.send(current_app._get_current_object())
+
+    flash('Updated username to {}'.format(new_username))
+
+    return render_template('settings.html', user=current_user.get_user_info(), error={})
+
+@app.route('/settings/password', methods=['post'])
+@login_required
+def set_password():
+    """
+    Set a new password
+
+    """
+    orig_password = request.form.get('original-password')
+    new_password = request.form.get('new-password')
+
+    if not User.valid_password(new_password):
+        return ('Invalid password', 403)
+
+    if not User.verify_password(orig_password):
+        return ('Incorrect password', 403)
+
+    current_user.password = User.hash_password(new_password)
+
+    user_needs_refresh.send(current_app._get_current_object())
+
+    flash('Updated password')
 
     return render_template('settings.html', user=current_user.get_user_info(), error={})
 

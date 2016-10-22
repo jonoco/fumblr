@@ -541,7 +541,8 @@ class User(db.Model, UserMixin):
 
         return False
 
-    def hash_password(self, pw):
+    @staticmethod
+    def hash_password(pw):
         """
         Hash and return a given password
 
