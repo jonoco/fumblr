@@ -447,10 +447,10 @@ class User(db.Model, UserMixin):
         Check if password conform to a valid password pattern
 
         Example:
-            Any password between 4 and 20 characters
+            Password between 8 and 20 characters including any @*#$%^&* characters
 
         """
-        password_pattern = re.compile('^.{4,20}$')
+        password_pattern = re.compile('^([a-zA-Z0-9@*#$%^&]{8,20})$')
         return password_pattern.match(password)
 
     def get_user_info(self):

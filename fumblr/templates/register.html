@@ -16,15 +16,16 @@
 					<div class="form-group">
 						<label for="register-password">Password</label>
 						<input type="password" id="register-password" placeholder="password" name="password" class="form-control" 
-							required min="4" max="20" />
+							pattern="^([a-zA-Z0-9@*#$%^&]{8,20})$" 						
+							data-parsley-pattern-message="Password must be 8-20 characters long, using letters, numbers, or [ @*#$%^& ]"/>
 					</div><!-- form-group -->
 					<div class="form-group">
-						<label for="register-password">Username</label>
-						<input type="text" id="register-password" placeholder="username" name="username" class="form-control" required 
-							min="3" max="20" 
-							pattern="[a-zA-Z0-9-_]+" 
-							data-parsley-pattern-message="Only use letters, numbers, or [ - _ ] characters"
+						<label for="register-username">Username</label>
+						<input type="text" id="register-username" placeholder="username" name="username" class="form-control" required 
+							pattern="^([a-zA-Z0-9]{3,20})$" 
+							data-parsley-pattern-message="Username must be 3-20 characters long, using letters, numbers, or [ - _ ] characters"
 							data-parsley-debounce="500"
+							data-parsley-remote="/valid/username/{value}"
 							data-parsley-remote-message="Username already taken." />
 					</div><!-- form-group -->
 					

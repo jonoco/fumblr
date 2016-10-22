@@ -10,33 +10,37 @@
 			<div class="avatar">
 				<img src="{{ user.avatar if user.avatar else 'http://i.imgur.com/Z9J5b6m.png' }}">
 			</div><!-- avatar -->
-			<form action="/settings/avatar" method="post" enctype="multipart/form-data">
+			<form action="/settings/avatar" method="post" enctype="multipart/form-data" data-parsley-validate>
 				<div class="form-group">
 					<label for="settings-avatar">Avatar</label>
-					<input type="file" id="settings-avatar" class="form-control" name="file" />
+					<input type="file" id="settings-avatar" class="form-control" name="file" required />
 				</div><!-- form-group -->
 
 				<button type="submit" class="btn">Change Avatar</button>
 			</form>
 
-			<form action="/settings/username" method="post">
+			<form action="/settings/username" method="post" data-parsley-validate data-parsley-trigger="change">
 				<div class="form-group">
 					<label for="settings-username">Change username</label>
-					<input type="text" id="settings-username" class="form-control" name="username" value="{{ user.username }}">
-					{% if error.username %}
-						<span class="form-error">{{ error.username }}</span>
-					{% endif %}
+					<input type="text" id="settings-username" class="form-control" name="username" value="{{ user.username }}" required 
+						pattern="^([a-zA-Z0-9]{3,20})$" 
+						data-parsley-pattern-message="Username must be 3-20 characters long, using letters, numbers, or [ - _ ] characters"
+						data-parsley-debounce="500"
+						data-parsley-remote="/valid/username/{value}"
+						data-parsley-remote-message="Username already taken." />
 				</div>
 
 				<button type="submit" class="btn">Change Username</button>
 			</form>
 			
 			{% if current_user.provider == 'email' %}
-			<form action="/settings/password" method="post">
+			<form action="/settings/password" method="post" data-parsley-validate data-parsley-trigger="change">
 				<div class="form-group">
 					<label>Change password</label>
-					<input type="password" class="form-control" name="original-password" placeholder="Original password" />
-					<input type="password" class="form-control" name="new-password" placeholder="New password" />
+					<input type="password" class="form-control" name="original-password" placeholder="Original password" required />
+					<input type="password" class="form-control" name="new-password" placeholder="New password" required
+						pattern="^([a-zA-Z0-9@*#$%^&]{8,20})$" 						
+						data-parsley-pattern-message="Password must be 8-20 characters long, using letters, numbers, or [ @*#$%^& ]"/>
 				</div><!-- form-group -->
 
 				<button type="submit" class="btn">Change Password</button>

@@ -116,7 +116,7 @@ def settings():
     """
         User's account settings
     """
-    return render_template('settings.html', user=current_user.get_user_info(), error={})
+    return render_template('settings.html', user=current_user.get_user_info())
 
 @app.route('/settings/username', methods=['post'])
 @login_required
@@ -126,10 +126,8 @@ def set_username():
     """
     new_username = request.form['username']
     if User.username_taken(new_username):
-        error = {
-            'username': '{} is already taken'.format(new_username)
-        }
-        return render_template('settings.html', user=current_user.get_user_info(), error=error)
+        return ('Username taken', 403)
+
     else:
         user = current_user
         user.username = new_username
@@ -140,7 +138,7 @@ def set_username():
 
     flash('Updated username to {}'.format(new_username))
 
-    return render_template('settings.html', user=current_user.get_user_info(), error={})
+    return render_template('settings.html', user=current_user.get_user_info())
 
 @app.route('/settings/password', methods=['post'])
 @login_required
@@ -164,7 +162,7 @@ def set_password():
 
     flash('Updated password')
 
-    return render_template('settings.html', user=current_user.get_user_info(), error={})
+    return render_template('settings.html', user=current_user.get_user_info())
 
 @app.route('/settings/avatar', methods=['post'])
 @login_required
@@ -177,7 +175,7 @@ def set_avatar():
         current_user.set_avatar(file)
         user_needs_refresh.send(current_app._get_current_object())
 
-        return render_template('settings.html', user=current_user.get_user_info(), error={})
+        return render_template('settings.html', user=current_user.get_user_info())
 
 @app.route('/message', methods=['get', 'post'])
 @login_required
