@@ -2,7 +2,7 @@ from flask import current_app
 from .database import db
 from .services.imgur import upload, upload_from_url
 from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
-from flask_login import UserMixin, current_user
+from flask_login import UserMixin, current_user, login_user, logout_user
 from datetime import datetime
 from sqlalchemy import exists, and_, or_
 from werkzeug.utils import secure_filename
@@ -570,6 +570,23 @@ class User(db.Model, UserMixin):
             return False
 
         return sha256_crypt.verify(pw, self.password)
+
+    def login(self):
+        """
+        Register user as logged in
+
+        """
+        login_user(self)
+        self.login_count = self.login_count + 1
+        self.last_login_at = self.current_login_at
+        self.current_login_at = datetime.utcnow()
+
+    def logout(self):
+        """
+        Unregister user as logged in
+
+        """
+        logout_user()
 
 class Follow(db.Model):
     __tablename__ = 'followers'

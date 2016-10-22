@@ -32,7 +32,7 @@ def login():
     if not user.verify_password(password):
         return ('Password invalid', 403)
 
-    login_user(user)
+    user.login()
 
     flash('Logged in successfully')
 
@@ -77,7 +77,7 @@ def register():
     db.session.add(user)
     db.session.commit()
 
-    login_user(user)
+    user.login()
 
     flash('Registered successfully')
 

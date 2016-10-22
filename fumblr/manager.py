@@ -41,7 +41,7 @@ def google_logged_in(blueprint, token):
             user = User(loginname=email, provider='google')
             db.session.add(user)
             db.session.commit()
-        login_user(user)
+        user.login()
         flash('Successfully signed in with Google')
     else:
         msg = 'Failed to fetch user info from {}'.format(blueprint.name)
@@ -73,7 +73,7 @@ def twitter_logged_in(blueprint, token):
             user = User(loginname=username, provider='twitter')
             db.session.add(user)
             db.session.commit()
-        login_user(user)
+        user.login()
         flash('Successfully signed in with Twitter')
     else:
         msg = 'Failed to fetch user info from {}'.format(blueprint.name)
