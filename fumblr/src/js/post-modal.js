@@ -29,7 +29,7 @@ export default class PostModal {
             .on('dragenter', this.dragenter.bind(this))
             .on('dragover', this.dragover.bind(this))
             .on('dragleave', this.dragleave.bind(this))
-            .on('drop', this.drop);
+            .on('drop', this.drop.bind(this));
           
         this.$switchBtn = this.$postModal.find('.switch-input');
         this.$switchBtn.on('click', this.switchInputs.bind(this));
