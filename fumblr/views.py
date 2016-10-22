@@ -177,9 +177,10 @@ def set_avatar():
 
         return render_template('settings.html', user=current_user.get_user_info())
 
-@app.route('/message', methods=['get', 'post'])
+@app.route('/message', methods=['get'])
+@app.route('/message/user/<username>', methods=['post'])
 @login_required
-def message():
+def message(username=None):
     """
         Get and send messages
     """
@@ -201,12 +202,14 @@ def message():
 
         return render_template('messages.html', users=user_messages)
 
-    req = request.get_json()
-    username = req['user']
-    text = req['text']
-    msg = Message.send_message(username, text)
+    if username:
+        if not User.username_taken(username):
+            return ('No user with that username', 403)
+        req = request.get_json()
+        text = req['text']
+        msg = Message.send_message(username, text)
 
-    return jsonify(message=msg.get_data())
+        return jsonify(message=render_template('component/message.html', message=msg.get_data()), user=username)
 
 @app.route('/comment', methods=['post'])
 @login_required

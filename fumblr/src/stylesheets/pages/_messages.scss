@@ -5,54 +5,73 @@
 		align-items: flex-start;
 	}
 
-	.message-display {
+	section {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
 		background-color: rgba(0,0,0, 0.2);
 		border-radius: 5px;
 		flex: 2 1 400px;
 		margin: 1% 1% 1% 0; 
-		padding: 1em 0.75em;
 		height: 400px;
-		overflow-y: auto;
-	}
+		.user-messages {
+			width: 100%;
+			overflow-y: auto;
+			&.hide {
+				display: none;
+			}
+		}
+		
+		.no-content {
+			color: #eee;
+			text-align: center;
+		}
 
-	.user-messages {
-		&.hide {
-			display: none;
+		.message-bar {
+			align-self: flex-end;
+			height: 45px;
+			width: 100%;
+			margin-top: auto;
+			input {
+				height: 45px;
+				width: 100%;
+				padding-left: .5rem;
+				border: none;
+			}
+			span {
+				height: inherit;
+				display: block;
+				overflow: hidden;
+			}
+			button {
+				float: right;
+				height: 45px;
+				padding: .75rem .5rem;
+				width: 5rem;
+				border: none;
+			}
 		}
 	}
 
-	.message-list {
+	aside {
 		background-color: rgba(0,0,0, 0.2);
 		border-radius: 5px;
 		flex: 1 2 200px;
-		margin: 1% 0;
-		max-height: 400px;
+		margin: 1% 1%;
+		max-height: 355px;
 		overflow-y: auto;
 		overflow-x: hidden;
-	}
+		.message-user {
+			color: #eee;
+			padding: 0.75em 1em;
+			&.selected {
+				font-weight: 700;
+			}
 
-	.message-user {
-		color: #eee;
-		padding: 0.75em 1em;
-
-		&.selected {
-			font-weight: 700;
+			&:hover {
+				background-color: rgba(0,0,0, 0.2);
+				cursor: pointer;
+			}
 		}
-
-		&:hover {
-			background-color: rgba(0,0,0, 0.2);
-			cursor: pointer;
-		}
-	}
-	.message {
-		.message-from, .message-time {
-			font-size: 12px;
-			font-weight: 700;
-			color: hsl(0,0, 50);
-		}
-	}
-	.no-content {
-		color: #eee;
-		text-align: center;
 	}
 }

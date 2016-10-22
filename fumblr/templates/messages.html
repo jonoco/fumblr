@@ -6,23 +6,29 @@
 		<h1>Messages</h1>
 
 		<div class="message-view">
-			<section class="message-display">
-				{% for user in users %}
-				<div class="user-messages hide" data-user="{{ user }}">
-					{% for message in users[user] %}
-					<li class="message list-group-item">
-						<span class="message-from">{{ message['from'] }}</span>
-						<span class="message-time pull-xs-right">{{ message['created']|timesince }}</span>
-						<p class="message-text">{{ message['text'] }}</p>
-					</li>
-					{% endfor %}
-				</div><!-- user-messages -->
-				{% else %}
+			<section>
+				{% if not users %}
 				<div class="no-content"><em>There are no messages.</em></div>
-				{% endfor %}
+				{% else %}
+					{% for user in users %}
+					<ul class="user-messages hide" data-user="{{ user }}">
+						{% for message in users[user] %}
+						{% include 'component/message.html' %}
+						{% endfor %}
+					</ul><!-- user-messages -->
+					{% endfor %}
+					<div class="message-bar hide">
+						<form action="/message" method="post" class="message-form" enctype="multipart/form-data">
+			        <button type="submit">Send</button>
+			        <span>
+			        	<input class="message-text" type="text" name="text" placeholder="Enter a message">
+			        </span>
+		        </form>
+					</div><!-- message-bar -->
+				{% endif %}
 			</section><!-- message-display -->
 
-			<aside class="message-list">
+			<aside>
 				{% for user in users %}
 				<div class="message-user" data-user="{{ user }}">
 					{{ user }}

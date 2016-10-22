@@ -3,6 +3,7 @@ import PostModal from './post-modal';
 import { askConfirm } from './confirm-modal';
 import LightBox from './lightbox';
 import Header from './header';
+import Messages from './messages';
 
 (function() {
     // Check browser compatibility for form support
@@ -28,15 +29,7 @@ import Header from './header';
     postModal.init();
     const lightbox = new LightBox();
     const header = new Header();
-
-    // View messages
-    $('.message-user').on('click', openUserMessages);
-    function openUserMessages(e) {
-        const user = $(this).addClass('selected').data('user');
-        $(`.message-user[data-user!='${user}']`).removeClass('selected');
-        $(`.user-messages[data-user!='${user}']`).addClass('hide');
-        const msgList = $(`.user-messages[data-user='${user}']`).removeClass('hide');
-    }
+    const messages = new Messages();
     
     // Comment modal
     $('.comment-btn').on('click', openCommentModal);
@@ -79,32 +72,11 @@ import Header from './header';
         const user = $(this).data('user');
 
         const $msgModal = $('#message-modal');
-              $msgModal.find('.message-form').data('user', user);
+              $msgModal.find('.message-form').attr('action', `/message/user/${user}`);
               $msgModal.find('.message-text').val('');
 
         $msgModal.modal('show');
-    }
-
-    // Send message
-    $('.message-form').on('submit', sendMessage);
-    function sendMessage(e) {
-        e.preventDefault();
-        
-        const $msgModal = $('#message-modal');
-        const $form = $msgModal.find('.message-form');
-        const user = $form.data('user');
-        const text = $form.find('.message-text').val();
-
-        axios.post('/message', {
-            user, 
-            text
-        }).then(res => {
-            console.log(res);
-            $msgModal.modal('hide');
-
-        }).catch(err => {
-            console.log(err);
-        });
+        $msgModal.find('form').on('submit', () => { $msgModal.modal('hide'); })
     }
 
     // Delete button

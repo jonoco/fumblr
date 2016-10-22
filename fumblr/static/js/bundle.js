@@ -64,6 +64,10 @@
 
 	var _header2 = _interopRequireDefault(_header);
 
+	var _messages = __webpack_require__(34);
+
+	var _messages2 = _interopRequireDefault(_messages);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	(function () {
@@ -85,15 +89,7 @@
 	    postModal.init();
 	    var lightbox = new _lightbox2.default();
 	    var header = new _header2.default();
-
-	    // View messages
-	    $('.message-user').on('click', openUserMessages);
-	    function openUserMessages(e) {
-	        var user = $(this).addClass('selected').data('user');
-	        $('.message-user[data-user!=\'' + user + '\']').removeClass('selected');
-	        $('.user-messages[data-user!=\'' + user + '\']').addClass('hide');
-	        var msgList = $('.user-messages[data-user=\'' + user + '\']').removeClass('hide');
-	    }
+	    var messages = new _messages2.default();
 
 	    // Comment modal
 	    $('.comment-btn').on('click', openCommentModal);
@@ -136,30 +132,12 @@
 	        var user = $(this).data('user');
 
 	        var $msgModal = $('#message-modal');
-	        $msgModal.find('.message-form').data('user', user);
+	        $msgModal.find('.message-form').attr('action', '/message/user/' + user);
 	        $msgModal.find('.message-text').val('');
 
 	        $msgModal.modal('show');
-	    }
-
-	    // Send message
-	    $('.message-form').on('submit', sendMessage);
-	    function sendMessage(e) {
-	        e.preventDefault();
-
-	        var $msgModal = $('#message-modal');
-	        var $form = $msgModal.find('.message-form');
-	        var user = $form.data('user');
-	        var text = $form.find('.message-text').val();
-
-	        _axios2.default.post('/message', {
-	            user: user,
-	            text: text
-	        }).then(function (res) {
-	            console.log(res);
+	        $msgModal.find('form').on('submit', function () {
 	            $msgModal.modal('hide');
-	        }).catch(function (err) {
-	            console.log(err);
 	        });
 	    }
 
@@ -19404,6 +19382,90 @@
 		return module;
 	}
 
+
+/***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _axios = __webpack_require__(2);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Messages = function () {
+	    function Messages() {
+	        _classCallCheck(this, Messages);
+
+	        this.$messages = $('#messages');
+	        this.$form = this.$messages.find('form');
+	        this.$messageBar = this.$messages.find('.message-bar');
+	        this.$messageUser = $('.message-user');
+
+	        this.$messageUser.on('click', this.openUserMessages.bind(this));
+	        this.$form.on('submit', this.sendMessage.bind(this));
+	    }
+
+	    _createClass(Messages, [{
+	        key: 'sendMessage',
+	        value: function sendMessage(e) {
+	            var _this = this;
+
+	            e.preventDefault();
+
+	            var $form = $('#messages form');
+	            var url = $form.attr('action');
+	            var text = $form.find('.message-text').val();
+	            $form.find('.message-text').val('');
+
+	            _axios2.default.post(url, {
+	                text: text
+	            }).then(function (res) {
+	                console.log(res.data);
+	                _this.addMessage(res.data.message, res.data.user);
+	            }).catch(function (err) {
+	                console.log(err);
+	            });
+	        }
+	    }, {
+	        key: 'openUserMessages',
+	        value: function openUserMessages(e) {
+	            var user = $(e.currentTarget).addClass('selected').data('user');
+	            this.$messages.find('.message-user[data-user!=\'' + user + '\']').removeClass('selected');
+	            this.$messages.find('.user-messages[data-user!=\'' + user + '\']').addClass('hide');
+	            this.$messages.find('.user-messages[data-user=\'' + user + '\']').removeClass('hide');
+
+	            this.$messageBar.removeClass('hide');
+	            this.$messages.find('form').attr('action', '/message/user/' + user);
+
+	            var messageList = this.$messages.find('.user-messages[data-user=\'' + user + '\']');
+	            var height = messageList.height();
+	            messageList.scrollTop(height);
+	        }
+	    }, {
+	        key: 'addMessage',
+	        value: function addMessage(msg, user) {
+	            var $newMsg = $(msg);
+	            var $messageList = this.$messages.find('.user-messages[data-user=\'' + user + '\']');
+	            $messageList.append($newMsg);
+	            $messageList.scrollTop($messageList.height());
+	        }
+	    }]);
+
+	    return Messages;
+	}();
+
+	exports.default = Messages;
 
 /***/ }
 /******/ ]);
