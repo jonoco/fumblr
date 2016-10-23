@@ -126,21 +126,6 @@
 	        });
 	    }
 
-	    // Message modal
-	    $('.msg-btn').on('click', openMsgModal);
-	    function openMsgModal() {
-	        var user = $(this).data('user');
-
-	        var $msgModal = $('#message-modal');
-	        $msgModal.find('.message-form').attr('action', '/message/user/' + user);
-	        $msgModal.find('.message-text').val('');
-
-	        $msgModal.modal('show');
-	        $msgModal.find('form').on('submit', function () {
-	            $msgModal.modal('hide');
-	        });
-	    }
-
 	    // Delete button
 	    var $deleteBtn = $('.delete-btn');
 	    if (!!$deleteBtn) {
@@ -18924,6 +18909,9 @@
 
 	        this.$messageUser.on('click', this.openUserMessages.bind(this));
 	        this.$form.on('submit', this.sendMessage.bind(this));
+
+	        // Message modal
+	        $('.msg-btn').on('click', this.openMsgModal);
 	    }
 
 	    _createClass(Messages, [{
@@ -18969,6 +18957,21 @@
 	            var $messageList = this.$messages.find('.user-messages[data-user=\'' + user + '\']');
 	            $messageList.append($newMsg);
 	            $messageList.scrollTop($messageList.height());
+	        }
+	    }, {
+	        key: 'openMsgModal',
+	        value: function openMsgModal() {
+	            var user = $(this).data('user');
+
+	            var $msgModal = $('#message-modal');
+	            $msgModal.find('.message-text').val('');
+	            var $form = $msgModal.find('form');
+	            $form.attr('action', '/message/user/' + user);
+	            $form.on('submit', function () {
+	                $msgModal.modal('hide');
+	            });
+
+	            $msgModal.modal('show');
 	        }
 	    }]);
 

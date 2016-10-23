@@ -66,19 +66,6 @@ import Messages from './messages';
         });
     }
 
-    // Message modal
-    $('.msg-btn').on('click', openMsgModal);
-    function openMsgModal() {
-        const user = $(this).data('user');
-
-        const $msgModal = $('#message-modal');
-              $msgModal.find('.message-form').attr('action', `/message/user/${user}`);
-              $msgModal.find('.message-text').val('');
-
-        $msgModal.modal('show');
-        $msgModal.find('form').on('submit', () => { $msgModal.modal('hide'); })
-    }
-
     // Delete button
     const $deleteBtn = $('.delete-btn');
     if (!!$deleteBtn) {

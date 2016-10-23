@@ -9,6 +9,9 @@ export default class Messages {
 
         this.$messageUser.on('click', this.openUserMessages.bind(this));
         this.$form.on('submit', this.sendMessage.bind(this));
+
+        // Message modal
+        $('.msg-btn').on('click', this.openMsgModal); 
     }
 
     sendMessage(e) {
@@ -48,5 +51,17 @@ export default class Messages {
         const $messageList = this.$messages.find(`.user-messages[data-user='${user}']`);
         $messageList.append($newMsg);
         $messageList.scrollTop($messageList.height());
+    }
+
+    openMsgModal() {
+        const user = $(this).data('user');
+
+        const $msgModal = $('#message-modal');
+              $msgModal.find('.message-text').val('');
+        const $form = $msgModal.find('form');
+              $form.attr('action', `/message/user/${user}`); 
+              $form.on('submit', () => { $msgModal.modal('hide'); })      
+
+        $msgModal.modal('show');
     }
 }
