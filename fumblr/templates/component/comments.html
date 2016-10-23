@@ -1,9 +1,16 @@
 <div id="comments">
 	<ul class="list-group">
 		{% for comment in comments %}
-		<li class="list-group-item">
-			<span class="comment-text">{{ comment.text }}</span>
+		<li class="comment list-group-item" data-user="{{ comment.user }}" data-id="{{ comment.id }}">
+			<span class="comment-text">{{ comment.text }}</span>	
 			<span class="comment-user pull-xs-right">{{ comment.user }}</span>
+			{% if current_user.is_authenticated and comment.user == current_user.username %}
+			<span class="controls closed">
+				<div class="delete-btn" data-id="{{ comment.id }}">
+					<i class="fa fa-close"></i>	
+				</div>
+			</span>
+			{% endif %}
 		</li>	
 		{% endfor %}
 	</ul>

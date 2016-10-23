@@ -770,6 +770,7 @@ class Comment(db.Model):
 
     def get_data(self):
         return {
+            'id': self.id,
             'user': self.user.username,
             'post': self.post.id,
             'text': self.text,

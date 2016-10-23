@@ -2,8 +2,29 @@
 	width: 640px;
 	margin: 2rem auto;
 
-	.comment-text {
+	.comment {
+		overflow: hidden;
+	}
 
+	.delete-btn {
+		padding: .5rem .5rem;
+		height: 100%;
+		width: 100%;
+	}
+
+	.controls {
+		transition: .2s all ease;
+		color: #fff;
+		background-color: $red;
+		border: 1px solid $red;
+		border-radius: .25rem;
+		position: absolute;
+		right: 0;
+		top: 0;
+		text-align: center;
+		height: 100%;
+		width: 2rem;
+		&.closed { right: -2rem; }
 	}
 	.comment-user {
 		color: rgba(0,0,0,0.6);

@@ -211,19 +211,33 @@ def message(username=None):
 
         return jsonify(message=render_template('component/message.html', message=msg.get_data()), user=username)
 
-@app.route('/comment', methods=['post'])
+@app.route('/comment/post/<post_id>', methods=['post'])
+@app.route('/comment/delete/<delete_id>', methods=['post'])
 @login_required
-def comment():
+def comment(post_id=None, delete_id=None):
     """
-        Create a new comment on a post
+    Create or delete comment on a post
+
     """
-    req = request.get_json()
-    post_id = req.get('post')
-    text = req.get('text')
+    if post_id:
+        req = request.get_json()
+        text = req.get('text')
 
-    cmt = Comment.send_comment(post_id, text)
+        cmt = Comment.send_comment(post_id, text)
 
-    return jsonify(comment=cmt.get_data())
+        return jsonify(comment=cmt.get_data())
+
+    if delete_id:
+        cmt = current_user.comments.filter_by(id=delete_id).one_or_none()
+        if not cmt:
+            return abort(404)
+
+        db.session.delete(cmt)
+        db.session.commit()
+
+        return jsonify(comment=True)
+
+    return abort(404)
 
 @app.route('/reblog/<int:post_id>', methods=['get', 'post'])
 @login_required
