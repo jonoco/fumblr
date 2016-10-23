@@ -7,6 +7,9 @@
 
 		{% for post in posts %}
 			{% include "component/post.html" %}
+
+		{% else %}
+		<div class="no-content"><em>You have not liked any posts</em></div><!-- no-content -->
 		{% endfor %}
 
 	</div><!-- container -->

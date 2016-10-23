@@ -1,7 +1,5 @@
 #dashboard {
 	.no-content {
-		color: #eee;
-		text-align: center;
-		a { color: #bbb; }
+		a { color: $accent-color-high; }
 	}	
 }

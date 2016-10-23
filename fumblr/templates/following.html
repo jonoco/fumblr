@@ -12,7 +12,7 @@
                 <a href="{{ url_for('user', username=follow.target) }}">{{ follow.target }}</a>
             </li>
         {% else %}
-            <li class="list-group-item"><em>You're not following anyone</em></li>
+        <div class="no-content"><em>You're not following anyone</em></div>
 		{% endfor %}
         </ul>
 
