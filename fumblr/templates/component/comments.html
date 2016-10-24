@@ -3,7 +3,7 @@
 		{% for comment in comments %}
 		<li class="comment list-group-item" data-user="{{ comment.user }}" data-id="{{ comment.id }}">
 			<span class="comment-text">{{ comment.text }}</span>	
-			<span class="comment-user pull-xs-right">{{ comment.user }}</span>
+			<a href="{{ url_for('user', username=comment.user) }}" class="comment-user pull-xs-right">{{ comment.user }}</a>
 			{% if current_user.is_authenticated and comment.user == current_user.username %}
 			<span class="controls closed">
 				<div class="delete-btn" data-id="{{ comment.id }}">
