@@ -3,8 +3,6 @@
 {% block content %}
 <div id="dashboard">
 	<div class="container-fluid">
-		<h1>Dashboard</h1>
-
 		{% for post in posts %}
 			{% include "component/post.html" %}
 		{% else %}

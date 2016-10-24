@@ -1,9 +1,9 @@
 {% extends "layout/base.html" %}
-{% block title %}Blog{% endblock %}
+{% block title %}{{ user }}{% endblock %}
 {% block content %}
 <div id="blog">
 	<div class="container">
-		<h1>Blog</h1>
+		<h1>{{ user }}</h1>
 
 		{% set class = 'following' if is_following else '' %}
 		<button class="btn follow-btn {{ class }}" data-user="{{ user }}">Follow</button>
