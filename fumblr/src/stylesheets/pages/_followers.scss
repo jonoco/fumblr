@@ -1,3 +1,11 @@
 #followers {
+	width: 100%;
+	background-color: #eee;
+	border-radius: .5rem;
+	padding: 2rem 1rem;
+	margin: 2rem auto;
 
+	@include media-breakpoint-up(md) {
+		max-width: 640px;	
+	}
 }

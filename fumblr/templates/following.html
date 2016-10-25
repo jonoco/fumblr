@@ -2,18 +2,19 @@
 {% block title %}Following{% endblock %}
 {% block content %}
 <div id="following">
-	<div class="container">
+    <div class="following-wrap">
+        {% set count = following|count %}
+        <h4>You are following {{ count }} {{ 'person' if count == 1 else 'people' }}</h4>
         <ul class="list-group">
         {% for follow in following %}
-			<li class="list-group-item">
+            <li class="list-group-item">
                 <button class="follow-btn pull-xs-right" data-user="{{ follow.target }}">Unfollow</button>
                 <a href="{{ url_for('user', username=follow.target) }}">{{ follow.target }}</a>
             </li>
         {% else %}
         <div class="no-content"><em>You're not following anyone</em></div>
-		{% endfor %}
+        {% endfor %}
         </ul>
-
-	</div><!-- container -->
+    </div><!-- following-wrap -->
 </div><!-- home -->
 {% endblock %}

@@ -6959,6 +6959,7 @@ textarea.parsley-error {
   overflow: hidden; }
 
 .no-content {
+  margin-top: 1rem;
   width: 100%;
   text-align: center;
   color: #eee; }
@@ -7055,6 +7056,31 @@ a {
 
 #dashboard .no-content a {
   color: #f9cba5; }
+
+#followers {
+  width: 100%;
+  background-color: #eee;
+  border-radius: .5rem;
+  padding: 2rem 1rem;
+  margin: 2rem auto; }
+  @media (min-width: 768px) {
+    #followers {
+      max-width: 640px; } }
+
+#following {
+  width: 100%;
+  background-color: #eee;
+  border-radius: .5rem;
+  padding: 2rem 1rem;
+  margin: 2rem auto; }
+  #following button {
+    border: none;
+    color: #2e416f;
+    background-color: transparent;
+    font-size: .8rem; }
+  @media (min-width: 768px) {
+    #following {
+      max-width: 640px; } }
 
 #gallery {
   margin-bottom: 3rem; }
