@@ -2,7 +2,7 @@
 {% block title %}{{ user }}{% endblock %}
 {% block content %}
 <div id="blog">
-	<div class="container">
+	<div class="blog-wrap">
 		<h1>{{ user }}</h1>
 
 		{% for post in posts %}
@@ -11,6 +11,6 @@
 
 		{% include 'component/message-modal.html' %}
 
-	</div><!-- container -->
+	</div><!-- blog-wrap -->
 </div><!-- home -->
 {% endblock %}

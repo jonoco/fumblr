@@ -2,7 +2,7 @@
 {% block title %}Gallery{% endblock %}
 {% block content %}
 <div id="gallery">
-	<div class="container-fluid">
+	<div class="gallery-wrap">
 		{% for post in posts %}
 			{% include "component/post.html" %}
 		{% else %}
@@ -13,6 +13,6 @@
 			<a href="{{ url_for('gallery', page=offset) }}" class="btn btn-primary pull-xs-right">Next</a>
 		{% endif %}
 		
-	</div><!-- container -->
+	</div><!-- gallery-wrap -->
 </div><!-- home -->
 {% endblock %}

@@ -2,7 +2,7 @@
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 <div id="dashboard">
-	<div class="container-fluid">
+	<div class="dashboard-wrap">
 		{% for post in posts %}
 			{% include "component/post.html" %}
 		{% else %}
@@ -11,6 +11,6 @@
 			</div><!-- no-posts -->
 		{% endfor %}
 		
-	</div><!-- container -->
+	</div><!-- dashboard-wrap -->
 </div><!-- home -->
 {% endblock %}
