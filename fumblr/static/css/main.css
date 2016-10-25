@@ -7120,6 +7120,10 @@ a {
   font-size: .8rem;
   color: #FF2466; }
 
+#view-post h1 {
+  text-align: center;
+  font-size: 2.5rem; }
+
 #messages .message-view {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -7632,7 +7636,7 @@ a {
   background-color: rgba(128, 128, 128, 0.1); }
 
 #comments {
-  width: 640px;
+  width: 100%;
   margin: 2rem auto; }
   #comments .comment {
     overflow: hidden; }
@@ -7656,7 +7660,11 @@ a {
     #comments .controls.closed {
       right: -2rem; }
   #comments .comment-user {
-    color: rgba(0, 0, 0, 0.6); }
+    font-weight: 700;
+    color: #999; }
+  @media (min-width: 768px) {
+    #comments {
+      max-width: 640px; } }
 
 #likes .likes-content {
   width: 640px;

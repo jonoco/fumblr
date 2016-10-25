@@ -3,6 +3,8 @@
 {% block content %}
 <div id="view-post">
 	<div class="container">
+		<h1>{{ post.user.username }}</h1>
+
 		{% include "component/post.html" %}
 		
 		{% set likes = post.likes %}
