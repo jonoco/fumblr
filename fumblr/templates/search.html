@@ -2,7 +2,7 @@
 {% block title %}Search{% endblock %}
 {% block content %}
 <div id="search">
-	<div class="container">
+	<div class="search-wrap">
 		<h1>Search</h1>
 
 		{% if no_results %}
@@ -34,11 +34,11 @@
 			{% endfor %}
 		</div><!-- users -->
 		{% endif %}
+	</div><!-- search-wrap -->		
 
-		{% for post in posts %}
-			{% include "component/post.html" %}
-		{% endfor %}
+	{% for post in posts %}
+		{% include "component/post.html" %}
+	{% endfor %}
 
-	</div><!-- container -->
 </div><!-- home -->
 {% endblock %}

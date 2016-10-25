@@ -5,19 +5,23 @@
 	.no-result {
 		color: #eee;
 	}
-	.tags,
-	.users {
-		width: 100%;
-		background-color: #eee;
-		border-radius: .5rem;
-		padding: 2rem 1rem;
-		margin: 2rem auto;
+	.search-wrap {
+		.tags,
+		.users {
+			width: 100%;
+			background-color: #eee;
+			border-radius: .5rem;
+			padding: 2rem 1rem;
+			margin: 2rem auto;
+		}	
 	}
 	
 	@include media-breakpoint-up(md) {
-		.tags,
-		.users {
-			max-width: 640px;	
+		.search-wrap {
+			.tags,
+			.users {
+				max-width: 640px;	
+			}
 		}
 	}
 }
