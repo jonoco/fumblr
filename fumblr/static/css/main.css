@@ -7120,8 +7120,23 @@ a {
     #register {
       max-width: 640px; } }
 
+#search h3 {
+  color: #eee; }
+
 #search .no-result {
   color: #eee; }
+
+#search .tags,
+#search .users {
+  width: 100%;
+  background-color: #eee;
+  border-radius: .5rem;
+  padding: 2rem 1rem;
+  margin: 2rem auto; }
+
+@media (min-width: 768px) {
+  #search {
+    max-width: 640px; } }
 
 #settings {
   width: 100%;

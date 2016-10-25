@@ -17,17 +17,23 @@
 
 		{% if tags %}
 		<div class="tags">
+			<h4>Found {{ tags|count }} {{ 'tag' if tags|count == 1 else 'tags' }}</h4>
 			{% for tag in tags %}
 				<a href="{{ url_for('tag', tag_name=tag) }}" class="tag">#{{ tag }}</a>	
 			{% endfor %}
 		</div>	
 		{% endif %}
 
-		{% for user in users %}
-		<div class="user">
-			<a href="{{ url_for('user', username=user.username) }}">{{ user.username }}</a>
-		</div>
-		{% endfor %}
+		{% if users %}
+		<div class="users">
+			<h4>Found {{ users|count }} {{ 'user' if users|count == 1 else 'users' }}</h4>
+			{% for user in users %}
+			<div class="user">
+				<a href="{{ url_for('user', username=user.username) }}">{{ user.username }}</a>
+			</div>
+			{% endfor %}
+		</div><!-- users -->
+		{% endif %}
 
 		{% for post in posts %}
 			{% include "component/post.html" %}
