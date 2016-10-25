@@ -2,55 +2,26 @@ import axios from 'axios';
 import { askConfirm } from './confirm-modal';
 
 // Delete button
-const $deleteBtn = $('.post .delete-btn');
-if (!!$deleteBtn) {
-    $deleteBtn.on('click', (e) => {
-        const btn = e.currentTarget;
-        const postID = btn.dataset.post;
+$('.post .delete-btn').on('click', (e) => {
+    const btn = e.currentTarget;
+    const postID = btn.dataset.post;
 
-        askConfirm({ title: 'Delete post?', btn: 'Delete' })
-        .then(() => {
-            axios.get(`/post/delete/${postID}`)
-            .then(res => {
-                document.location.reload(true);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-        }).catch(() => {
-            console.log('delete cancelled');
+    askConfirm({ title: 'Delete post?', btn: 'Delete' })
+    .then(() => {
+        axios.get(`/post/delete/${postID}`)
+        .then(res => {
+            document.location.reload(true);
+        })
+        .catch(err => {
+            console.log(err);
         });
+    }).catch(() => {
+        console.log('delete cancelled');
     });
-}
-
-// Follow button
-$('.follow-btn').on('click', followUser);
-function followUser(e) {
-    const $btn = $(this);
-    const user = $btn.data('user');
-
-    axios.post('/follow', {
-        user
-    }).then(res => {
-        if (res.data.follow) {
-            $btn.toggleClass('following');    
-        } else {
-            document.location.assign(res.request.responseURL);
-        }
-        
-    }).catch(err => {
-        console.log(err);
-    });
-}
+});
 
 // Like buttons
-const likeButtons = document.querySelectorAll('.like-btn');
-if (!!likeButtons) {
-    likeButtons.forEach( btn => {
-        btn.addEventListener('click', likePost);
-    });
-}
-
+$('.like-btn').on('click', likePost);
 function likePost(e) {
     const btn = e.currentTarget;
     const postID = btn.dataset.post;

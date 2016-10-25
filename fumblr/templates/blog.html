@@ -5,9 +5,10 @@
 	<div class="container">
 		<h1>{{ user }}</h1>
 
-		{% set class = 'following' if is_following else '' %}
-		<button class="btn follow-btn {{ class }}" data-user="{{ user }}">Follow</button>
-		<button class="btn msg-btn" data-user="{{ user }}" >Message</button>
+		<div class="blog-menu">
+			<button class="btn follow-btn {{ 'following' if is_following }}" data-user="{{ user }}"></button>
+			<button class="btn msg-btn" data-user="{{ user }}" >Message</button>
+		</div><!-- blog-menu -->
 
 		{% for post in posts %}
 			{% include "component/post.html" %}

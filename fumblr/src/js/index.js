@@ -6,6 +6,7 @@ import Header from './header';
 import Messages from './messages';
 import Comment from './comment';
 import './post';
+import { stopScrolling } from './utils';
 
 (function() {
     // Check browser compatibility for form support
@@ -34,11 +35,24 @@ import './post';
     const messages = new Messages();
     const comment = new Comment();
 
-    // Mobile header-sidebar
-    $('.menu-btn, .mask').on('click', openSidemenu);
-    function openSidemenu(e) {
-        $('#header-sidebar').toggleClass('open');
-        $('.menu-btn').toggleClass('fa-bars').toggleClass('fa-close');
+    // Follow button
+    $('.follow-btn').on('click', followUser);
+    function followUser(e) {
+        const $btn = $(this);
+        const user = $btn.data('user');
+
+        axios.post('/follow', {
+            user
+        }).then(res => {
+            if (res.data.follow) {
+                $btn.toggleClass('following');    
+            } else {
+                document.location.assign(res.request.responseURL);
+            }
+            
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
 }());

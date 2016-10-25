@@ -6951,11 +6951,6 @@ textarea.parsley-error {
 .parsley-errors-list.filled {
   opacity: 1; }
 
-#header nav:after {
-  clear: both;
-  display: table;
-  content: ''; }
-
 .hide {
   display: none; }
 
@@ -7047,8 +7042,14 @@ a {
   a:hover {
     text-decoration: none; }
 
+#blog .follow-btn:before {
+  content: 'Follow'; }
+
 #blog .follow-btn.following {
+  color: #eee;
   background-color: #76ba30; }
+  #blog .follow-btn.following:before {
+    content: 'Unfollow'; }
 
 #dashboard .no-content a {
   color: #f9cba5; }
@@ -7296,27 +7297,32 @@ a {
           color: #cc3750; } }
 
 #header {
-  color: #ddd; }
-  #header .screen-header {
-    display: none; }
+  z-index: 10;
+  top: 0;
+  color: #ddd;
+  width: 100%; }
   #header nav {
     background-color: #236863;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    height: 50px;
+    height: 10vh;
     padding: 0;
     font-size: 1.5rem; }
-    #header nav .hide-top {
-      top: -50px;
-      position: fixed; }
     #header nav .fa-pencil-square-o {
       color: #f9cba5; }
     #header nav i:hover {
       cursor: pointer;
       color: #fff; }
+    #header nav.open-search .mobile-search {
+      top: 0; }
+    #header nav.open-search .nav-icons {
+      top: -10vh;
+      position: absolute; }
+  #header .screen-header {
+    display: none; }
   #header .nav-icons {
     -webkit-transition: .1s all ease;
     transition: .1s all ease;
-    padding: .75rem;
+    padding: 1rem;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -7325,56 +7331,62 @@ a {
             justify-content: space-between; }
     #header .nav-icons .logo {
       font-size: 1.7rem; }
-  #header .search-bar {
+  #header .mobile-search {
     -webkit-transition: .1s all ease;
     transition: .1s all ease;
     position: absolute;
-    top: 0;
+    top: -10vh;
     left: 0;
-    width: 100%; }
-    #header .search-bar input {
+    width: 100%;
+    height: 100%; }
+    #header .mobile-search .close-btn {
+      color: #aaa;
+      position: absolute;
+      height: 100%;
+      padding: 1rem;
+      left: 0; }
+    #header .mobile-search form {
+      height: 100%; }
+    #header .mobile-search input {
       background-color: rgba(0, 0, 0, 0.2);
       color: #eee;
-      height: 3rem;
+      height: 100%;
       width: 100%;
       text-align: center;
       border: none; }
-    #header .search-bar .close-btn {
-      color: #aaa;
-      position: absolute;
-      padding: .75rem 0 0 .75rem;
-      left: 0; }
   #header .user-name {
     display: inline-block;
     text-overflow: ellipsis;
     overflow: hidden;
     max-width: 10rem; }
   #header #header-sidebar {
-    display: block;
     -webkit-transition: all .2s ease;
     transition: all .2s ease;
+    z-index: 10;
     position: fixed;
-    right: -300px;
-    width: 100%;
-    height: 100%; }
+    right: -16rem;
+    width: 100vw;
+    height: 100vh; }
+    #header #header-sidebar a:hover {
+      color: #eee; }
     #header #header-sidebar i {
-      width: 2rem;
+      width: 1rem;
       margin-right: .5rem; }
     #header #header-sidebar .side-menu {
-      z-index: 10;
+      z-index: 12;
       position: relative;
       background-color: #236863;
-      width: 300px;
-      height: 100%; }
+      width: 16rem;
+      height: 90%; }
     #header #header-sidebar .menu-item {
       display: block;
-      padding: 1rem .5rem;
-      font-size: 2rem;
+      padding: .75rem .5rem;
+      font-size: 1rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
       #header #header-sidebar .menu-item:last-child {
         border: none; }
     #header #header-sidebar .mask {
-      z-index: 1;
+      z-index: 11;
       -webkit-transition: inherit;
       transition: inherit;
       height: 100%;
@@ -7383,19 +7395,20 @@ a {
       position: absolute;
       background-color: #000;
       opacity: .6; }
-    #header #header-sidebar.open {
-      right: 0; }
-      #header #header-sidebar.open .mask {
-        width: 100%; }
+  #header.open-menu #header-sidebar {
+    right: 0; }
+    #header.open-menu #header-sidebar .mask {
+      width: 100%; }
   @media (min-width: 768px) {
+    #header nav {
+      height: 50px;
+      font-size: 2rem; }
     #header #header-sidebar {
       display: none; }
     #header .mobile-header {
       display: none; }
     #header .screen-header {
       display: block; }
-    #header nav {
-      font-size: 2rem; }
     #header .logo {
       margin-right: 1rem;
       margin-top: .5rem;
@@ -7407,6 +7420,8 @@ a {
       display: inline;
       position: relative; }
       #header .search-bar input {
+        background-color: rgba(0, 0, 0, 0.2);
+        color: #eee;
         margin-top: 8px;
         display: inline;
         max-width: 12rem;

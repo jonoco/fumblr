@@ -1,7 +1,13 @@
 #blog {
-    .follow-btn {
-        &.following {
-            background-color: $green;
-        }
+	.blog-menu {
+		//
+	}
+  .follow-btn {
+  	&:before { content: 'Follow'; }
+    &.following {
+    	color: #eee;
+    	background-color: $green;
+			&:before { content: 'Unfollow'; }
     }
+  }
 }

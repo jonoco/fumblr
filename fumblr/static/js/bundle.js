@@ -74,6 +74,8 @@
 
 	__webpack_require__(34);
 
+	var _utils = __webpack_require__(10);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	(function () {
@@ -98,11 +100,23 @@
 	    var messages = new _messages2.default();
 	    var comment = new _comment2.default();
 
-	    // Mobile header-sidebar
-	    $('.menu-btn, .mask').on('click', openSidemenu);
-	    function openSidemenu(e) {
-	        $('#header-sidebar').toggleClass('open');
-	        $('.menu-btn').toggleClass('fa-bars').toggleClass('fa-close');
+	    // Follow button
+	    $('.follow-btn').on('click', followUser);
+	    function followUser(e) {
+	        var $btn = $(this);
+	        var user = $btn.data('user');
+
+	        _axios2.default.post('/follow', {
+	            user: user
+	        }).then(function (res) {
+	            if (res.data.follow) {
+	                $btn.toggleClass('following');
+	            } else {
+	                document.location.assign(res.request.responseURL);
+	            }
+	        }).catch(function (err) {
+	            console.log(err);
+	        });
 	    }
 	})();
 
@@ -18757,7 +18771,7 @@
 
 /***/ },
 /* 30 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -18767,6 +18781,8 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _utils = __webpack_require__(10);
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var Header = function () {
@@ -18774,6 +18790,8 @@
 			_classCallCheck(this, Header);
 
 			this.$mobileHeader = $('.mobile-header');
+
+			$('#header').find('.menu-btn, .mask').on('click', this.toggleSideMenu);
 
 			this.$mobileHeader.find('.search-btn').on('click', this.openMobileSearch.bind(this));
 			this.$mobileHeader.find('.close-btn').on('click', this.closeMobileSearch.bind(this));
@@ -18783,15 +18801,21 @@
 		_createClass(Header, [{
 			key: 'openMobileSearch',
 			value: function openMobileSearch() {
-				this.$mobileHeader.find('.nav-icons').addClass('hide-top');
-				this.$mobileHeader.find('.search-bar').removeClass('hide-top');
+				this.$mobileHeader.addClass('open-search');
 				this.$mobileHeader.find('input').focus();
 			}
 		}, {
 			key: 'closeMobileSearch',
 			value: function closeMobileSearch() {
-				this.$mobileHeader.find('.nav-icons').removeClass('hide-top');
-				this.$mobileHeader.find('.search-bar').addClass('hide-top');
+				this.$mobileHeader.removeClass('open-search');
+			}
+		}, {
+			key: 'toggleSideMenu',
+			value: function toggleSideMenu() {
+				window.scrollTo(0, 0);
+				$('#header').toggleClass('open-menu');
+				$('.menu-btn').toggleClass('fa-bars').toggleClass('fa-close');
+				(0, _utils.stopScrolling)($('#header').hasClass('open-menu'));
 			}
 		}]);
 
@@ -19266,51 +19290,23 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// Delete button
-	var $deleteBtn = $('.post .delete-btn');
-	if (!!$deleteBtn) {
-	    $deleteBtn.on('click', function (e) {
-	        var btn = e.currentTarget;
-	        var postID = btn.dataset.post;
+	$('.post .delete-btn').on('click', function (e) {
+	    var btn = e.currentTarget;
+	    var postID = btn.dataset.post;
 
-	        (0, _confirmModal.askConfirm)({ title: 'Delete post?', btn: 'Delete' }).then(function () {
-	            _axios2.default.get('/post/delete/' + postID).then(function (res) {
-	                document.location.reload(true);
-	            }).catch(function (err) {
-	                console.log(err);
-	            });
-	        }).catch(function () {
-	            console.log('delete cancelled');
+	    (0, _confirmModal.askConfirm)({ title: 'Delete post?', btn: 'Delete' }).then(function () {
+	        _axios2.default.get('/post/delete/' + postID).then(function (res) {
+	            document.location.reload(true);
+	        }).catch(function (err) {
+	            console.log(err);
 	        });
+	    }).catch(function () {
+	        console.log('delete cancelled');
 	    });
-	}
-
-	// Follow button
-	$('.follow-btn').on('click', followUser);
-	function followUser(e) {
-	    var $btn = $(this);
-	    var user = $btn.data('user');
-
-	    _axios2.default.post('/follow', {
-	        user: user
-	    }).then(function (res) {
-	        if (res.data.follow) {
-	            $btn.toggleClass('following');
-	        } else {
-	            document.location.assign(res.request.responseURL);
-	        }
-	    }).catch(function (err) {
-	        console.log(err);
-	    });
-	}
+	});
 
 	// Like buttons
-	var likeButtons = document.querySelectorAll('.like-btn');
-	if (!!likeButtons) {
-	    likeButtons.forEach(function (btn) {
-	        btn.addEventListener('click', likePost);
-	    });
-	}
-
+	$('.like-btn').on('click', likePost);
 	function likePost(e) {
 	    var btn = e.currentTarget;
 	    var postID = btn.dataset.post;
