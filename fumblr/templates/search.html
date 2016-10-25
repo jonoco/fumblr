@@ -19,7 +19,7 @@
 		<div class="tags">
 			<h4>Found {{ tags|count }} {{ 'tag' if tags|count == 1 else 'tags' }}</h4>
 			{% for tag in tags %}
-				<a href="{{ url_for('tag', tag_name=tag) }}" class="tag">#{{ tag }}</a>	
+				<a href="{{ url_for('tag', tag_name=tag) }}">#{{ tag }}</a>	
 			{% endfor %}
 		</div>	
 		{% endif %}

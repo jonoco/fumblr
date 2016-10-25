@@ -6,6 +6,7 @@
 		color: #eee;
 	}
 	.search-wrap {
+		margin: 0 auto;
 		.tags,
 		.users {
 			width: 100%;
@@ -18,10 +19,7 @@
 	
 	@include media-breakpoint-up(md) {
 		.search-wrap {
-			.tags,
-			.users {
-				max-width: 640px;	
-			}
+			max-width: 640px;	
 		}
 	}
 }
