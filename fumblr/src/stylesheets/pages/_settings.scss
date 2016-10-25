@@ -1,5 +1,16 @@
 #settings {
-	.avatar {
+	width: 100%;
+  background-color: #eee;
+  border-radius: .5rem;
+  padding: 2rem 1rem;
+  margin: 2rem auto;
+  
+  form {
+    margin-bottom: 2rem;
+    &:last-child { margin-bottom: 0; }
+  }
+
+  .avatar {
 		height: 64px;
 		width: 64px;
 		overflow: hidden;
@@ -8,17 +19,8 @@
   		width: 64px;
   	}      	
   }
-  .menu {
-      background-color: #eeeeee;
-      width: 640px;
-      padding: 1rem;
-      form {
-      	margin-bottom: 1rem;
-      }
-  }
 
-  .form-error {
-      font-size: .8rem;
-      color: #FF2466;
+  @include media-breakpoint-up(md) {
+    max-width: 640px;
   }
 }

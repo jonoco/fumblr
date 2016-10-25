@@ -2,7 +2,7 @@
 {% block title %}Likes{% endblock %}
 {% block content %}
 <div id="likes">
-	<div class="container">
+	<div class="likes-wrap">
 		{% for post in posts %}
 			{% include "component/post.html" %}
 
@@ -10,6 +10,6 @@
 		<div class="no-content"><em>You have not liked any posts</em></div><!-- no-content -->
 		{% endfor %}
 
-	</div><!-- container -->
+	</div><!-- likes-wrap -->
 </div><!-- home -->
 {% endblock %}

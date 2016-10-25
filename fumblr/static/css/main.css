@@ -7127,24 +7127,26 @@ a {
 #search .no-result {
   color: #eee; }
 
-#settings .avatar {
-  height: 64px;
-  width: 64px;
-  overflow: hidden;
-  margin-bottom: 1rem; }
-  #settings .avatar img {
-    width: 64px; }
-
-#settings .menu {
-  background-color: #eeeeee;
-  width: 640px;
-  padding: 1rem; }
-  #settings .menu form {
+#settings {
+  width: 100%;
+  background-color: #eee;
+  border-radius: .5rem;
+  padding: 2rem 1rem;
+  margin: 2rem auto; }
+  #settings form {
+    margin-bottom: 2rem; }
+    #settings form:last-child {
+      margin-bottom: 0; }
+  #settings .avatar {
+    height: 64px;
+    width: 64px;
+    overflow: hidden;
     margin-bottom: 1rem; }
-
-#settings .form-error {
-  font-size: .8rem;
-  color: #FF2466; }
+    #settings .avatar img {
+      width: 64px; }
+  @media (min-width: 768px) {
+    #settings {
+      max-width: 640px; } }
 
 #view-post h1 {
   text-align: center;
@@ -7692,12 +7694,12 @@ a {
     #comments {
       max-width: 640px; } }
 
-#likes .likes-content {
+#post-likes .likes-content {
   width: 640px;
   margin: 2rem auto;
   background-color: #eee;
   padding: 1rem; }
-  #likes .likes-content .like {
+  #post-likes .likes-content .like {
     color: #999; }
 
 #reblog-modal .image {
