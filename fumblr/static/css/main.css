@@ -7183,7 +7183,7 @@ a {
   text-align: center;
   font-size: 2.5rem; }
 
-#messages .message-view {
+#messages .message-wrap {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -7192,7 +7192,15 @@ a {
           justify-content: center;
   -webkit-box-align: start;
       -ms-flex-align: start;
-          align-items: flex-start; }
+          align-items: flex-start;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+  max-width: 640px;
+  padding: 1rem 0;
+  margin: 0 auto; }
 
 #messages section {
   display: -webkit-box;
@@ -7210,7 +7218,10 @@ a {
   -webkit-box-flex: 2;
       -ms-flex: 2 1 400px;
           flex: 2 1 400px;
-  margin: 1% 1% 1% 0;
+  -webkit-box-ordinal-group: 3;
+      -ms-flex-order: 2;
+          order: 2;
+  width: 100%;
   height: 400px; }
   #messages section .user-messages {
     width: 100%;
@@ -7247,10 +7258,11 @@ a {
 #messages aside {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 5px;
-  -webkit-box-flex: 1;
-      -ms-flex: 1 2 200px;
-          flex: 1 2 200px;
-  margin: 1% 1%;
+  width: 100%;
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
+  margin-bottom: 2%;
   max-height: 355px;
   overflow-y: auto;
   overflow-x: hidden; }
@@ -7262,6 +7274,33 @@ a {
     #messages aside .message-user:hover {
       background-color: rgba(0, 0, 0, 0.2);
       cursor: pointer; }
+
+@media (min-width: 768px) {
+  #messages .message-wrap {
+    margin: 2rem auto;
+    padding: 2rem 1rem;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row; }
+  #messages section {
+    -webkit-box-flex: 2;
+        -ms-flex: 2 1 400px;
+            flex: 2 1 400px;
+    width: auto;
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;
+    margin: 1% 1% 1% 0; }
+  #messages aside {
+    width: auto;
+    -webkit-box-flex: 1;
+        -ms-flex: 1 2 200px;
+            flex: 1 2 200px;
+    -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+            order: 2;
+    margin: 1%; } }
 
 #home {
   color: #eee; }
