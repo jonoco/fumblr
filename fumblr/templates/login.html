@@ -13,13 +13,17 @@
           <label for="login-password">Password</label>
           <input type="password" id="login-password" placeholder="password" name="password" class="form-control" required />
         </div><!-- form-group -->
-        
+        {% if error %}
+        <div class="error">
+          {{ error }}
+        </div><!-- error-message -->
+        {% endif %}
         <button type="submit" class="btn btn-primary">Login</button>
       </form>
       <hr />
       <div class="login-buttons">
-          <a href="{{ url_for('twitter.login') }}" class="btn btn-info">Login with Twitter</a>
-          <a href="{{ url_for('google.login') }}" class="btn btn-info">Login with Google</a>
+        <a href="{{ url_for('twitter.login') }}" class="btn btn-info">Login with Twitter</a>
+        <a href="{{ url_for('google.login') }}" class="btn btn-info">Login with Google</a>
       </div>
     </div><!-- login-wrap -->
 </div><!-- home -->

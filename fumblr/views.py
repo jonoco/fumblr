@@ -24,18 +24,19 @@ def login():
 
     email = request.form.get('email')
     password = request.form.get('password')
-
+    error = None
     user = User.query.filter_by(email=email).one_or_none()
     if not user:
-        return ('No user found with that email', 404)
+        error = 'No user found with that email'
 
-    if not user.verify_password(password):
-        return ('Password invalid', 403)
+    if user and not user.verify_password(password):
+        error = 'Password invalid'
+
+    if error:
+        return render_template('login.html', error=error)
 
     user.login()
-
     flash('Logged in successfully')
-
     return redirect(url_for('dashboard'))
 
 @app.route('/register', methods=['get', 'post'])
@@ -52,19 +53,19 @@ def register():
     password = request.form.get('password')
 
     if User.username_taken(username):
-        return ('Username taken', 403)
+        return render_template('register.html', error='Username taken')
 
     if User.email_taken(email):
-        return ('Email taken', 403)
+        return render_template('register.html', error='Email taken')
 
     if not User.valid_username(username):
-        return ('Invalid username', 403)
+        return render_template('register.html', error='Invalid username')
 
     if not User.valid_email(email):
-        return ('Invalid email', 403)
+        return render_template('register.html', error='Invalid email')
 
     if not User.valid_password(password):
-        return ('Invalid password', 403)
+        return render_template('register.html', error='Invalid password')
 
     user = User(email, 'email')
     user.password = User.hash_password(password)

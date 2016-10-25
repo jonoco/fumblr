@@ -7100,6 +7100,9 @@ a {
     text-align: center; }
     #login .login-buttons a {
       margin: 1rem; }
+  #login .error {
+    margin: 1rem 0;
+    color: #cc3750; }
   @media (min-width: 768px) {
     #login {
       max-width: 640px; } }
@@ -7116,6 +7119,9 @@ a {
     text-align: center; }
     #register .login-buttons a {
       margin: 1rem; }
+  #register .error {
+    margin: 1rem 0;
+    color: #cc3750; }
   @media (min-width: 768px) {
     #register {
       max-width: 640px; } }

@@ -12,6 +12,10 @@
     text-align: center;
     a { margin: 1rem; } 
   }
+  .error {
+    margin: 1rem 0;
+    color: $red;
+  }
   @include media-breakpoint-up(md) {
     max-width: 640px;
   }

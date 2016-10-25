@@ -27,7 +27,11 @@
 					data-parsley-remote="/valid/username/{value}"
 					data-parsley-remote-message="Username already taken." />
 			</div><!-- form-group -->
-			
+			{% if error %}
+      <div class="error">
+        {{ error }}
+      </div><!-- error-message -->
+      {% endif %}
 			<button type="submit" class="btn btn-primary">Sign up</button>
 		</form>
 		<hr>
