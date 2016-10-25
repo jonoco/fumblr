@@ -29,7 +29,6 @@ import { stopScrolling } from './utils';
     }
 
     const postModal = new PostModal();
-    postModal.init();
     const lightbox = new LightBox();
     const header = new Header();
     const messages = new Messages();

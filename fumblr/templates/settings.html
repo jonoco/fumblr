@@ -4,41 +4,48 @@
 <div id="settings">
 	<div class="settings-wrap">
 		<div class="avatar">
-			<img src="{{ user.avatar if user.avatar else 'http://i.imgur.com/Z9J5b6m.png' }}">
+			<img src="{{ current_user.avatar.link if current_user.avatar else 'http://i.imgur.com/Z9J5b6m.png' }}">
 		</div><!-- avatar -->
 		<form action="/settings/avatar" method="post" enctype="multipart/form-data" data-parsley-validate>
 			<div class="form-group">
 				<label for="settings-avatar">Avatar</label>
 				<input type="file" id="settings-avatar" class="form-control" name="file" required />
 			</div><!-- form-group -->
-
+			{% if error and error.avatar %}
+      <div class="error">{{ error.avatar }}</div><!-- error -->
+      {% endif %}
 			<button type="submit" class="btn btn-primary">Change Avatar</button>
 		</form>
 
-		<form action="/settings/username" method="post" data-parsley-validate data-parsley-trigger="change">
+		<form action="/settings/username" method="post" enctype="multipart/form-data" data-parsley-validate data-parsley-trigger="change">
 			<div class="form-group">
 				<label for="settings-username">Change username</label>
-				<input type="text" id="settings-username" class="form-control" name="username" value="{{ user.username }}" required 
+				<input type="text" id="settings-username" class="form-control" name="username" value="{{ current_user.username }}" required 
 					pattern="^([a-zA-Z0-9]{3,20})$" 
 					data-parsley-pattern-message="Username must be 3-20 characters long, using letters, numbers, or [ - _ ] characters"
 					data-parsley-debounce="500"
 					data-parsley-remote="/valid/username/{value}"
 					data-parsley-remote-message="Username already taken." />
 			</div>
-
+			{% if error and error.username %}
+      <div class="error">{{ error.username }}</div><!-- error -->
+      {% endif %}
 			<button type="submit" class="btn btn-primary">Change Username</button>
 		</form>
 		
 		{% if current_user.provider == 'email' %}
-		<form action="/settings/password" method="post" data-parsley-validate data-parsley-trigger="change">
+		<form action="/settings/password" method="post" enctype="multipart/form-data" data-parsley-validate>
 			<div class="form-group">
 				<label>Change password</label>
 				<input type="password" class="form-control" name="original-password" placeholder="Original password" required />
 				<input type="password" class="form-control" name="new-password" placeholder="New password" required
+					data-parsley-trigger="change"
 					pattern="^([a-zA-Z0-9@*#$%^&]{8,20})$" 						
 					data-parsley-pattern-message="Password must be 8-20 characters long, using letters, numbers, or [ @*#$%^& ]"/>
 			</div><!-- form-group -->
-
+			{% if error and error.password %}
+      <div class="error">{{ error.password }}</div><!-- error -->
+      {% endif %}
 			<button type="submit" class="btn btn-primary">Change Password</button>
 		</form>
 		{% endif %}

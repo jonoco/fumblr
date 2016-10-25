@@ -3,7 +3,7 @@ import { hashCode } from './utils';
 import _ from 'lodash';
 
 export default class PostModal {
-    init() {
+    constructor() {
         $('.post-btn').on('click', this.initUploadModal.bind(this));
         $('.edit-btn').on('click', this.getEditPost.bind(this));
 

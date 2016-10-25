@@ -117,7 +117,7 @@ def settings():
     """
         User's account settings
     """
-    return render_template('settings.html', user=current_user.get_user_info())
+    return render_template('settings.html')
 
 @app.route('/settings/username', methods=['post'])
 @login_required
@@ -126,20 +126,19 @@ def set_username():
         Set a user's username
     """
     new_username = request.form['username']
+
+    if not new_username:
+        return render_template('settings.html', error={'username': 'Please enter a username'})
+
     if User.username_taken(new_username):
-        return ('Username taken', 403)
+        return render_template('settings.html', error={'password': 'Username taken'})
 
-    else:
-        user = current_user
-        user.username = new_username
-        db.session.commit()
+    current_user.username = new_username
+    db.session.commit()
 
-    ## refresh login manager
     user_needs_refresh.send(current_app._get_current_object())
-
     flash('Updated username to {}'.format(new_username))
-
-    return render_template('settings.html', user=current_user.get_user_info())
+    return render_template('settings.html')
 
 @app.route('/settings/password', methods=['post'])
 @login_required
@@ -151,19 +150,19 @@ def set_password():
     orig_password = request.form.get('original-password')
     new_password = request.form.get('new-password')
 
-    if not User.valid_password(new_password):
-        return ('Invalid password', 403)
+    if not orig_password or not new_password:
+        return render_template('settings.html', error={'password': 'Please enter your password and new password'})
 
-    if not User.verify_password(orig_password):
-        return ('Incorrect password', 403)
+    if not User.valid_password(new_password):
+        return render_template('settings.html', error={'password': 'Invalid password'})
+
+    if not current_user.verify_password(orig_password):
+        return render_template('settings.html', error={'password': 'Incorrect password'})
 
     current_user.password = User.hash_password(new_password)
-
     user_needs_refresh.send(current_app._get_current_object())
-
     flash('Updated password')
-
-    return render_template('settings.html', user=current_user.get_user_info())
+    return render_template('settings.html')
 
 @app.route('/settings/avatar', methods=['post'])
 @login_required
@@ -172,11 +171,13 @@ def set_avatar():
         Set a user avatar
     """
     file = request.files['file']
-    if file and Image.allowed_file(file.filename):
-        current_user.set_avatar(file)
-        user_needs_refresh.send(current_app._get_current_object())
 
-        return render_template('settings.html', user=current_user.get_user_info())
+    if not file or not Image.allowed_file(file.filename):
+        return render_template('settings.html', error={'avatar': 'Invalid image'})
+
+    current_user.set_avatar(file)
+    user_needs_refresh.send(current_app._get_current_object())
+    return render_template('settings.html')
 
 @app.route('/message', methods=['get'])
 @app.route('/message/user/<username>', methods=['post'])

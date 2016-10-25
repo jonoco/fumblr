@@ -10,6 +10,11 @@
     &:last-child { margin-bottom: 0; }
   }
 
+  .error {
+    color: $red;
+    margin: 1rem 0;
+  }
+
   .avatar {
 		height: 64px;
 		width: 64px;
