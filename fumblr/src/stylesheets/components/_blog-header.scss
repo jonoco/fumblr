@@ -1,0 +1,36 @@
+#blog-header {
+	width: 100vw;
+	position: fixed;	
+	top: 0;
+	.blog-menu {
+		position: absolute;
+		right: 0;
+		display: block;
+		color: #eee;
+		font-weight: 700;
+		font-size: .8rem;
+		margin-top: 5px;
+		&>div {
+			padding: .25rem .5rem;
+			display: inline;
+			background-color: rgba(0,0,0, 0.3);
+			border-radius: .125rem;
+			margin-left: .25rem;
+			&:last-child { margin-right: .25rem; }
+		}
+		i { margin-right: .5rem; }
+	}
+  .follow-btn {
+  	.text { 
+  		&:before { content: 'Follow'; }
+  	}
+    &.following {
+			.text { 
+				&:before { content: 'Unfollow'; }
+			}
+    }
+  }
+  @include media-breakpoint-up(md) { 
+		
+  }
+}

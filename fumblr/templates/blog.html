@@ -1,14 +1,9 @@
-{% extends "layout/base.html" %}
+{% extends "layout/blog.html" %}
 {% block title %}{{ user }}{% endblock %}
 {% block content %}
 <div id="blog">
 	<div class="container">
 		<h1>{{ user }}</h1>
-
-		<div class="blog-menu">
-			<button class="btn follow-btn {{ 'following' if is_following }}" data-user="{{ user }}"></button>
-			<button class="btn msg-btn" data-user="{{ user }}" >Message</button>
-		</div><!-- blog-menu -->
 
 		{% for post in posts %}
 			{% include "component/post.html" %}

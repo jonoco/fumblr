@@ -1,0 +1,15 @@
+<header id="blog-header">
+	<nav class="blog-menu">
+		<div class="follow-btn {{ 'following' if is_following }}" data-user="{{ user }}">
+			<i class="fa {{ 'fa-minus' if is_following else 'fa-star-o' }}"></i><span class="text"></span>				
+		</div><!-- follow-btn -->
+		<div class="msg-btn" data-user="{{ user }}">
+			<i class="fa fa-envelope-o"></i>Message
+		</div><!-- msg-btn -->
+		<div class="dshb-btn">
+			<a href="{{ url_for('dashboard') }}">
+				<i class="fa fa-home"></i>Dashboard
+			</a><!-- dshb-btn -->	
+		</div>
+	</nav><!-- blog-menu -->
+</header><!-- #blog-header -->

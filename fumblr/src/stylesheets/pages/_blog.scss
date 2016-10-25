@@ -1,13 +1,15 @@
 #blog {
-	.blog-menu {
-		//
+	margin-top: 2rem;	
+	h1 {
+		text-align: center;
+		font-size: 2.5rem;
+		overflow: hidden;
+		text-overflow: hidden;
 	}
-  .follow-btn {
-  	&:before { content: 'Follow'; }
-    &.following {
-    	color: #eee;
-    	background-color: $green;
-			&:before { content: 'Unfollow'; }
-    }
-  }
+
+	@include media-breakpoint-up(md) {
+		h1 {
+			font-size: 4rem;
+		}
+	}
 }

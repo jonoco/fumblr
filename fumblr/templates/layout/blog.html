@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='icons/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='icons/favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+		{% include 'component/blog-header.html' %}
+
+    <div id="content">{% block content %}{% endblock %}</div>
+
+    {% include 'component/alert.html' %}
+    {% include 'component/confirm-modal.html'   %}
+    {% include 'component/post-modal.html' %}
+    {% include 'component/comment-modal.html' %}
+    {% include 'component/reblog-modal.html' %}
+    {% include 'component/lightbox.html' %}
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/parsley.min.js') }}" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="sha384-VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/bundle.js') }}" type="text/javascript"></script>
+</body>
+</html>
