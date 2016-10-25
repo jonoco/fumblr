@@ -2,27 +2,25 @@
 {% block title %}Login{% endblock %}
 {% block content %}
 <div id="login">
-	<div class="container">
-    <div class="login-menu">
-    		<h2>Login</h2>
-				<form action="/login" method="post" class="login-form" enctype="multipart/form-data" data-parsley-validate data-parsley-trigger="change">
-					<div class="form-group">
-						<label for="login-email">Email</label>
-						<input type="email" id="login-email" placeholder="email" name="email" class="form-control" required autofocus />
-					</div><!-- form-group -->
-					<div class="form-group">
-						<label for="login-password">Password</label>
-						<input type="password" id="login-password" placeholder="password" name="password" class="form-control" required />
-					</div><!-- form-group -->
-					
-					<button type="submit" class="btn btn-primary">Login</button>
-				</form>
-				<hr />
-        <div class="login-buttons">
-            <a href="{{ url_for('twitter.login') }}" class="btn btn-info">Login with Twitter</a>
-            <a href="{{ url_for('google.login') }}" class="btn btn-info">Login with Google</a>
-        </div>
-    </div>
-	</div><!-- container -->
+    <div class="login-wrap">
+      <h2>Login</h2>
+      <form action="/login" method="post" class="login-form" enctype="multipart/form-data" data-parsley-validate data-parsley-trigger="change">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="email" name="email" class="form-control" required autofocus />
+        </div><!-- form-group -->
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="password" name="password" class="form-control" required />
+        </div><!-- form-group -->
+        
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+      <hr />
+      <div class="login-buttons">
+          <a href="{{ url_for('twitter.login') }}" class="btn btn-info">Login with Twitter</a>
+          <a href="{{ url_for('google.login') }}" class="btn btn-info">Login with Google</a>
+      </div>
+    </div><!-- login-wrap -->
 </div><!-- home -->
 {% endblock %}

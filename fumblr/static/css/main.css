@@ -7088,41 +7088,37 @@ a {
     color: #eee;
     text-align: center; }
 
-#login .login-menu {
-  background-color: #eeeeee;
+#login {
   width: 100%;
-  padding: 2rem;
+  background-color: #eee;
+  border-radius: .5rem;
+  padding: 2rem 1rem;
   margin: 2rem auto; }
+  #login .login-form {
+    max-width: 600px; }
+  #login .login-buttons {
+    text-align: center; }
+    #login .login-buttons a {
+      margin: 1rem; }
+  @media (min-width: 768px) {
+    #login {
+      max-width: 640px; } }
 
-#login .login-form {
-  max-width: 600px; }
-
-#login .login-buttons {
-  text-align: center; }
-  #login .login-buttons a {
-    margin: 1rem; }
-
-@media (min-width: 768px) {
-  #login .login-menu {
-    max-width: 600px; } }
-
-#register .register-menu {
-  background-color: #eeeeee;
+#register {
   width: 100%;
-  padding: 2rem;
+  background-color: #eee;
+  border-radius: .5rem;
+  padding: 2rem 1rem;
   margin: 2rem auto; }
-
-#register .register-form {
-  max-width: 600px; }
-
-#register .login-buttons {
-  text-align: center; }
-  #register .login-buttons a {
-    margin: 1rem; }
-
-@media (min-width: 768px) {
-  #register .register-menu {
-    max-width: 600px; } }
+  #register .register-form {
+    max-width: 600px; }
+  #register .login-buttons {
+    text-align: center; }
+    #register .login-buttons a {
+      margin: 1rem; }
+  @media (min-width: 768px) {
+    #register {
+      max-width: 640px; } }
 
 #search .no-result {
   color: #eee; }

@@ -1,20 +1,18 @@
 #register {
-	.register-menu {
-		background-color: #eeeeee;
-		width: 100%;
-		padding: 2rem;
-		margin: 2rem auto;
-	}
-	.register-form {
-		max-width: 600px;
-	}
-	.login-buttons {
-		text-align: center;
-		a { margin: 1rem; }	
-	}
-	@include media-breakpoint-up(md) {
-		.register-menu {
-			max-width: 600px;
-		}
-	}
+  width: 100%;
+  background-color: #eee;
+  border-radius: .5rem;
+  padding: 2rem 1rem;
+  margin: 2rem auto;
+  
+  .register-form {
+    max-width: 600px;
+  }
+  .login-buttons {
+    text-align: center;
+    a { margin: 1rem; } 
+  }
+  @include media-breakpoint-up(md) {
+    max-width: 640px;
+  }
 }

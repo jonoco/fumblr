@@ -2,41 +2,39 @@
 {% block title %}Register{% endblock %}
 {% block content %}
 <div id="register">
-	<div class="container">
-    <div class="register-menu">
-    	<h2>Register</h2>
-			<form action="/register" method="post" class="register-form" enctype="multipart/form-data" data-parsley-validate data-parsley-trigger="change">
-				<div class="form-group">
-					<label for="register-email">Email</label>
-					<input type="email" id="register-email" placeholder="email" name="email" class="form-control" required autofocus 
-						data-parsley-remote="/valid/email/{value}" 
-						data-parsley-debounce="500"
-						data-parsley-remote-message="Email already exists." />
-				</div><!-- form-group -->
-				<div class="form-group">
-					<label for="register-password">Password</label>
-					<input type="password" id="register-password" placeholder="password" name="password" class="form-control" 
-						pattern="^([a-zA-Z0-9@*#$%^&]{8,20})$" 						
-						data-parsley-pattern-message="Password must be 8-20 characters long, using letters, numbers, or [ @*#$%^& ]"/>
-				</div><!-- form-group -->
-				<div class="form-group">
-					<label for="register-username">Username</label>
-					<input type="text" id="register-username" placeholder="username" name="username" class="form-control" required 
-						pattern="^([a-zA-Z0-9]{3,20})$" 
-						data-parsley-pattern-message="Username must be 3-20 characters long, using letters, numbers, or [ - _ ] characters"
-						data-parsley-debounce="500"
-						data-parsley-remote="/valid/username/{value}"
-						data-parsley-remote-message="Username already taken." />
-				</div><!-- form-group -->
-				
-				<button type="submit" class="btn btn-primary">Sign up</button>
-			</form>
-			<hr>
-      <div class="login-buttons">
-          <a href="{{ url_for('twitter.login') }}" class="btn btn-info">Signup with Twitter</a>
-          <a href="{{ url_for('google.login') }}" class="btn btn-info">Signup with Google</a>
-      </div>
+  <div class="register-wrap">
+  	<h2>Register</h2>
+		<form action="/register" method="post" class="register-form" enctype="multipart/form-data" data-parsley-validate data-parsley-trigger="change">
+			<div class="form-group">
+				<label for="register-email">Email</label>
+				<input type="email" id="register-email" placeholder="email" name="email" class="form-control" required autofocus 
+					data-parsley-remote="/valid/email/{value}" 
+					data-parsley-debounce="500"
+					data-parsley-remote-message="Email already exists." />
+			</div><!-- form-group -->
+			<div class="form-group">
+				<label for="register-password">Password</label>
+				<input type="password" id="register-password" placeholder="password" name="password" class="form-control" 
+					pattern="^([a-zA-Z0-9@*#$%^&]{8,20})$" 						
+					data-parsley-pattern-message="Password must be 8-20 characters long, using letters, numbers, or [ @*#$%^& ]"/>
+			</div><!-- form-group -->
+			<div class="form-group">
+				<label for="register-username">Username</label>
+				<input type="text" id="register-username" placeholder="username" name="username" class="form-control" required 
+					pattern="^([a-zA-Z0-9]{3,20})$" 
+					data-parsley-pattern-message="Username must be 3-20 characters long, using letters, numbers, or [ - _ ] characters"
+					data-parsley-debounce="500"
+					data-parsley-remote="/valid/username/{value}"
+					data-parsley-remote-message="Username already taken." />
+			</div><!-- form-group -->
+			
+			<button type="submit" class="btn btn-primary">Sign up</button>
+		</form>
+		<hr>
+    <div class="login-buttons">
+        <a href="{{ url_for('twitter.login') }}" class="btn btn-info">Signup with Twitter</a>
+        <a href="{{ url_for('google.login') }}" class="btn btn-info">Signup with Google</a>
     </div>
-	</div><!-- container -->
+  </div><!-- register-wrap -->
 </div><!-- home -->
 {% endblock %}
