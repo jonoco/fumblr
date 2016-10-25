@@ -1,5 +1,5 @@
-#settings {
-	width: 100%;
+#settings {	
+  width: 100%;
   background-color: #eee;
   border-radius: .5rem;
   padding: 2rem 1rem;
@@ -10,16 +10,23 @@
     &:last-child { margin-bottom: 0; }
   }
 
+  .avatar-form {
+    display: inline-block;
+  }
+
   .error {
     color: $red;
     margin: 1rem 0;
   }
 
   .avatar {
+    display: inline-block;
 		height: 64px;
 		width: 64px;
 		overflow: hidden;
 		margin-bottom: 1rem;
+    margin-right: 1rem;
+    border-radius: 32px;
   	img {
   		width: 64px;
   	}      	

@@ -7160,14 +7160,19 @@ a {
     margin-bottom: 2rem; }
     #settings form:last-child {
       margin-bottom: 0; }
+  #settings .avatar-form {
+    display: inline-block; }
   #settings .error {
     color: #cc3750;
     margin: 1rem 0; }
   #settings .avatar {
+    display: inline-block;
     height: 64px;
     width: 64px;
     overflow: hidden;
-    margin-bottom: 1rem; }
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+    border-radius: 32px; }
     #settings .avatar img {
       width: 64px; }
   @media (min-width: 768px) {

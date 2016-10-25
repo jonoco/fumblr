@@ -6,7 +6,7 @@
 		<div class="avatar">
 			<img src="{{ current_user.avatar.link if current_user.avatar else 'http://i.imgur.com/Z9J5b6m.png' }}">
 		</div><!-- avatar -->
-		<form action="/settings/avatar" method="post" enctype="multipart/form-data" data-parsley-validate>
+		<form action="/settings/avatar" method="post" class="avatar-form" enctype="multipart/form-data" data-parsley-validate>
 			<div class="form-group">
 				<label for="settings-avatar">Avatar</label>
 				<input type="file" id="settings-avatar" class="form-control" name="file" required />
