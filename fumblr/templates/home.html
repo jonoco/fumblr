@@ -2,17 +2,16 @@
 {% block title %}Hello{% endblock %}
 {% block content %}
 <div id="home">
-	<div class="container">
+	<div class="home-wrap">
 		<h1>Fumblr</h1>
-		
-		{% if current_user.is_authenticated %}
-			You are logged in as {{ current_user.username }}.
-			<a href="{{ url_for('logout') }}">Log out</a>
-		{% else %}
-			You are not logged in.
-			<a href="{{ url_for('login') }}">Sign in</a>
-		{% endif %}
-
-	</div><!-- container -->
+		<p>A flask full of tumbles.</p>
+		<div class="buttons">
+			<a href="{{ url_for('register') }}" class="btn btn-secondary signup-btn">Sign up</a>
+			<a href="{{ url_for('login') }}" class="btn btn-secondary">Log in</a>
+		</div><!-- buttons -->
+		<a href="{{ url_for('gallery') }}" class="gallery-btn">
+			<i class="fa fa-globe"></i>See what others are posting
+		</a>
+	</div><!-- home-wrap -->
 </div><!-- home -->
 {% endblock %}

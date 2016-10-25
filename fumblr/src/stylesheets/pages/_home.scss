@@ -1,0 +1,33 @@
+#home {
+	color: #eee;
+
+	.home-wrap {
+		width: 100%;
+	  border-radius: .5rem;
+	  padding: 2rem 1rem;
+	  margin: 2rem auto;
+		text-align: center;
+	}
+	.buttons {
+		margin: 1rem 0 .5rem 0;		
+		a { 
+			margin: 0 auto;
+			display: block;
+			width: 100%; 
+			max-width: 300px;
+			&:last-child { margin-top: .5rem; }
+		}
+	}
+	.signup-btn {
+		border-color: $accent-color-high;
+		background-color: $accent-color-high;
+	}
+	.gallery-btn {
+		font-weight: 700;
+		&>i { margin-right: .25rem; }
+	}
+	
+  @include media-breakpoint-up(md) {
+    .home-wrap { max-width: 640px; }
+  }
+}
