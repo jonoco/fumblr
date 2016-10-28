@@ -16,7 +16,6 @@ const LOAD_HEIGHT = 1000;
 
 (function() {
     let store = createStore(fumblrApp, window.STATE_FROM_SERVER);
-    console.log(store.getState())
 
     // Check browser compatibility for form support
     const isAdvancedUpload = function() {
@@ -67,7 +66,7 @@ const LOAD_HEIGHT = 1000;
     ['gallery', 'dashboard', 'user', 'likes'].forEach(location => {
       if (!!document.getElementById(location))  {
         document.addEventListener('scroll', _.debounce(() => {
-            if (getPosition() <= LOAD_HEIGHT) {
+            if (getPosition() <= LOAD_HEIGHT && store.getState().pages.more) {
                 loadNextPage(location);
             }
         }, 250, { 'maxWait': 500 }));   
@@ -80,9 +79,6 @@ const LOAD_HEIGHT = 1000;
 
     function loadNextPage(location) {
         if (store.getState().pages.loading) return;
-        if (!store.getState().pages.more) {
-            console.log('there are no more posts to get');
-        }
         
         store.dispatch(loadPosts());
 
@@ -95,10 +91,25 @@ const LOAD_HEIGHT = 1000;
         .then(res => {
             $(res.data.posts).appendTo('.post-list');
             store.dispatch(gotPosts(res.data.state.pages));
-            
         }).catch(err => {
             console.log(err.message);
-        })
+        });
+    }
+
+    let unsubscribe = store.subscribe(handleChange);
+    function handleChange() {
+        const list = $('.post-list');
+        if (store.getState().pages.loading && !$('.post-loading').length) {
+            $(`<div class="post-loading">
+                <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+                </div>`).appendTo(list);
+        } else {
+            $('.post-loading').remove();
+        }
+
+        if (!store.getState().pages.more) {
+            unsubscribe();
+        }
     }
 
 }());

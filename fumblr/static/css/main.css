@@ -7876,3 +7876,9 @@ a {
     content: 'Follow'; }
   #blog-header .follow-btn.following .text:before {
     content: 'Unfollow'; }
+
+.post-list .post-loading {
+  width: 100%;
+  text-align: center;
+  color: #eee;
+  margin-bottom: 3rem; }

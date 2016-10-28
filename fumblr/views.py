@@ -5,7 +5,7 @@ from .models import Post, User, Image, Tag, Follow, Like, Message, Comment, Role
 from .database import db
 import os
 
-POST_LIMIT = 8
+POST_LIMIT = 10
 
 @app.route('/')
 def index():
@@ -372,7 +372,7 @@ def gallery(post_count=0):
     """
     raw_posts = request.args.get('raw_posts')
 
-    posts = Post.query.order_by(Post.created.desc()).offset(post_count).limit(POST_LIMIT).all()
+    posts = Post.query.order_by(Post.created.desc()).offset(post_count).limit(POST_LIMIT)
     posts_data = Post.get_posts_data(posts)
 
     total_count = Post.query.count()
@@ -382,7 +382,7 @@ def gallery(post_count=0):
     state = {'pages': {'post_count': offset, 'more': more_posts, 'loading': False}}
 
     if raw_posts == '1':
-        rendered_posts = render_template('component/post-list.html', posts=posts_data)
+        rendered_posts = ''.join([render_template('component/post.html', post=post) for post in posts_data])
         return jsonify(posts=rendered_posts, state=state)
 
     return render_template('gallery.html', posts=posts_data, state=state)
@@ -409,7 +409,7 @@ def dashboard(post_count=0):
     state = {'pages': {'post_count': offset, 'more': more_posts, 'loading': False}}
 
     if raw_posts == '1':
-        rendered_posts = render_template('component/post-list.html', posts=posts_data)
+        rendered_posts = ''.join([render_template('component/post.html', post=post) for post in posts_data])
         return jsonify(posts=rendered_posts, state=state)
 
     return render_template('dashboard.html', posts=posts_data, state=state)
@@ -441,7 +441,7 @@ def user(username, post_count=0):
     state = {'pages': {'post_count': offset, 'more': more_posts, 'loading': False}}
 
     if raw_posts == '1':
-        rendered_posts = render_template('component/post-list.html', posts=posts_data)
+        rendered_posts = ''.join([render_template('component/post.html', post=post) for post in posts_data])
         return jsonify(posts=rendered_posts, state=state)
 
     return render_template('user.html', posts=posts_data, user=username, is_following=is_following, state=state)
@@ -593,7 +593,7 @@ def likes(post_count=0):
     state = {'pages': {'post_count': offset, 'more': more_posts, 'loading': False}}
 
     if raw_posts == '1':
-        rendered_posts = render_template('component/post-list.html', posts=posts_data)
+        rendered_posts = ''.join([render_template('component/post.html', post=post) for post in posts_data])
         return jsonify(posts=rendered_posts, state=state)
 
     return render_template('likes.html', posts=posts_data, state=state)

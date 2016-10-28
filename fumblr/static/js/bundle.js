@@ -94,7 +94,6 @@
 
 	(function () {
 	    var store = (0, _redux.createStore)(_reducers2.default, window.STATE_FROM_SERVER);
-	    console.log(store.getState());
 
 	    // Check browser compatibility for form support
 	    var isAdvancedUpload = function () {
@@ -139,7 +138,7 @@
 	    ['gallery', 'dashboard', 'user', 'likes'].forEach(function (location) {
 	        if (!!document.getElementById(location)) {
 	            document.addEventListener('scroll', _lodash2.default.debounce(function () {
-	                if (getPosition() <= LOAD_HEIGHT) {
+	                if (getPosition() <= LOAD_HEIGHT && store.getState().pages.more) {
 	                    loadNextPage(location);
 	                }
 	            }, 250, { 'maxWait': 500 }));
@@ -152,9 +151,6 @@
 
 	    function loadNextPage(location) {
 	        if (store.getState().pages.loading) return;
-	        if (!store.getState().pages.more) {
-	            console.log('there are no more posts to get');
-	        }
 
 	        store.dispatch((0, _actions.loadPosts)());
 
@@ -169,6 +165,20 @@
 	        }).catch(function (err) {
 	            console.log(err.message);
 	        });
+	    }
+
+	    var unsubscribe = store.subscribe(handleChange);
+	    function handleChange() {
+	        var list = $('.post-list');
+	        if (store.getState().pages.loading && !$('.post-loading').length) {
+	            $('<div class="post-loading">\n                <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>\n                </div>').appendTo(list);
+	        } else {
+	            $('.post-loading').remove();
+	        }
+
+	        if (!store.getState().pages.more) {
+	            unsubscribe();
+	        }
 	    }
 	})();
 

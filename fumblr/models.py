@@ -191,7 +191,7 @@ class Post(db.Model):
         self.created = created
 
     def __repr__(self):
-        return '<Post {}>'.format(self.user)
+        return '<Post {} {}>'.format(self.id, self.user)
 
     def get_data(self):
         return {
