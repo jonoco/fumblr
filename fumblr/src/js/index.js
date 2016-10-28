@@ -7,8 +7,14 @@ import Messages from './messages';
 import Comment from './comment';
 import './post';
 import { stopScrolling } from './utils';
+import { createStore } from 'redux';
+import fumblrApp from './reducers';
+import { loadPosts, gotPosts } from './actions';
+import _ from 'lodash';
 
 (function() {
+    let store = createStore(fumblrApp, window.STATE_FROM_SERVER);
+
     // Check browser compatibility for form support
     const isAdvancedUpload = function() {
       const div = document.createElement('div');
@@ -52,6 +58,41 @@ import { stopScrolling } from './utils';
         }).catch(err => {
             console.log(err);
         });
+    }
+
+    const gallery = document.getElementById('gallery');
+    if (!!gallery) {
+        document.addEventListener('scroll', () => { checkPosition() });   
+    }
+
+    const checkPosition = _.debounce(_checkPosition, 250, { 'maxWait': 500 });
+    function _checkPosition() {
+        const LOAD_HEIGHT = 1000;
+        if (getPosition() <= LOAD_HEIGHT) {
+            loadNextPage();
+        }
+    }
+    
+    function getPosition() {
+        return document.body.clientHeight - window.innerHeight -  window.scrollY;
+    }
+
+    function loadNextPage() {
+        if (store.getState().pages.loading) return;
+        if (!store.getState().pages.more) {
+            console.log('there are no more posts to get');
+        }
+        
+        store.dispatch(loadPosts());
+
+        axios.get(`/gallery/${store.getState().pages.post_count}?json=1`)
+        .then(res => {
+            $(res.data.posts).appendTo('#gallery .gallery-wrap');
+            store.dispatch(gotPosts(res.data.state.pages));
+            
+        }).catch(err => {
+            console.log(err.message);
+        })
     }
 
 }());

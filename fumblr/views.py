@@ -363,21 +363,28 @@ def edit_post(id):
     return jsonify(reload=True)
 
 @app.route('/gallery')
-@app.route('/gallery/<int:page>')
-def gallery(page=0):
+@app.route('/gallery/<int:post_count>')
+def gallery(post_count=0):
     """
         Posts of all users
     """
-    PAGE_LIMIT = 20
+    in_json = request.args.get('json')
+    POST_LIMIT = 8
 
-    posts = Post.query.order_by(Post.created.desc()).offset(page).limit(PAGE_LIMIT).all()
+    posts = Post.query.order_by(Post.created.desc()).offset(post_count).limit(POST_LIMIT).all()
     posts_data = Post.get_posts_data(posts)
 
     total_count = Post.query.count()
-    offset = len(posts_data) + page
+    offset = len(posts_data) + post_count
     more_posts = total_count > offset
 
-    return render_template('gallery.html', posts=posts_data, more_posts=more_posts, offset=offset)
+    state = {'pages': {'post_count': offset, 'more': more_posts, 'loading': False}}
+    
+    if in_json == '1':
+        rendered_posts = render_template('component/post-list.html', posts=posts_data)
+        return jsonify(posts=rendered_posts, state=state)
+
+    return render_template('gallery.html', posts=posts_data, state=state)
 
 @app.route('/dashboard')
 @login_required
