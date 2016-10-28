@@ -12,8 +12,11 @@ import fumblrApp from './reducers';
 import { loadPosts, gotPosts } from './actions';
 import _ from 'lodash';
 
+const LOAD_HEIGHT = 1000;
+
 (function() {
     let store = createStore(fumblrApp, window.STATE_FROM_SERVER);
+    console.log(store.getState())
 
     // Check browser compatibility for form support
     const isAdvancedUpload = function() {
@@ -60,24 +63,22 @@ import _ from 'lodash';
         });
     }
 
-    const gallery = document.getElementById('gallery');
-    if (!!gallery) {
-        document.addEventListener('scroll', () => { checkPosition() });   
-    }
-
-    const checkPosition = _.debounce(_checkPosition, 250, { 'maxWait': 500 });
-    function _checkPosition() {
-        const LOAD_HEIGHT = 1000;
-        if (getPosition() <= LOAD_HEIGHT) {
-            loadNextPage();
-        }
-    }
+    // check for scrolling on pages with posts
+    ['gallery', 'dashboard', 'user', 'likes'].forEach(location => {
+      if (!!document.getElementById(location))  {
+        document.addEventListener('scroll', _.debounce(() => {
+            if (getPosition() <= LOAD_HEIGHT) {
+                loadNextPage(location);
+            }
+        }, 250, { 'maxWait': 500 }));   
+      }
+    });
     
     function getPosition() {
-        return document.body.clientHeight - window.innerHeight -  window.scrollY;
+        return document.body.clientHeight - window.innerHeight - window.scrollY;
     }
 
-    function loadNextPage() {
+    function loadNextPage(location) {
         if (store.getState().pages.loading) return;
         if (!store.getState().pages.more) {
             console.log('there are no more posts to get');
@@ -85,9 +86,14 @@ import _ from 'lodash';
         
         store.dispatch(loadPosts());
 
-        axios.get(`/gallery/${store.getState().pages.post_count}?json=1`)
+        let url = `/${location}/posts/${store.getState().pages.post_count}?raw_posts=1`;
+        if (location === 'user') {
+            url = `${window.location.pathname}/posts/${store.getState().pages.post_count}?raw_posts=1`;
+        }
+
+        axios.get(url)
         .then(res => {
-            $(res.data.posts).appendTo('#gallery .gallery-wrap');
+            $(res.data.posts).appendTo('.post-list');
             store.dispatch(gotPosts(res.data.state.pages));
             
         }).catch(err => {

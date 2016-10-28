@@ -3,13 +3,14 @@
 {% block content %}
 <div id="dashboard">
 	<div class="dashboard-wrap">
-		{% for post in posts %}
-			{% include "component/post.html" %}
-		{% else %}
+		
+		{% include 'component/post-list.html' %}
+
+		{% if not posts %}
 			<div class="no-content">
 				<p>You don't have any posts, why not <a href="#" class="post-btn">make a post</a> or <a href="{{ url_for('gallery') }}">find someone to follow?</a></p>
-			</div><!-- no-posts -->
-		{% endfor %}
+			</div><!-- no-content -->
+		{% endif %}
 		
 	</div><!-- dashboard-wrap -->
 </div><!-- home -->

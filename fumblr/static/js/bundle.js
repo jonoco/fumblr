@@ -90,8 +90,11 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var LOAD_HEIGHT = 1000;
+
 	(function () {
 	    var store = (0, _redux.createStore)(_reducers2.default, window.STATE_FROM_SERVER);
+	    console.log(store.getState());
 
 	    // Check browser compatibility for form support
 	    var isAdvancedUpload = function () {
@@ -132,26 +135,22 @@
 	        });
 	    }
 
-	    var gallery = document.getElementById('gallery');
-	    if (!!gallery) {
-	        document.addEventListener('scroll', function () {
-	            checkPosition();
-	        });
-	    }
-
-	    var checkPosition = _lodash2.default.debounce(_checkPosition, 250, { 'maxWait': 500 });
-	    function _checkPosition() {
-	        var LOAD_HEIGHT = 1000;
-	        if (getPosition() <= LOAD_HEIGHT) {
-	            loadNextPage();
+	    // check for scrolling on pages with posts
+	    ['gallery', 'dashboard', 'user', 'likes'].forEach(function (location) {
+	        if (!!document.getElementById(location)) {
+	            document.addEventListener('scroll', _lodash2.default.debounce(function () {
+	                if (getPosition() <= LOAD_HEIGHT) {
+	                    loadNextPage(location);
+	                }
+	            }, 250, { 'maxWait': 500 }));
 	        }
-	    }
+	    });
 
 	    function getPosition() {
 	        return document.body.clientHeight - window.innerHeight - window.scrollY;
 	    }
 
-	    function loadNextPage() {
+	    function loadNextPage(location) {
 	        if (store.getState().pages.loading) return;
 	        if (!store.getState().pages.more) {
 	            console.log('there are no more posts to get');
@@ -159,8 +158,13 @@
 
 	        store.dispatch((0, _actions.loadPosts)());
 
-	        _axios2.default.get('/gallery/' + store.getState().pages.post_count + '?json=1').then(function (res) {
-	            $(res.data.posts).appendTo('#gallery .gallery-wrap');
+	        var url = '/' + location + '/posts/' + store.getState().pages.post_count + '?raw_posts=1';
+	        if (location === 'user') {
+	            url = window.location.pathname + '/posts/' + store.getState().pages.post_count + '?raw_posts=1';
+	        }
+
+	        _axios2.default.get(url).then(function (res) {
+	            $(res.data.posts).appendTo('.post-list');
 	            store.dispatch((0, _actions.gotPosts)(res.data.state.pages));
 	        }).catch(function (err) {
 	            console.log(err.message);

@@ -3,12 +3,12 @@
 {% block content %}
 <div id="likes">
 	<div class="likes-wrap">
-		{% for post in posts %}
-			{% include "component/post.html" %}
+		
+		{% include 'component/post-list.html' %}
 
-		{% else %}
+		{% if not posts %}
 		<div class="no-content"><em>You have not liked any posts</em></div><!-- no-content -->
-		{% endfor %}
+		{% endif %}
 
 	</div><!-- likes-wrap -->
 </div><!-- home -->

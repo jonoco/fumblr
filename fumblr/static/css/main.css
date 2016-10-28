@@ -7047,15 +7047,15 @@ a {
   a:hover {
     text-decoration: none; }
 
-#blog {
+#user {
   margin-top: 2rem; }
-  #blog h1 {
+  #user h1 {
     text-align: center;
     font-size: 2.5rem;
     overflow: hidden;
     text-overflow: hidden; }
   @media (min-width: 768px) {
-    #blog h1 {
+    #user h1 {
       font-size: 4rem; } }
 
 #dashboard .no-content a {

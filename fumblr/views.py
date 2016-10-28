@@ -5,6 +5,8 @@ from .models import Post, User, Image, Tag, Follow, Like, Message, Comment, Role
 from .database import db
 import os
 
+POST_LIMIT = 8
+
 @app.route('/')
 def index():
     """
@@ -363,13 +365,12 @@ def edit_post(id):
     return jsonify(reload=True)
 
 @app.route('/gallery')
-@app.route('/gallery/<int:post_count>')
+@app.route('/gallery/posts/<int:post_count>')
 def gallery(post_count=0):
     """
         Posts of all users
     """
-    in_json = request.args.get('json')
-    POST_LIMIT = 8
+    raw_posts = request.args.get('raw_posts')
 
     posts = Post.query.order_by(Post.created.desc()).offset(post_count).limit(POST_LIMIT).all()
     posts_data = Post.get_posts_data(posts)
@@ -379,44 +380,71 @@ def gallery(post_count=0):
     more_posts = total_count > offset
 
     state = {'pages': {'post_count': offset, 'more': more_posts, 'loading': False}}
-    
-    if in_json == '1':
+
+    if raw_posts == '1':
         rendered_posts = render_template('component/post-list.html', posts=posts_data)
         return jsonify(posts=rendered_posts, state=state)
 
     return render_template('gallery.html', posts=posts_data, state=state)
 
 @app.route('/dashboard')
+@app.route('/dashboard/posts/<int:post_count>')
 @login_required
-def dashboard():
+def dashboard(post_count=0):
     """
         User's private facing page
     """
+    raw_posts = request.args.get('raw_posts')
+
     following_ids = current_user.following.with_entities(Follow.target_id).all()
     following_ids.append(current_user.id)
 
-    posts = Post.query.filter(Post.user_id.in_(following_ids)).order_by(Post.created.desc()).all()
-    posts_data = Post.get_posts_data(posts)
+    posts_query = Post.query.filter(Post.user_id.in_(following_ids)).order_by(Post.created.desc()).offset(post_count).limit(POST_LIMIT)
+    posts_data = Post.get_posts_data(posts_query)
 
-    return render_template('dashboard.html', posts=posts_data)
+    total_count = posts_query.count()
+    offset = len(posts_data) + post_count
+    more_posts = total_count > offset
+
+    state = {'pages': {'post_count': offset, 'more': more_posts, 'loading': False}}
+
+    if raw_posts == '1':
+        rendered_posts = render_template('component/post-list.html', posts=posts_data)
+        return jsonify(posts=rendered_posts, state=state)
+
+    return render_template('dashboard.html', posts=posts_data, state=state)
 
 @app.route('/user/<username>')
-def user(username):
+@app.route('/user/<username>/posts/<int:post_count>')
+def user(username, post_count=0):
     """
         User's public facing page; posts and reblogs
     """
+    raw_posts = request.args.get('raw_posts')
+
     user = User.query.filter_by(username=username).one_or_none()
     if not user:
         return abort(404)
-    posts = user.posts.order_by(Post.created.desc())
-    posts_data = Post.get_posts_data(posts)
+
+    posts_query = user.posts.order_by(Post.created.desc()).offset(post_count).limit(POST_LIMIT)
+    posts_data = Post.get_posts_data(posts_query)
 
     if current_user.is_authenticated:
         is_following = current_user.following_user(username)
     else:
         is_following = False
 
-    return render_template('blog.html', posts=posts_data, user=username, is_following=is_following)
+    total_count = posts_query.count()
+    offset = len(posts_data) + post_count
+    more_posts = total_count > offset
+
+    state = {'pages': {'post_count': offset, 'more': more_posts, 'loading': False}}
+
+    if raw_posts == '1':
+        rendered_posts = render_template('component/post-list.html', posts=posts_data)
+        return jsonify(posts=rendered_posts, state=state)
+
+    return render_template('user.html', posts=posts_data, user=username, is_following=is_following, state=state)
 
 @app.route('/image/<int:id>')
 def get_image(id):
@@ -547,15 +575,28 @@ def followers():
     return render_template('followers.html', followers=followers_data)
 
 @app.route('/likes')
+@app.route('/likes/posts/<int:post_count>')
 @login_required
-def likes():
+def likes(post_count=0):
     """
         All posts the user liked
     """
-    likes_query = current_user.likes.order_by(Like.created.desc())
+    raw_posts = request.args.get('raw_posts')
+
+    likes_query = current_user.likes.order_by(Like.created.desc()).offset(post_count).limit(POST_LIMIT)
     posts_data = [l.post.get_data() for l in likes_query]
 
-    return render_template('likes.html', posts=posts_data)
+    total_count = likes_query.count()
+    offset = len(posts_data) + post_count
+    more_posts = total_count > offset
+
+    state = {'pages': {'post_count': offset, 'more': more_posts, 'loading': False}}
+
+    if raw_posts == '1':
+        rendered_posts = render_template('component/post-list.html', posts=posts_data)
+        return jsonify(posts=rendered_posts, state=state)
+
+    return render_template('likes.html', posts=posts_data, state=state)
 
 @app.errorhandler(404)
 def page_not_found(error):

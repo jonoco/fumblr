@@ -3,15 +3,12 @@
 {% block content %}
 <div id="gallery">
 	<div class="gallery-wrap">
-		{% for post in posts %}
-			{% include "component/post.html" %}
-		{% else %}
+		
+		{% include 'component/post-list.html' %}
+		
+		{% if not posts %}
 			<div class="no-content"><em>No posts to display.</em></div><!-- no-content -->
-		{% endfor %}
-
-		<!-- {% if more_posts %}
-			<a href="{{ url_for('gallery', page=offset) }}" class="btn btn-primary pull-xs-right">Next</a>
-		{% endif %} -->
+		{% endif %}
 		
 	</div><!-- gallery-wrap -->
 </div><!-- home -->
