@@ -162,6 +162,8 @@ def set_password():
         return render_template('settings.html', error={'password': 'Incorrect password'})
 
     current_user.password = User.hash_password(new_password)
+    db.session.commit()
+
     user_needs_refresh.send(current_app._get_current_object())
     flash('Updated password')
     return render_template('settings.html')

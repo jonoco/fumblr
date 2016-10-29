@@ -583,6 +583,8 @@ class User(db.Model, UserMixin):
         self.last_login_at = self.current_login_at
         self.current_login_at = datetime.utcnow()
 
+        db.session.commit()
+
     def logout(self):
         """
         Unregister user as logged in
