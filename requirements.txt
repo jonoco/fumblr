@@ -25,5 +25,5 @@ six==1.10.0
 SQLAlchemy==1.0.15
 SQLAlchemy-Utils==0.32.9
 URLObject==2.4.2
-Werkzeug==0.11.11
+Werkzeug==0.15.3
 WTForms==2.1
