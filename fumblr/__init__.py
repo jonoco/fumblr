@@ -1,7 +1,7 @@
 from flask import Flask
 from fumblr.database import db
 from fumblr.keys import APP_SECRET_KEY
-from werkzeug.contrib.fixers import ProxyFix
+from werkzeug.middleware.proxy_fix import ProxyFix
 from raven.contrib.flask import Sentry
 
 ## initialize app
