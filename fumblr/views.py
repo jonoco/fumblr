@@ -3,6 +3,7 @@ from fumblr import app
 from flask_login import login_required, logout_user, current_user, user_needs_refresh
 from .models import Post, User, Image, Tag, Follow, Like, Message, Comment, Role
 from .database import db
+from .default_settings import DEBUG
 import os
 
 POST_LIMIT = 10
@@ -289,7 +290,12 @@ def new_post():
     images = []
 
     files = [request.files.get(f) for f in request.files]
-    submitted_images = Image.submit_images(files)
+
+    try:
+        submitted_images = Image.submit_images(files)
+    except:
+        return abort(500)
+
     images.extend(submitted_images)
 
     image_ids = [int(request.form.get(item)) for item in request.form if 'image' in item]
@@ -609,7 +615,7 @@ def page_not_found(error):
 
 @app.before_request
 def before_request():
-    if not os.environ.get('DEBUG') and request.url.startswith('http://'):
+    if not DEBUG and not request.is_secure():
         url = request.url.replace('http://', 'https://', 1)
         code = 301
         return redirect(url, code=code)

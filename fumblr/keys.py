@@ -1,6 +1,6 @@
 import os
 
-APP_SECRET_KEY = os.environ.get('APP_SECRET_KEY', '')
+APP_SECRET_KEY = os.environ.get('APP_SECRET_KEY', '1234')
 
 IMGUR_ID = os.environ.get('IMGUR_ID', '')
 IMGUR_SECRET = os.environ.get('IMGUR_SECRET', '')

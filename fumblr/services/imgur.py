@@ -16,7 +16,7 @@ def get_client():
     try:
         return ImgurClient(IMGUR_ID, IMGUR_SECRET)
     except helpers.error.ImgurClientError:
-        print('Error: imgur client error')
+        print(f'Error: imgur client error - id: {IMGUR_ID} secret: {IMGUR_SECRET}')
 
 def delete_image(deletehash):
     """

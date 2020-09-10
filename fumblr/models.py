@@ -77,6 +77,10 @@ class Image(db.Model):
 
         for f in files:
             image_data = upload(f)
+
+            if not image_data:
+                raise Exception('submit_images: No upload data received')
+
             image = cls(image_data['id'], image_data['deletehash'], image_data['link'])
             images.append(image)
             db.session.add(image)
